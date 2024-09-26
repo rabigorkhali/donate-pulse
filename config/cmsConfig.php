@@ -15,6 +15,7 @@ $postUrl = '/posts';
 $sliderUrl = '/sliders';
 $contactUsUrl = '/contact-us';
 $testimonialUrl = '/testimonials';
+$partnerUrl = '/partners';
 
 return [
     // routes entered in this array are accessible by any user no matter what role is given
@@ -483,6 +484,57 @@ return [
                     'name' => 'Delete Testimonial',
                     'route' => [
                         'url' => $testimonialUrl . '/*',
+                        'method' => $deleteMethod,
+                    ],
+                ]
+            ],
+
+        ],
+        [
+            'name' => 'Partners',
+            'icon' => "<i class='fa fa-user-friends'></i>",
+            'hasSubmodules' => false,
+            'route' => $partnerUrl,
+            'routeIndexName' => 'partners.index',
+            'routeName' => 'partners',
+            'permissions' => [
+                [
+                    'name' => 'View Partner',
+                    'route' => [
+                        'url' => $partnerUrl,
+                        'method' => $getMethod,
+                    ],
+                ],
+                [
+                    'name' => 'Create Partner',
+                    'route' => [
+                        [
+                            'url' => $partnerUrl . '/create',
+                            'method' => $getMethod,
+                        ],
+                        [
+                            'url' => $partnerUrl,
+                            'method' => $postMethod,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Edit Partner',
+                    'route' => [
+                        [
+                            'url' => $partnerUrl . '/*/edit',
+                            'method' => $getMethod,
+                        ],
+                        [
+                            'url' => $partnerUrl . '/*',
+                            'method' => $putMethod,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Delete Partner',
+                    'route' => [
+                        'url' => $partnerUrl . '/*',
                         'method' => $deleteMethod,
                     ],
                 ]
