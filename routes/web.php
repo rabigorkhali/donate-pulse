@@ -11,6 +11,7 @@ use App\Http\Controllers\System\PostCategoryController;
 use App\Http\Controllers\System\PostController;
 use App\Http\Controllers\System\SliderController;
 use App\Http\Controllers\System\ContactUsController;
+use App\Http\Controllers\System\TestimonialController;
 
 
 //Route::get('/', function () {
@@ -41,4 +42,5 @@ Route::prefix(getSystemPrefix())->middleware(['auth', 'permission.routes'])->gro
     Route::resource('/posts', PostController::class, ['except' => ['show']]);
     Route::resource('/sliders', SliderController::class, ['except' => ['show']]);
     Route::resource('/contact-us', ContactUsController::class, ['except' => ['show']]);
+    Route::resource('/testimonials', TestimonialController::class, ['except' => ['show']]);
 });

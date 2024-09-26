@@ -14,6 +14,7 @@ $postCategoryUrl = '/post-categories';
 $postUrl = '/posts';
 $sliderUrl = '/sliders';
 $contactUsUrl = '/contact-us';
+$testimonialUrl = '/testimonials';
 
 return [
     // routes entered in this array are accessible by any user no matter what role is given
@@ -437,5 +438,57 @@ return [
             ],
 
         ],
+        [
+            'name' => 'Testimonials',
+            'icon' => "<i class='fa fa-user-circle'></i>",
+            'hasSubmodules' => false,
+            'route' => $testimonialUrl,
+            'routeIndexName' => 'testimonials.index',
+            'routeName' => 'testimonials',
+            'permissions' => [
+                [
+                    'name' => 'View Testimonial',
+                    'route' => [
+                        'url' => $testimonialUrl,
+                        'method' => $getMethod,
+                    ],
+                ],
+                [
+                    'name' => 'Create Testimonial',
+                    'route' => [
+                        [
+                            'url' => $testimonialUrl . '/create',
+                            'method' => $getMethod,
+                        ],
+                        [
+                            'url' => $testimonialUrl,
+                            'method' => $postMethod,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Edit Testimonial',
+                    'route' => [
+                        [
+                            'url' => $testimonialUrl . '/*/edit',
+                            'method' => $getMethod,
+                        ],
+                        [
+                            'url' => $testimonialUrl . '/*',
+                            'method' => $putMethod,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Delete Testimonial',
+                    'route' => [
+                        'url' => $testimonialUrl . '/*',
+                        'method' => $deleteMethod,
+                    ],
+                ]
+            ],
+
+        ],
+
     ],
 ];
