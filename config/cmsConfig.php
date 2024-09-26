@@ -16,6 +16,7 @@ $sliderUrl = '/sliders';
 $contactUsUrl = '/contact-us';
 $testimonialUrl = '/testimonials';
 $partnerUrl = '/partners';
+$campaignCategoryUrl = '/campaign-categories';
 
 return [
     // routes entered in this array are accessible by any user no matter what role is given
@@ -73,6 +74,53 @@ return [
                 ]
             ],
         ],
+        [
+            'name' => 'Campaign',
+            'icon' => "<i class='fa fa-file-clipboard' aria-hidden='true'></i>",
+            'hasSubmodules' => true,
+            'routeIndexNameMultipleSubMenu' => ['campaign-categories.index'],
+            'submodules' => [
+                [
+                    'name' => 'Category',
+                    'icon' => '<i class="fa fa-cog" aria-hidden="true"></i>',
+                    'route' => $campaignCategoryUrl,
+                    'routeIndexName' => 'campaign-categories.index',
+                    'routeName' => 'campaign-categories',
+                    'hasSubmodules' => false,
+                    'permissions' => [
+                        [
+                            'name' => 'View Category',
+                            'route' => [
+                                'url' => $campaignCategoryUrl,
+                                'method' => $getMethod,
+                            ],
+                        ],
+                        [
+                            'name' => 'Create Category',
+                            'route' => [
+                                'url' => $campaignCategoryUrl,
+                                'method' => $postMethod,
+                            ],
+                        ],
+                        [
+                            'name' => 'Edit Category',
+                            'route' => [
+                                'url' => $campaignCategoryUrl . '/*',
+                                'method' => $putMethod,
+                            ],
+                        ],
+                        [
+                            'name' => 'Delete Category',
+                            'route' => [
+                                'url' => $campaignCategoryUrl . '/*',
+                                'method' => $deleteMethod,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+
         [
             'name' => 'User Management',
             'icon' => "<i class='fa fa-user'></i>",

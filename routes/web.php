@@ -13,6 +13,7 @@ use App\Http\Controllers\System\SliderController;
 use App\Http\Controllers\System\ContactUsController;
 use App\Http\Controllers\System\TestimonialController;
 use App\Http\Controllers\System\PartnerController;
+use App\Http\Controllers\System\CampaignCategoryController;
 
 
 //Route::get('/', function () {
@@ -45,4 +46,5 @@ Route::prefix(getSystemPrefix())->middleware(['auth', 'permission.routes'])->gro
     Route::resource('/contact-us', ContactUsController::class, ['except' => ['show']]);
     Route::resource('/testimonials', TestimonialController::class, ['except' => ['show']]);
     Route::resource('/partners', PartnerController::class, ['except' => ['show']]);
+    Route::resource('/campaign-categories', CampaignCategoryController::class, ['except' => ['show']]);
 });
