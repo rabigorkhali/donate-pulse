@@ -18,6 +18,7 @@ $testimonialUrl = '/testimonials';
 $partnerUrl = '/partners';
 $campaignCategoryUrl = '/campaign-categories';
 $campaignUrl = '/campaigns';
+$paymentGatewayUrl = '/payment-gateways';
 
 return [
     // routes entered in this array are accessible by any user no matter what role is given
@@ -444,6 +445,57 @@ return [
                     'name' => 'Delete Page',
                     'route' => [
                         'url' => $pageBaseUrl . '/*',
+                        'method' => $deleteMethod,
+                    ],
+                ]
+            ],
+
+        ],
+        [
+            'name' => 'Payment Gateway',
+            'icon' => "<i class='fa fa-credit-card-alt'></i>",
+            'hasSubmodules' => false,
+            'route' => $paymentGatewayUrl,
+            'routeIndexName' => 'payment-gateways.index',
+            'routeName' => 'payment-gateways',
+            'permissions' => [
+                [
+                    'name' => 'View Payment Gateway',
+                    'route' => [
+                        'url' => $paymentGatewayUrl,
+                        'method' => $getMethod,
+                    ],
+                ],
+                [
+                    'name' => 'Create Payment Gateway',
+                    'route' => [
+                        [
+                            'url' => $paymentGatewayUrl . '/create',
+                            'method' => $getMethod,
+                        ],
+                        [
+                            'url' => $paymentGatewayUrl,
+                            'method' => $postMethod,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Edit Payment Gateway',
+                    'route' => [
+                        [
+                            'url' => $paymentGatewayUrl . '/*/edit',
+                            'method' => $getMethod,
+                        ],
+                        [
+                            'url' => $paymentGatewayUrl . '/*',
+                            'method' => $putMethod,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Delete Payment Gateway',
+                    'route' => [
+                        'url' => $paymentGatewayUrl . '/*',
                         'method' => $deleteMethod,
                     ],
                 ]

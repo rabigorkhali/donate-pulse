@@ -74,7 +74,7 @@
 
                 <!-- Submit Button -->
                 <div class="pt-4">
-                    <button type="submit" class="btn btn-primary me-sm-3 me-1">{{ __('Update Partner') }}</button>
+                    <button type="submit" class="btn btn-primary me-sm-3 me-1">{{ __('Update') }}</button>
                 </div>
             </form>
         </div>
