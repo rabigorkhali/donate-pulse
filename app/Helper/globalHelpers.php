@@ -249,4 +249,17 @@ function removeImage($dir)
     File::delete(public_path() .'/'.$f2);
     File::delete(public_path() .'/'.$f3);
 }
+ function getCampaignStatus()
+{
+    return [
+        "pending" => "Pending",
+        "accepted" => "Accepted",
+        "running" => "Running",
+        "rejected" => "Rejected",
+        "stopped" => "Stopped",
+        "completed" => "Completed",
+        "withdrawal-processing" => "Withdrawal Processing",
+        "withdrawn" => "Withdrawn"
+    ];
+}
 

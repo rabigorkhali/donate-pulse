@@ -17,6 +17,7 @@ $contactUsUrl = '/contact-us';
 $testimonialUrl = '/testimonials';
 $partnerUrl = '/partners';
 $campaignCategoryUrl = '/campaign-categories';
+$campaignUrl = '/campaigns';
 
 return [
     // routes entered in this array are accessible by any user no matter what role is given
@@ -113,6 +114,44 @@ return [
                             'name' => 'Delete Category',
                             'route' => [
                                 'url' => $campaignCategoryUrl . '/*',
+                                'method' => $deleteMethod,
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Campaign',
+                    'icon' => '<i class="fa fa-cog" aria-hidden="true"></i>',
+                    'route' => $campaignUrl,
+                    'routeIndexName' => 'campaigns.index',
+                    'routeName' => 'campaigns',
+                    'hasSubmodules' => false,
+                    'permissions' => [
+                        [
+                            'name' => 'View Campaign',
+                            'route' => [
+                                'url' => $campaignUrl,
+                                'method' => $getMethod,
+                            ],
+                        ],
+                        [
+                            'name' => 'Create Campaign',
+                            'route' => [
+                                'url' => $campaignUrl,
+                                'method' => $postMethod,
+                            ],
+                        ],
+                        [
+                            'name' => 'Edit Campaign',
+                            'route' => [
+                                'url' => $campaignUrl . '/*',
+                                'method' => $putMethod,
+                            ],
+                        ],
+                        [
+                            'name' => 'Delete Campaign',
+                            'route' => [
+                                'url' => $campaignUrl . '/*',
                                 'method' => $deleteMethod,
                             ],
                         ],

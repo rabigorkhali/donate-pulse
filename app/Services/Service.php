@@ -67,6 +67,10 @@ class Service
             $data['image'] = $this->fullImageUploadPath . uploadImage($this->fullImageUploadPath, 'image', true, 300, null);
         }
 
+        if ($request->file('cover_image')) {
+            $data['cover_image'] = $this->fullImageUploadPath . uploadImage($this->fullImageUploadPath, 'cover_image', true, 300, null);
+        }
+
         if ($request->file('logo')) {
             $data['logo'] = $this->fullImageUploadPath . uploadImage($this->fullImageUploadPath, 'logo', true, 300, null);
         }
@@ -92,6 +96,13 @@ class Service
         $logoPath = $update->logo ?? null;
         $bannerPath = $update->banner ?? null;
         $thumbnailImage = $update->thumbnail_image ?? null;
+        $coverImage = $update->cover_image ?? null;
+        if ($request->hasFile('cover_image')) {
+            if ($imagePath && file_exists(public_path($imagePath))) {
+                removeImage($imagePath);
+            }
+            $data['cover_image'] = $this->fullImageUploadPath . uploadImage($this->fullImageUploadPath, 'cover_image', true, 300, null);
+        }
         if ($request->hasFile('image')) {
             if ($imagePath && file_exists(public_path($imagePath))) {
                 removeImage($imagePath);
@@ -131,6 +142,10 @@ class Service
         $logoPath = $item->logo ?? null;
         $bannerPath = $update->banner ?? null;
         $thumbnailImage = $update->thumbnail_image ?? null;
+        $coverImage = $update->cover_image ?? null;
+        if ($coverImage && file_exists(public_path($coverImage))) {
+            removeImage($coverImage);
+        }
         if ($imagePath && file_exists(public_path($imagePath))) {
             removeImage($imagePath);
         }
