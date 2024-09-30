@@ -6,12 +6,45 @@ use App\Models\Page;
 use App\Models\PaymentGateway;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Schema;
 
 class PaymentGatewayService extends Service
 {
     public function __construct(PaymentGateway $model)
     {
         parent::__construct($model);
+    }
+    public function indexPageData($request)
+    {
+        return [
+            'users' => User::get(),
+            'thisDatas' => $this->getAllData($request),
+        ];
+    }
+
+    public function getAllData($data, $selectedColumns = [], $pagination = true)
+    {
+        $keyword = $data->get('keyword');
+        $show = $data->get('show');
+        $userId = $data->get('user_id');
+        $query = $this->query();
+        if (count($selectedColumns) > 0) {
+            $query->select($selectedColumns);
+        }
+        $table = $this->model->getTable();
+        if ($keyword) {
+            if (Schema::hasColumn($table, 'name')) {
+                $query->whereRaw('LOWER(mobile_number) LIKE ?', ['%' . strtolower($keyword) . '%']);
+            }
+        }
+        if ($userId) {
+            $query->where('user_id', $userId);
+        }
+        if ($pagination) {
+            return $query->orderBy('created_at', 'DESC')->paginate($show ?? 10);
+        } else {
+            return $query->orderBy('created_at', 'DESC')->get();
+        }
     }
 
     public function createPageData($request)

@@ -35,8 +35,21 @@
                                         class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0">
                                         <div class="dataTables_filter">
                                             <label>
+                                                <select name="user_id" class="form-select">
+                                                    <option value="">{{ __('Select User') }}</option>
+                                                    @foreach($users as $datumUsers)
+                                                        <option value="{{ $datumUsers->id }}"
+                                                                @if (request('user_id') == $datumUsers->id) selected @endif>
+                                                            {{ ucfirst($datumUsers->name) }} ({{$datumUsers->email}})
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <div class="dataTables_filter">
+                                            <label>
                                                 <input type="text" value="{{ request('keyword') }}" name="keyword"
-                                                       class="form-control" placeholder="Search...">
+                                                       class="form-control" placeholder="Search Mobile Number...">
                                             </label>
                                         </div>
                                         <div class="dt-buttons btn-group flex-wrap">
