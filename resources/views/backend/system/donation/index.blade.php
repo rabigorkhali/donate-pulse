@@ -13,7 +13,7 @@
                             <div class="row me-2">
                                 <div class="col-md-2">
                                     <div class="me-3">
-                                        <div class="dataTables_length">
+                                        <div class="">
                                             <label>
                                                 <select name="show" class="form-select">
                                                     <option value="10" @if (request('show') == 10) selected @endif>10
@@ -30,76 +30,71 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-10">
-                                    <div
-                                        class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0">
-                                        <div class="dataTables_filter">
-                                            <label>
-                                                <select name="donor_user_id" class="form-select">
-                                                    <option value="">{{ __('Select Donor') }}</option>
-                                                    @foreach($users as $user)
-                                                        <option value="{{ $user->id }}"
-                                                                @if (request('donor_user_id') == $user->id) selected @endif>
-                                                            {{ ucfirst($user->name) }} ({{$user->email}})
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </label>
-                                        </div>
-                                        <div class="dataTables_filter ml-2">
-                                            <label>
-                                                <select name="receiver_user_id" class="form-select">
-                                                    <option value="">{{ __('Select Receiver') }}</option>
-                                                    @foreach($users as $user)
-                                                        <option value="{{ $user->id }}"
-                                                                @if (request('receiver_user_id') == $user->id) selected @endif>
-                                                            {{ ucfirst($user->name) }} ({{$user->email}})
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </label>
-                                        </div>
-                                        <div class="dataTables_filter">
-                                            <label>From:
-                                                <input type="date" name="from_date" class="form-control" value="{{request('from_date')}}">
-                                            </label>
-                                        </div>
-                                        <div class="dataTables_filter">
-                                            <label>To:
-                                                <input type="date" name="to_date" class="form-control" value="{{request('to_date')}}">
-                                            </label>
-                                        </div>
-                                        <div class="dataTables_filter">
-                                            <label>
-                                                <input type="text" value="{{ request('keyword') }}" name="keyword"
-                                                       class="form-control" placeholder="Search Mobile Number...">
-                                            </label>
-                                        </div>
-                                        <div class="dataTables_filter">
-                                            <label>
-                                                <select name="payment_gateway" class="form-select">
-                                                    <option value="">{{ __('Select Payment Gateway') }}</option>
-                                                    <option value="bank"
-                                                            @if (request('payment_gateway') == 'bank') selected @endif>
-                                                        Bank
-                                                    </option>
-                                                    <option value="esewa"
-                                                            @if (request('payment_gateway') == 'esewa') selected @endif>
-                                                        Esewa
-                                                    </option>
-                                                    <option value="khalti"
-                                                            @if (request('payment_gateway') == 'khalti') selected @endif>
-                                                        Khalti
-                                                    </option>
-                                                </select>
-                                            </label>
-                                        </div>
-                                        <div class="dt-buttons btn-group flex-wrap">
-                                            <button type="submit" class="btn btn-primary mx-3">
-                                                <span><i class="ti ti-filter me-1 ti-xs"></i>Filter</span>
-                                            </button>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 "> Donor:
+                                    <select name="donor_user_id" class="form-select">
+                                        <option value="">{{ __('Select Donor') }}</option>
+                                        @foreach($users as $user)
+                                            <option value="{{ $user->id }}"
+                                                    @if (request('donor_user_id') == $user->id) selected @endif>
+                                                {{ ucfirst($user->name) }} ({{$user->email}})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    Receiver:
+                                    <select name="receiver_user_id" class="form-select">
+                                        <option value="">{{ __('Select Receiver') }}</option>
+                                        @foreach($users as $user)
+                                            <option value="{{ $user->id }}"
+                                                    @if (request('receiver_user_id') == $user->id) selected @endif>
+                                                {{ ucfirst($user->name) }} ({{$user->email}})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                        From: <input type="date" name="from_date" class="form-control" value="{{request('from_date')}}">
+                                </div>
+                                <div class="col-md-3">
+                                    To: <input type="date" name="to_date" class="form-control" value="{{request('to_date')}}">
+
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-3 mt-2 mb-2">
+                                    Mobile Number:
+                                    <input type="text" value="{{ request('keyword') }}" name="keyword"
+                                           class="form-control" placeholder="Search...">
+                                </div>
+                                <div class="col-md-3 mt-2 mb-2">
+                                    Payment Gateway:
+                                    <select name="payment_gateway" class="form-select">
+                                        <option value="">{{ __('Select Payment Gateway') }}</option>
+                                        <option value="bank"
+                                                @if (request('payment_gateway') == 'bank') selected @endif>
+                                            Bank
+                                        </option>
+                                        <option value="esewa"
+                                                @if (request('payment_gateway') == 'esewa') selected @endif>
+                                            Esewa
+                                        </option>
+                                        <option value="khalti"
+                                                @if (request('payment_gateway') == 'khalti') selected @endif>
+                                            Khalti
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mt-4 mb-2">
+                                    <button type="submit" class="btn btn-primary ">
+                                        <span><i class="ti ti-filter me-1 ti-xs"></i>Filter</span>
+                                    </button>
+                                    <a href="{{route('donations.index')}}" class="btn btn-warning ">
+                                        <span><i class="ti ti-clear-all me-1 ti-xs"></i>Clear</span>
+                                    </a>
                                 </div>
                             </div>
                             <table class="datatables table dataTable no-footer dtr-column" id="DataTables_Table_0"

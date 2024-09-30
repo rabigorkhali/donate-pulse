@@ -25,7 +25,6 @@ class DonationService extends Service
 
     public function getAllData($data, $selectedColumns = [], $pagination = true)
     {
-        dump($data->all());
         $keyword = $data->get('keyword');
         $donorUserId = $data->get('donor_user_id');
         $receiverUserId = $data->get('receiver_user_id');
