@@ -236,11 +236,13 @@ class ResourceController extends Controller
         }
         $request = app()->make($request);
         try {
-            $this->service->store($request);
+            $response=$this->service->store($request);
+            if (isset($response['error'])) {
+                return redirect()->back()->withErrors(['error' => $response['error']]);
+            }
             $this->setModuleId($request->id);
             return redirect($this->getUrl())->withErrors(['success' => 'Successfully created.']);
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->back()->withErrors(['error' => 'Something went wrong.']);
         }
     }
@@ -259,7 +261,6 @@ class ResourceController extends Controller
             $data['breadcrumbs'] = $this->breadcrumbForForm('Edit');
             return $this->renderView('edit', $data);
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->back()->withErrors(['error' => 'Something went wrong.']);
         }
     }

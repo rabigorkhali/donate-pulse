@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('bank_address')->nullable();
             $table->string('bank_account_number')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

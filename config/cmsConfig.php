@@ -479,19 +479,7 @@ return [
                         ],
                     ],
                 ],
-                [
-                    'name' => 'Edit Payment Gateway',
-                    'route' => [
-                        [
-                            'url' => $paymentGatewayUrl . '/*/edit',
-                            'method' => $getMethod,
-                        ],
-                        [
-                            'url' => $paymentGatewayUrl . '/*',
-                            'method' => $putMethod,
-                        ],
-                    ],
-                ],
+
                 [
                     'name' => 'Delete Payment Gateway',
                     'route' => [

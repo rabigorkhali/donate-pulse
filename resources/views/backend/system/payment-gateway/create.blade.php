@@ -124,13 +124,22 @@
     </div>
 
     <script>
-        // Show bank details fields based on payment gateway selection
+        let paymentType = "{{$thisData->payment_gateway??old('payment_gateway')??'bank'}}";
+        if (paymentType == 'bank') {
+            $('.bank-details').show();
+            $('.bank-details input').attr('required', 'required');
+
+        } else {
+            $('.bank-details input').removeAttr('required');
+            $('.bank-details').hide();
+        }
         document.querySelector('select[name="payment_gateway"]').addEventListener('change', function () {
             if (this.value == 'bank') {
                 $('.bank-details').show();
+                $('.bank-details input').attr('required', 'required');
             } else {
+                $('.bank-details input').removeAttr('required');
                 $('.bank-details').hide();
-
             }
         });
     </script>

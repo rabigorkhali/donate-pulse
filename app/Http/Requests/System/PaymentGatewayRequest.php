@@ -29,11 +29,11 @@ class PaymentGatewayRequest extends FormRequest
             'mobile_number' => 'required|min:10|max:10',
 
             // Bank details validation (only if payment_gateway is 'bank')
-            'bank_name' => 'required_if:payment_gateway,bank|string|max:255',
-            'bank_account_name' => 'required_if:payment_gateway,bank|string|max:255',
-            'bank_swift_code' => 'required_if:payment_gateway,bank|string|max:255',
-            'bank_address' => 'required_if:payment_gateway,bank|string|max:255',
-            'bank_account_number' => 'required_if:payment_gateway,bank|string|max:255',
+            'bank_name' => 'required_if:payment_gateway,bank|max:255',
+            'bank_account_name' => 'required_if:payment_gateway,bank|max:255',
+            'bank_swift_code' => 'required_if:payment_gateway,bank|max:255',
+            'bank_address' => 'required_if:payment_gateway,bank|max:255',
+            'bank_account_number' => 'required_if:payment_gateway,bank|max:255',
         ];
         return $validation;
     }

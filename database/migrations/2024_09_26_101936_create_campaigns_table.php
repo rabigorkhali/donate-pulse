@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('cover_image')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

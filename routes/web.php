@@ -50,5 +50,5 @@ Route::prefix(getSystemPrefix())->middleware(['auth', 'permission.routes'])->gro
     Route::resource('/partners', PartnerController::class, ['except' => ['show']]);
     Route::resource('/campaign-categories', CampaignCategoryController::class, ['except' => ['show']]);
     Route::resource('/campaigns', CampaignController::class, ['except' => ['show']]);
-    Route::resource('/payment-gateways', PaymentGatewayController::class, ['except' => ['show']]);
+    Route::resource('/payment-gateways', PaymentGatewayController::class, ['except' => ['show','edit','update']]);
 });
