@@ -19,6 +19,7 @@ $partnerUrl = '/partners';
 $campaignCategoryUrl = '/campaign-categories';
 $campaignUrl = '/campaigns';
 $paymentGatewayUrl = '/payment-gateways';
+$donationUrl = '/donations';
 
 return [
     // routes entered in this array are accessible by any user no matter what role is given
@@ -80,7 +81,7 @@ return [
             'name' => 'Campaign',
             'icon' => "<i class='fa fa-file-clipboard' aria-hidden='true'></i>",
             'hasSubmodules' => true,
-            'routeIndexNameMultipleSubMenu' => ['campaign-categories.index'],
+            'routeIndexNameMultipleSubMenu' => ['campaign-categories.index','campaigns.index'],
             'submodules' => [
                 [
                     'name' => 'Category',
@@ -159,6 +160,25 @@ return [
                     ],
                 ],
             ],
+        ],
+        [
+            'name' => 'Donations',
+            'icon' => "<i class='fa fa-donate'></i>",
+            'hasSubmodules' => false,
+            'route' => $donationUrl,
+            'routeIndexName' => 'donations.index',
+            'routeName' => 'donations',
+            'permissions' => [
+                [
+                    'name' => 'View Donation',
+                    'route' => [
+                        'url' => $donationUrl,
+                        'method' => $getMethod,
+                    ],
+                ],
+
+            ],
+
         ],
 
         [
@@ -319,7 +339,7 @@ return [
             'name' => 'Post',
             'icon' => "<i class='fa fa-file-clipboard' aria-hidden='true'></i>",
             'hasSubmodules' => true,
-            'routeIndexNameMultipleSubMenu' => ['post-categories.index','posts.index'],
+            'routeIndexNameMultipleSubMenu' => ['post-categories.index', 'posts.index'],
             'submodules' => [
                 [
                     'name' => 'Category',
