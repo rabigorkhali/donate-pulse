@@ -56,10 +56,12 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                        From: <input type="date" name="from_date" class="form-control" value="{{request('from_date')}}">
+                                    From: <input type="date" name="from_date" class="form-control"
+                                                 value="{{request('from_date')}}">
                                 </div>
                                 <div class="col-md-3">
-                                    To: <input type="date" name="to_date" class="form-control" value="{{request('to_date')}}">
+                                    To: <input type="date" name="to_date" class="form-control"
+                                               value="{{request('to_date')}}">
 
                                 </div>
                             </div>
@@ -74,6 +76,10 @@
                                     Payment Gateway:
                                     <select name="payment_gateway" class="form-select">
                                         <option value="">{{ __('Select Payment Gateway') }}</option>
+                                        <option value="bank"
+                                                @if (request('payment_gateway') == 'offline') selected @endif>
+                                            Offline
+                                        </option>
                                         <option value="bank"
                                                 @if (request('payment_gateway') == 'bank') selected @endif>
                                             Bank
@@ -92,9 +98,16 @@
                                     <button type="submit" class="btn btn-primary ">
                                         <span><i class="ti ti-filter me-1 ti-xs"></i>Filter</span>
                                     </button>
-                                    <a href="{{route('donations.index')}}" class="btn btn-warning ">
+                                    <a href="{{route('donations.index')}}" class="btn btn-primary ">
                                         <span><i class="ti ti-clear-all me-1 ti-xs"></i>Clear</span>
                                     </a>
+                                    @if(hasPermission('/'.strtolower($title).'/*','put'))
+                                        <a class="btn add-new btn-primary text-white"
+                                           href="{{ route(strtolower($title).'.create') }}">
+                                            <i class="ti ti-plus me-0 me-sm-1 ti-xs"></i>
+                                            <span class="d-none d-sm-inline-block">Add</span>
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                             <table class="datatables table dataTable no-footer dtr-column" id="DataTables_Table_0"
@@ -125,6 +138,7 @@
                                         <td><b>Name:</b>{{ $donation->giver->name }}<br>
                                             <b>Email:</b>{{ $donation->giver->email }}<br>
                                             <b>Contact:</b>{{ $donation->giver->phone_number }}<br>
+                                            <b>Display Image:</b> <a target="_blank" href="{{asset($donation->donor_display_image??authUser()->image)}}" >View here</a><br>
                                         </td>
                                         <td><b>Name:</b>{{ $donation->receiver->name }}<br>
                                             <b>Email:</b>{{ $donation->receiver->email }}<br>
@@ -136,7 +150,11 @@
 
                                         </td>
                                         <td>{{ $donation->amount}}</td>
-                                        <td>{{ ucfirst($donation->payment_gateway??'-') }}</td>
+                                        <td><b>Type:</b> {{ ucfirst($donation->payment_gateway??'-') }} <br>
+                                            @if($donation->payment_receipt)<b>Receipt:</b> <a href="{{asset($donation->payment_receipt)}}">View receipt</a>
+                                             @endif
+
+                                        </td>
                                         <td>{{ $donation->mobile_number }}</td>
                                         <td><b>Date:</b>{{ $donation->created_at }}<br>
                                             <b>ID:</b>{{ $donation->transaction_id }}<br>

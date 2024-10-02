@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Campaign;
 use App\Models\Donation;
 use App\Models\Page;
 use App\Models\Role;
@@ -18,9 +19,28 @@ class DonationService extends Service
     public function indexPageData($request)
     {
         return [
-            'users' => User::get(),
+            'users' => User::orderby('name')->get(),
             'thisDatas' => $this->getAllData($request),
         ];
+    }
+
+    public function createPageData($request)
+    {
+        return [
+            'users' => User::orderby('name')->get(),
+            'campaigns' => Campaign::orderby('title')->get()
+        ];
+    }
+    public function store($request)
+    {
+        $data = $request->except('_token');
+        if ($request->file('payment_receipt')) {
+            $data['payment_receipt'] = $this->fullImageUploadPath . uploadImage($this->fullImageUploadPath, 'payment_receipt', true, 300, null);
+        }
+        if ($request->file('donor_display_image')) {
+            $data['donor_display_image'] = $this->fullImageUploadPath . uploadImage($this->fullImageUploadPath, 'donor_display_image', true, 300, null);
+        }
+        return $this->model->create($data);
     }
 
     public function getAllData($data, $selectedColumns = [], $pagination = true)

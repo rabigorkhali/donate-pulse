@@ -52,5 +52,5 @@ Route::prefix(getSystemPrefix())->middleware(['auth', 'permission.routes'])->gro
     Route::resource('/campaign-categories', CampaignCategoryController::class, ['except' => ['show']]);
     Route::resource('/campaigns', CampaignController::class, ['except' => ['show']]);
     Route::resource('/payment-gateways', PaymentGatewayController::class, ['except' => ['show','edit','update']]);
-    Route::resource('/donations', DonationController::class, ['except' => ['edit','update','create','store']]);
+    Route::resource('/donations', DonationController::class);
 });

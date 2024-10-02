@@ -24,5 +24,9 @@ class DonationController extends ResourceController
     {
         return 'backend.system.donation';
     }
+    public function storeValidationRequest()
+    {
+        return 'App\Http\Requests\System\DonationRequest';
+    }
 
 }
