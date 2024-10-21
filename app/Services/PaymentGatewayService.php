@@ -33,7 +33,7 @@ class PaymentGatewayService extends Service
         }
         $table = $this->model->getTable();
         if ($keyword) {
-            if (Schema::hasColumn($table, 'name')) {
+            if (Schema::hasColumn($table, 'mobile_number')) {
                 $query->whereRaw('LOWER(mobile_number) LIKE ?', ['%' . strtolower($keyword) . '%']);
             }
         }
