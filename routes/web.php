@@ -17,6 +17,7 @@ use App\Http\Controllers\System\CampaignCategoryController;
 use App\Http\Controllers\System\CampaignController;
 use App\Http\Controllers\System\PaymentGatewayController;
 use App\Http\Controllers\System\DonationController;
+use App\Http\Controllers\System\WithdrawalController;
 
 
 //Route::get('/', function () {
@@ -53,4 +54,5 @@ Route::prefix(getSystemPrefix())->middleware(['auth', 'permission.routes'])->gro
     Route::resource('/campaigns', CampaignController::class, ['except' => ['show']]);
     Route::resource('/payment-gateways', PaymentGatewayController::class, ['except' => ['show','edit','update']]);
     Route::resource('/donations', DonationController::class);
+    Route::resource('/withdrawals', WithdrawalController::class);
 });

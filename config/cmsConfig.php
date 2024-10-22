@@ -20,6 +20,7 @@ $campaignCategoryUrl = '/campaign-categories';
 $campaignUrl = '/campaigns';
 $paymentGatewayUrl = '/payment-gateways';
 $donationUrl = '/donations';
+$withdrawalUrl = '/withdrawals';
 
 return [
     // routes entered in this array are accessible by any user no matter what role is given
@@ -174,6 +175,51 @@ return [
                     'route' => [
                         'url' => $donationUrl,
                         'method' => $getMethod,
+                    ],
+                ],
+
+            ],
+
+        ],
+        [
+            'name' => 'Withdrawals',
+            'icon' => "<i class='fa fa-piggy-bank'></i>",
+            'hasSubmodules' => false,
+            'route' => $withdrawalUrl,
+            'routeIndexName' => 'withdrawals.index',
+            'routeName' => 'withdrawals',
+            'permissions' => [
+                [
+                    'name' => 'View Withdrawal',
+                    'route' => [
+                        'url' => $withdrawalUrl,
+                        'method' => $getMethod,
+                    ],
+                ],
+                [
+                    'name' => 'Create Withdrawal',
+                    'route' => [
+                        [
+                            'url' => $withdrawalUrl . '/create',
+                            'method' => $getMethod,
+                        ],
+                        [
+                            'url' => $withdrawalUrl,
+                            'method' => $postMethod,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Edit Withdrawal',
+                    'route' => [
+                        [
+                            'url' => $withdrawalUrl . '/*/edit',
+                            'method' => $getMethod,
+                        ],
+                        [
+                            'url' => $withdrawalUrl . '/*',
+                            'method' => $putMethod,
+                        ],
                     ],
                 ],
 
