@@ -32,6 +32,11 @@ class Withdrawal extends Model
         return $this->belongsTo(Campaign::class);
     }
 
+    public function campaignView()
+    {
+        return $this->belongsTo(CampaignView::class,'campaign_id');
+    }
+
     /**
      * Relationship with User.
      */

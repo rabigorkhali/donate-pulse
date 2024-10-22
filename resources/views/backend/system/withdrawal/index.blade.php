@@ -8,7 +8,7 @@
             <div class="card">
 
                 <div class="card-datatable table-responsive">
-                    <form method="get" action="{{ route('donations.index') }}">
+                    <form method="get" action="{{ route('withdrawals.index') }}">
                         <div class="dataTables_wrapper dt-bootstrap5 no-footer">
                             <div class="row me-2">
                                 <div class="col-md-2">
@@ -74,7 +74,7 @@
                                     <button type="submit" class="btn btn-primary ">
                                         <span><i class="ti ti-filter me-1 ti-xs"></i>Filter</span>
                                     </button>
-                                    <a href="{{route('donations.index')}}" class="btn btn-primary ">
+                                    <a href="{{route('withdrawals.index')}}" class="btn btn-primary ">
                                         <span><i class="ti ti-clear-all me-1 ti-xs"></i>Clear</span>
                                     </a>
                                     @if(hasPermission('/'.strtolower($title).'/*','put'))
@@ -91,14 +91,13 @@
                                 <thead class="border-top">
                                 <tr>
                                     <th>{{ __('SN') }}</th>
-                                    <th>{{ __('Donor') }}</th>
-                                    <th>{{ __('Receiver') }}</th>
-                                    <th>{{ __('Campaign Details') }}</th>
+                                    <th>{{ __('Campaign') }}</th>
                                     <th>{{ __('Amount(Rs.)') }}</th>
                                     <th>{{ __('Payment Gateway') }}</th>
                                     <th>{{ __('Mobile Number') }}</th>
-                                    <th>{{ __('Transaction') }}</th>
-                                    <th>{{ __('Status') }}</th>
+                                    <th>{{ __('Requested At') }}</th>
+                                    <th>{{ __('Campaign Status') }}</th>
+                                    <th>{{ __('Withdrawal Status') }}</th>
                                     <th>{{ __('Action') }}</th>
                                 </tr>
                                 </thead>
@@ -108,46 +107,37 @@
                                         <td class="text-center" colspan="8">{{ __('No data found.') }}</td>
                                     </tr>
                                 @endif
-                                @foreach ($thisDatas as $key => $donation)
+                                @foreach ($thisDatas as $key => $withdrawal)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td><b>Name:</b>{{ $donation->giver->name }}<br>
-                                            <b>Email:</b>{{ $donation->giver->email }}<br>
-                                            <b>Contact:</b>{{ $donation->giver->phone_number }}<br>
-                                            <b>Display Image:</b> <a target="_blank" href="{{asset($donation->donor_display_image??authUser()->image)}}" >View here</a><br>
-                                        </td>
-                                        <td><b>Name:</b>{{ $donation->receiver->name }}<br>
-                                            <b>Email:</b>{{ $donation->receiver->email }}<br>
-                                            <b>Contact:</b>{{ $donation->receiver->phone_number }}<br>
+
+                                        <td>
+                                           {{ $withdrawal->campaign->title}}<br>
                                         </td>
                                         <td>
-                                            Name:{{ $donation->campaign->title}}<br>
-                                            Status:{{ ucfirst($donation->campaign->campaign_status)}}
-
+                                            Gross: {{ $withdrawal->campaignView->summary_total_collection}} <br>
+                                            Service Charge: {{ $withdrawal->campaignView->summary_service_charge_amount}} <br>
+                                            Net: {{ $withdrawal->campaignView->net_amount_collection}} <br>
                                         </td>
-                                        <td>{{ $donation->amount}}</td>
-                                        <td><b>Type:</b> {{ ucfirst($donation->payment_gateway??'-') }} <br>
-                                            @if($donation->payment_receipt)<b>Receipt:</b> <a href="{{asset($donation->payment_receipt)}}">View receipt</a>
-                                             @endif
-
+                                        <td>{{ ucfirst($withdrawal->paymentGateway->payment_gateway??'-') }} <br>
                                         </td>
-                                        <td>{{ $donation->mobile_number }}</td>
-                                        <td><b>Date:</b>{{ $donation->created_at }}<br>
-                                            <b>ID:</b>{{ $donation->transaction_id }}<br>
+                                        <td>{{ $withdrawal->withdrawal_mobile_number??'-' }}</td>
+                                        <td>{{ $withdrawal->created_at }}<br>
                                         </td>
-                                        <td>{{ ucfirst($donation->payment_status) }}</td>
+                                        <td>{{ ucfirst($withdrawal->campaign->campaign_status) }}</td>
+                                        <td>{{ ucfirst($withdrawal->withdrawal_status) }}</td>
                                         <td>
-                                            @if(hasPermission('/donations/*', 'put') || hasPermission('/donations/*', 'delete'))
+                                            @if(hasPermission('/withdrawals/*', 'put') || hasPermission('/withdrawals/*', 'delete'))
                                                 <div class="dropdown">
                                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                                             data-bs-toggle="dropdown">
                                                         <i class="ti ti-dots-vertical"></i>
                                                     </button>
                                                     <div class="dropdown-menu">
-                                                        @if(hasPermission('/donations/*', 'delete'))
+                                                        @if(hasPermission('/withdrawals/*', 'delete'))
                                                             <a href="#" class="dropdown-item delete-button"
                                                                data-bs-toggle="modal"
-                                                               data-actionurl="{{ route('donations.destroy', $donation->id) }}"
+                                                               data-actionurl="{{ route('withdrawals.destroy', $withdrawal->id) }}"
                                                                data-bs-target="#deleteModal">
                                                                 <i class="ti ti-trash me-1"></i>{{ __('Delete') }}
                                                             </a>

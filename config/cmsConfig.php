@@ -222,6 +222,13 @@ return [
                         ],
                     ],
                 ],
+                [
+                    'name' => 'Delete Withdrawal',
+                    'route' => [
+                        'url' => $withdrawalUrl . '/*',
+                        'method' => $deleteMethod,
+                    ],
+                ]
 
             ],
 

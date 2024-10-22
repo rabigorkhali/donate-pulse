@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use DB;
+
 class ViewTableCampaignSummary extends Seeder
 {
     /**
@@ -15,19 +16,41 @@ class ViewTableCampaignSummary extends Seeder
     public function run()
     {
         DB::select("CREATE OR REPLACE VIEW campaigns_summary_view AS
-        SELECT *,(select sum(amount) from donations where campaign_id=cmp.id and payment_status='completed') as summary_total_collection
-        ,
-        (SELECT FLOOR(SUM(don.amount - ((don.amount * don.service_charge_percentage) / 100))) from donations as don where campaign_id=cmp.id and payment_status='completed')
-         as net_amount_collection
-         ,
-         (select count(id) from campaign_visits where campaign_id=cmp.id) as total_visits
-         ,
-         (SELECT FLOOR(SUM(((don.amount * don.service_charge_percentage) / 100))) from donations as don where campaign_id=cmp.id and payment_status='completed')
-         as summary_service_charge_amount
-         ,
-         (select count(id) from donations where campaign_id=cmp.id and payment_status='completed') as total_number_donation
-        FROM campaigns cmp
-        ")
-        ;
+        SELECT cmp.id,
+       cmp.user_id,
+       cmp.title,
+       cmp.description,
+       cmp.start_date,
+       cmp.end_date,
+       cmp.goal_amount,
+       cmp.campaign_status,
+
+       (SELECT SUM(amount)
+        FROM donations
+        WHERE campaign_id = cmp.id
+          AND payment_status = 'completed') AS summary_total_collection,
+
+       (SELECT FLOOR(SUM(don.amount - ((don.amount * don.service_charge_percentage) / 100)))
+        FROM donations AS don
+        WHERE don.campaign_id = cmp.id
+          AND don.payment_status = 'completed') AS net_amount_collection,
+
+       (SELECT COUNT(id)
+        FROM campaign_visits
+        WHERE campaign_id = cmp.id) AS total_visits,
+
+       (SELECT FLOOR(SUM(((don.amount * don.service_charge_percentage) / 100)))
+        FROM donations AS don
+        WHERE don.campaign_id = cmp.id
+          AND don.payment_status = 'completed') AS summary_service_charge_amount,
+
+       (SELECT COUNT(id)
+        FROM donations
+        WHERE campaign_id = cmp.id
+          AND payment_status = 'completed') AS total_number_donation
+FROM campaigns cmp
+GROUP BY cmp.id, cmp.user_id, cmp.title, cmp.description, cmp.start_date, cmp.end_date, cmp.goal_amount, cmp.campaign_status;
+
+        ");
     }
 }

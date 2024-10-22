@@ -81,7 +81,7 @@
                             <option value="">{{__('None')}}</option>
                             @foreach($roles as $roleDatum)
                                 <option @if(old('role_id')==$roleDatum->id) selected
-                                        @endif value="{{$roleDatum->id}}">{{ucfirst($roleDatum->name)}}</option>
+                                        @endif value="{{$roleDatum->id}}">{{$roleDatum->name}}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback">{{ $errors->first('role_id') }}</div>
