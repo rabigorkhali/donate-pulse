@@ -41,7 +41,7 @@
 
                     <!-- Submit Button -->
                     <div class="mt-3">
-                        <button type="submit" class="btn btn-primary">{{ __('Submit Donation') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
                     </div>
             </form>
         </div>

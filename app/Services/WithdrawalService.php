@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\CampaignView;
 use App\Models\Withdrawal;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 
 class WithdrawalService extends Service
@@ -15,6 +16,33 @@ class WithdrawalService extends Service
     public function __construct(Withdrawal $model)
     {
         parent::__construct($model);
+    }
+    public function getAllData($data, $selectedColumns = [], $pagination = true)
+    {
+        $keyword = $data->get('mobile_number');
+        $withdrawalStatus = $data->get('withdrawal_status');
+        $show = $data->get('show');
+        $fromDate = $data->get('from_date');
+        $toDate = $data->get('to_date');
+        $query = $this->query();
+        if (count($selectedColumns) > 0) {
+            $query->select($selectedColumns);
+        }
+        $table = $this->model->getTable();
+        if ($keyword) {
+            if (Schema::hasColumn($table, 'withdrawal_mobile_number')) {
+                $query->WhereRaw('LOWER(withdrawal_mobile_number) LIKE ?', ['%'.strtolower($keyword).'%']);
+            }
+        }
+        $query->where('user_id',authUser()->id);
+        if($withdrawalStatus)$query->where('withdrawal_status',$withdrawalStatus);
+        if ($fromDate) $query->where('created_at','>', $fromDate);
+        if ($toDate) $query->where('created_at','<', $toDate);
+        if ($pagination) {
+            return $query->orderBy('created_at', 'DESC')->paginate($show ?? 10);
+        } else {
+            return $query->orderBy('created_at', 'DESC')->get();
+        }
     }
 
     public function indexPageData($request)
@@ -29,8 +57,8 @@ class WithdrawalService extends Service
     {
         return [
             'users' => User::orderby('name')->get(),
-            'paymentGateways' => PaymentGateway::orderby('payment_gateway')->get(),
-            'campaigns' => Campaign::orderby('title')->get()
+            'paymentGateways' => PaymentGateway::where('user_id',authUser()->id)->orderby('payment_gateway')->get(),
+            'campaigns' => Campaign::where('campaign_status','completed')->where('user_id',authUser()->id)->orderby('title')->get()
         ];
     }
 
@@ -39,7 +67,7 @@ class WithdrawalService extends Service
         try {
             $data = $request->only('campaign_id', 'payment_gateway_id');
             $campaignId = $request->get('campaign_id');
-            $alreadyInwithdrawal = Withdrawal::where('campaign_id', $campaignId)->first();
+            $alreadyInwithdrawal = Withdrawal::where('campaign_id', $campaignId)->wherein('campaign_id',permittedCampaigns())->first();
             if ($alreadyInwithdrawal) {
                 $message['error'] = 'Withdrawal already exists for this campaign.';
                 return $message;
@@ -63,10 +91,7 @@ class WithdrawalService extends Service
 
             $data['withdrawal_amount'] = $campaignData->net_amount_collection;
             $data['withdrawal_service_charge'] = $campaignData->summary_service_charge_amount;
-            DB::beginTransaction();
-            $this->model->create($data);
-            DB::commit();
-            return true;
+            return $this->model->create($data);
         } catch (\Throwable $throwable) {
             $message['error'] = 'Server error.';
             return $message;
@@ -75,7 +100,7 @@ class WithdrawalService extends Service
 
     public function delete($request, $id)
     {
-        $item = $this->itemByIdentifier($id);
+        $item = $this->model->where('user_id', authUser()->id)->findOrFail($id);
         if ($item->withdrawal_status !== 'pending') {
             $message['error'] = 'Only pending status can be deleted.';
             return $message;

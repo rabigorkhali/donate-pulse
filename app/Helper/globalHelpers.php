@@ -258,8 +258,11 @@ function removeImage($dir)
         "rejected" => "Rejected",
         "stopped" => "Stopped",
         "completed" => "Completed",
-        "withdrawal-processing" => "Withdrawal Processing",
         "withdrawn" => "Withdrawn"
     ];
 }
 
+function permittedCampaigns()
+{
+    return \App\Models\Campaign::where('user_id',authUser()->id)->pluck('id');
+}

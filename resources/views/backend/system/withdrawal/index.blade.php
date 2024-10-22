@@ -32,44 +32,56 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3 "> User:
-                                    <select name="user_id" class="form-select">
-                                        <option value="">{{ __('Select User') }}</option>
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}"
-                                                    @if (request('user_id') == $user->id) selected @endif>
-                                                {{ ucfirst($user->name) }} ({{$user->email}})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
                                 <div class="col-md-3">
                                     Status:
                                     <select name="withdrawal_status" class="form-select">
                                         <option value="">{{ __('Select Status') }}</option>
-                                        <option value="pending"@if (request('withdrawal_status') == 'pending') selected @endif>Pending</option>
-                                        <option value="rejected"@if (request('withdrawal_status') == 'rejected') selected @endif>Rejected</option>
-                                        <option value="cancelled"@if (request('withdrawal_status') == 'cancelled') selected @endif>Cancelled</option>
-                                        <option value="successful"@if (request('withdrawal_status') == 'successful') selected @endif>Successful</option>
+                                        <option value="pending"
+                                                @if (request('withdrawal_status') == 'pending') selected @endif>Pending
+                                        </option>
+                                        <option value="rejected"
+                                                @if (request('withdrawal_status') == 'rejected') selected @endif>
+                                            Rejected
+                                        </option>
+                                        <option value="cancelled"
+                                                @if (request('withdrawal_status') == 'cancelled') selected @endif>
+                                            Cancelled
+                                        </option>
+                                        <option value="successful"
+                                                @if (request('withdrawal_status') == 'successful') selected @endif>
+                                            Successful
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
                                     From Request Date: <input type="date" name="from_date" class="form-control"
-                                                 value="{{request('from_date')}}">
+                                                              value="{{request('from_date')}}">
                                 </div>
                                 <div class="col-md-3">
                                     To Request Date: <input type="date" name="to_date" class="form-control"
-                                               value="{{request('to_date')}}">
+                                                            value="{{request('to_date')}}">
 
                                 </div>
-                            </div>
-                            <div class="row">
-
-                                <div class="col-md-3 mt-2 mb-2">
+                                <div class="col-md-3">
                                     Mobile Number:
                                     <input type="text" value="{{ request('mobile_number') }}" name="mobile_number"
                                            class="form-control" placeholder="Search...">
                                 </div>
+
+                                @if(authUser()->role->name!=='public-user')
+                                    <div class="col-md-3 "> User:
+                                        <select name="user_id" class="form-select">
+                                            <option value="">{{ __('Select User') }}</option>
+                                            @foreach($users as $user)
+                                                <option value="{{ $user->id }}"
+                                                        @if (request('user_id') == $user->id) selected @endif>
+                                                    {{ ucfirst($user->name) }} ({{$user->email}})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+
                                 <div class="col-md-3 mt-4 mb-2">
                                     <button type="submit" class="btn btn-primary ">
                                         <span><i class="ti ti-filter me-1 ti-xs"></i>Filter</span>
@@ -112,11 +124,12 @@
                                         <td>{{ $key + 1 }}</td>
 
                                         <td>
-                                           {{ $withdrawal->campaign->title}}<br>
+                                            {{ $withdrawal->campaign->title}}<br>
                                         </td>
                                         <td>
                                             Gross: {{ $withdrawal->campaignView->summary_total_collection}} <br>
-                                            Service Charge: {{ $withdrawal->campaignView->summary_service_charge_amount}} <br>
+                                            Service
+                                            Charge: {{ $withdrawal->campaignView->summary_service_charge_amount}} <br>
                                             Net: {{ $withdrawal->campaignView->net_amount_collection}} <br>
                                         </td>
                                         <td>{{ ucfirst($withdrawal->paymentGateway->payment_gateway??'-') }} <br>
@@ -127,23 +140,30 @@
                                         <td>{{ ucfirst($withdrawal->campaign->campaign_status) }}</td>
                                         <td>{{ ucfirst($withdrawal->withdrawal_status) }}</td>
                                         <td>
-                                            @if(hasPermission('/withdrawals/*', 'put') || hasPermission('/withdrawals/*', 'delete'))
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                            data-bs-toggle="dropdown">
-                                                        <i class="ti ti-dots-vertical"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        @if(hasPermission('/withdrawals/*', 'delete'))
-                                                            <a href="#" class="dropdown-item delete-button"
-                                                               data-bs-toggle="modal"
-                                                               data-actionurl="{{ route('withdrawals.destroy', $withdrawal->id) }}"
-                                                               data-bs-target="#deleteModal">
-                                                                <i class="ti ti-trash me-1"></i>{{ __('Delete') }}
-                                                            </a>
-                                                        @endif
+                                            @if($withdrawal->withdrawal_status=='pending')
+                                                @if(hasPermission('/withdrawals/*', 'put') || hasPermission('/withdrawals/*', 'delete'))
+                                                    <div class="dropdown">
+                                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                                data-bs-toggle="dropdown">
+                                                            <i class="ti ti-dots-vertical"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            @if(hasPermission('/'.strtolower($title).'/*','put'))
+                                                                <a class="dropdown-item"
+                                                                   href="{{route('withdrawals.edit',$withdrawal->id)}}"><i
+                                                                        class="ti ti-pencil me-1"></i>{{__('Edit')}}</a>
+                                                            @endif
+                                                            @if(hasPermission('/withdrawals/*', 'delete'))
+                                                                <a href="#" class="dropdown-item delete-button"
+                                                                   data-bs-toggle="modal"
+                                                                   data-actionurl="{{ route('withdrawals.destroy', $withdrawal->id) }}"
+                                                                   data-bs-target="#deleteModal">
+                                                                    <i class="ti ti-trash me-1"></i>{{ __('Delete') }}
+                                                                </a>
+                                                            @endif
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>
