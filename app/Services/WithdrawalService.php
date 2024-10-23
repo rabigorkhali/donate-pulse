@@ -17,6 +17,7 @@ class WithdrawalService extends Service
     {
         parent::__construct($model);
     }
+
     public function getAllData($data, $selectedColumns = [], $pagination = true)
     {
         $keyword = $data->get('mobile_number');
@@ -31,13 +32,13 @@ class WithdrawalService extends Service
         $table = $this->model->getTable();
         if ($keyword) {
             if (Schema::hasColumn($table, 'withdrawal_mobile_number')) {
-                $query->WhereRaw('LOWER(withdrawal_mobile_number) LIKE ?', ['%'.strtolower($keyword).'%']);
+                $query->WhereRaw('LOWER(withdrawal_mobile_number) LIKE ?', ['%' . strtolower($keyword) . '%']);
             }
         }
-        $query->where('user_id',authUser()->id);
-        if($withdrawalStatus)$query->where('withdrawal_status',$withdrawalStatus);
-        if ($fromDate) $query->where('created_at','>', $fromDate);
-        if ($toDate) $query->where('created_at','<', $toDate);
+        $query->where('user_id', authUser()->id);
+        if ($withdrawalStatus) $query->where('withdrawal_status', $withdrawalStatus);
+        if ($fromDate) $query->where('created_at', '>', $fromDate);
+        if ($toDate) $query->where('created_at', '<', $toDate);
         if ($pagination) {
             return $query->orderBy('created_at', 'DESC')->paginate($show ?? 10);
         } else {
@@ -57,8 +58,8 @@ class WithdrawalService extends Service
     {
         return [
             'users' => User::orderby('name')->get(),
-            'paymentGateways' => PaymentGateway::where('user_id',authUser()->id)->orderby('payment_gateway')->get(),
-            'campaigns' => Campaign::where('campaign_status','completed')->where('user_id',authUser()->id)->orderby('title')->get()
+            'paymentGateways' => PaymentGateway::where('user_id', authUser()->id)->orderby('payment_gateway')->get(),
+            'campaigns' => Campaign::where('campaign_status', 'completed')->where('user_id', authUser()->id)->orderby('title')->get()
         ];
     }
 
@@ -67,7 +68,7 @@ class WithdrawalService extends Service
         try {
             $data = $request->only('campaign_id', 'payment_gateway_id');
             $campaignId = $request->get('campaign_id');
-            $alreadyInwithdrawal = Withdrawal::where('campaign_id', $campaignId)->wherein('campaign_id',permittedCampaigns())->first();
+            $alreadyInwithdrawal = Withdrawal::where('campaign_id', $campaignId)->wherein('campaign_id', permittedCampaigns())->first();
             if ($alreadyInwithdrawal) {
                 $message['error'] = 'Withdrawal already exists for this campaign.';
                 return $message;
@@ -96,6 +97,42 @@ class WithdrawalService extends Service
             $message['error'] = 'Server error.';
             return $message;
         }
+    }
+
+    public function editPageData($request, $id)
+    {
+        try {
+            return [
+                'thisData' => $this->itemByIdentifier($id),
+                'users' => User::orderby('name')->get(),
+                'paymentGateways' => PaymentGateway::where('user_id', authUser()->id)->orderby('payment_gateway')->get(),
+                'campaigns' => Campaign::where('campaign_status', 'completed')->where('user_id', authUser()->id)->orderby('title')->get()
+            ];
+        } catch (\Throwable $throwable) {
+            $message['error'] = 'Server error.';
+            return $message;
+        }
+    }
+
+    public function update($request, $id)
+    {
+        $data = $request->except('_token','campaign_id');
+        $update = $this->itemByIdentifier($id);
+        if ($update->withdrawal_status !== 'pending') {
+            $message['error'] = 'Only pending withdrawal can be updated';
+            return $message;
+        }
+        $imagePath = $update->receipt ?? null;
+
+        if ($request->hasFile('receipt')) {
+            if ($imagePath && file_exists(public_path($imagePath))) {
+                removeImage($imagePath);
+            }
+            $data['receipt'] = $this->fullImageUploadPath . uploadImage($this->fullImageUploadPath, 'receipt', true, 300, null);
+        }
+        $update->fill($data)->save();
+        $update = $this->itemByIdentifier($id);
+        return $update;
     }
 
     public function delete($request, $id)

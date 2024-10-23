@@ -266,3 +266,13 @@ function permittedCampaigns()
 {
     return \App\Models\Campaign::where('user_id',authUser()->id)->pluck('id');
 }
+
+function withdrawalStatus()
+{
+    return[
+        'pending'=>'Pending',
+        'cancelled'=>'Cancelled',
+        'rejected'=>'Rejected',
+        'successful'=>'Successful',
+    ];
+}

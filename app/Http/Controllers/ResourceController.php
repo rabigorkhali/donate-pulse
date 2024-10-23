@@ -236,7 +236,7 @@ class ResourceController extends Controller
         }
         $request = app()->make($request);
         try {
-            $response=$this->service->store($request);
+            $response = $this->service->store($request);
             if (isset($response['error'])) {
                 return redirect()->back()->withErrors(['error' => $response['error']]);
             }
@@ -279,7 +279,11 @@ class ResourceController extends Controller
             $request = $this->defaultRequest();
         }
         $request = app()->make($request);
-        $this->service->update($request, $id);
+
+        $response = $this->service->update($request, $id);
+        if (isset($response['error'])) {
+            return redirect()->back()->withErrors(['error' => $response['error']]);
+        }
         $this->setModuleId($id);
 
         return redirect($this->getUrl())->withErrors(['success' => 'Successfully updated.']);

@@ -134,7 +134,7 @@
                                         </td>
                                         <td>{{ ucfirst($withdrawal->paymentGateway->payment_gateway??'-') }} <br>
                                         </td>
-                                        <td>{{ $withdrawal->withdrawal_mobile_number??'-' }}</td>
+                                        <td>{{ $withdrawal->paymentGateway->mobile_number??'-' }}</td>
                                         <td>{{ $withdrawal->created_at }}<br>
                                         </td>
                                         <td>{{ ucfirst($withdrawal->campaign->campaign_status) }}</td>

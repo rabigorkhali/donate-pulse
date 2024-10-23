@@ -57,7 +57,7 @@
                                                 <button type="submit" class="btn btn-primary mx-3">
                                                     <span><i class="ti ti-filter me-1 ti-xs"></i>Filter</span>
                                                 </button>
-                                                @if(hasPermission('/payment-gateways/*', 'put'))
+                                                @if(hasPermission('/payment-gateways', 'post'))
                                                     <a class="btn add-new btn-primary text-white"
                                                        href="{{ route('payment-gateways.create') }}">
                                                         <i class="ti ti-plus me-0 me-sm-1 ti-xs"></i>
