@@ -35,7 +35,7 @@ class WithdrawalService extends Service
                 $query->WhereRaw('LOWER(withdrawal_mobile_number) LIKE ?', ['%' . strtolower($keyword) . '%']);
             }
         }
-        $query->where('user_id', authUser()->id);
+        if (authUser() == 'public-user') $query->where('user_id', authUser()->id);
         if ($withdrawalStatus) $query->where('withdrawal_status', $withdrawalStatus);
         if ($fromDate) $query->where('created_at', '>', $fromDate);
         if ($toDate) $query->where('created_at', '<', $toDate);
@@ -106,7 +106,6 @@ class WithdrawalService extends Service
                 'thisData' => $this->itemByIdentifier($id),
                 'users' => User::orderby('name')->get(),
                 'paymentGateways' => PaymentGateway::where('user_id', authUser()->id)->orderby('payment_gateway')->get(),
-                'campaigns' => Campaign::where('campaign_status', 'completed')->where('user_id', authUser()->id)->orderby('title')->get()
             ];
         } catch (\Throwable $throwable) {
             $message['error'] = 'Server error.';
@@ -116,7 +115,11 @@ class WithdrawalService extends Service
 
     public function update($request, $id)
     {
-        $data = $request->except('_token','campaign_id');
+        $data = $request->except('_token', 'campaign_id', 'withdrawal_status');
+        if (authUser()->role->name !== 'public-user') {
+            $data = $request->except('_token', 'campaign_id', 'payment_gateway_id', '');
+        }
+
         $update = $this->itemByIdentifier($id);
         if ($update->withdrawal_status !== 'pending') {
             $message['error'] = 'Only pending withdrawal can be updated';
