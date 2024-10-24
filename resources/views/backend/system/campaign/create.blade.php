@@ -29,19 +29,21 @@
                     </div>
 
                     <!-- User ID Field (Dropdown) -->
-                    <div class="col-md-6">
-                        <label class="form-label" for="user_id">{{ __('Campaign Owner') }}</label> *
-                        <select required name="user_id" id="user_id"
-                                class=" form-control @if ($errors->first('user_id')) is-invalid @endif">
-                            <option value="">{{ __('Select User') }}</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" @if(old('user_id') == $user->id) selected @endif>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">{{ $errors->first('user_id') }}</div>
-                    </div>
+                    @if (authUser()->role->name !== 'public-user')
+                        <div class="col-md-6">
+                            <label class="form-label" for="user_id">{{ __('Campaign Owner') }}</label> *
+                            <select required name="user_id" id="user_id"
+                                    class=" form-control @if ($errors->first('user_id')) is-invalid @endif">
+                                <option value="">{{ __('Select User') }}</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" @if(old('user_id') == $user->id) selected @endif>
+                                        {{ $user->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">{{ $errors->first('user_id') }}</div>
+                        </div>
+                    @endif
                     <!-- Campaign Category ID Field (Dropdown) -->
                     <div class="col-md-6">
                         <label class="form-label" for="campaign_category_id">{{ __('Campaign Category') }}</label> *
@@ -110,18 +112,20 @@
                     </div>
 
                     <!-- Campaign Status Field -->
-                    <div class="col-md-6">
-                        <label class="form-label" for="campaign_status">{{ __('Campaign Status') }}</label> *
-                        <select required name="campaign_status" id="campaign_status"
-                                class="form-control @if ($errors->first('campaign_status')) is-invalid @endif">
-                            <option value="">Select</option>
-                            @foreach(getCampaignStatus() as $getCampaignStatusKey => $getCampaignStatusDatum)
-                                <option value="{{$getCampaignStatusKey}}"
-                                        @if(old('campaign_status') == $getCampaignStatusKey) selected @endif>{{ $getCampaignStatusDatum }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">{{ $errors->first('campaign_status') }}</div>
-                    </div>
+                    @if (authUser()->role->name !== 'public-user')
+                        <div class="col-md-6">
+                            <label class="form-label" for="campaign_status">{{ __('Campaign Status') }}</label> *
+                            <select required name="campaign_status" id="campaign_status"
+                                    class="form-control @if ($errors->first('campaign_status')) is-invalid @endif">
+                                <option value="">Select</option>
+                                @foreach(getCampaignStatus() as $getCampaignStatusKey => $getCampaignStatusDatum)
+                                    <option value="{{$getCampaignStatusKey}}"
+                                            @if(old('campaign_status') == $getCampaignStatusKey) selected @endif>{{ $getCampaignStatusDatum }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">{{ $errors->first('campaign_status') }}</div>
+                        </div>
+                    @endif
                     <div class="col-md-6">
                         <label class="form-label w-100" for="status">{{ __('Is Featured?') }}</label>
                         <div class="form-check-inline">

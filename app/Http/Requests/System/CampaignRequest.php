@@ -39,8 +39,13 @@ class CampaignRequest extends FormRequest
             'image' => 'nullable|image|max:10240',
             'status' => 'nullable|boolean',
         ];
+        if (authUser()->role->name == 'public-user') {
+            unset($validation['user_id']);
+            unset($validation['campaign_status']);
+        }
         return $validation;
     }
+
     public function messages()
     {
         return [

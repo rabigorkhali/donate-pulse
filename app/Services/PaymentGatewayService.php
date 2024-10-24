@@ -40,6 +40,7 @@ class PaymentGatewayService extends Service
         if ($userId) {
             $query->where('user_id', $userId);
         }
+        if(authUser()->role->name=='public-user') $query->where('user_id',authUser()->id);
         if ($pagination) {
             return $query->orderBy('created_at', 'DESC')->paginate($show ?? 10);
         } else {
@@ -58,6 +59,8 @@ class PaymentGatewayService extends Service
     {
         $data = $request->except('_token');
         $userId = $data['user_id'] ?? authUser()->id;
+        if(authUser()->role->name=='public-user') $userId=authUser()->id;
+        $data['user_id']=$userId;
         $countPaymentGateway = PaymentGateway::where('user_id', $userId)->count();
         if ($countPaymentGateway > 2) {
             $message['error'] = 'You cannot add more than 3 active payment gateways. Please delete anyone before adding new one.';

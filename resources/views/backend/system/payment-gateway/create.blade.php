@@ -11,18 +11,20 @@
                 @csrf
                 <div class="row g-3">
                     <!-- User ID -->
-                    <div class="col-md-6">
-                        <label class="form-label" for="user_id">{{ __('User') }}</label> *
-                        <select required class="form-control @error('user_id') is-invalid @enderror" name="user_id">
-                            <option value="">{{ __('Select User') }}</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" @if(old('user_id') == $user->id) selected @endif>
-                                    {{ $user->name }} ({{ $user->email }})
-                                </option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">@error('user_id') {{ $message }} @enderror</div>
-                    </div>
+                    @if(authUser()->role->name!=='public-user')
+                        <div class="col-md-6">
+                            <label class="form-label" for="user_id">{{ __('User') }}</label> *
+                            <select required class="form-control @error('user_id') is-invalid @enderror" name="user_id">
+                                <option value="">{{ __('Select User') }}</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" @if(old('user_id') == $user->id) selected @endif>
+                                        {{ $user->name }} ({{ $user->email }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">@error('user_id') {{ $message }} @enderror</div>
+                        </div>
+                    @endif
 
                     <!-- Payment Gateway -->
                     <div class="col-md-6">
@@ -42,7 +44,8 @@
                     <!-- Mobile Number -->
                     <div class="col-md-6">
                         <label class="form-label" for="mobile_number">{{ __('Mobile Number') }}</label> *
-                        <input required type="text" name="mobile_number" id="mobile_number" value="{{ old('mobile_number') }}"
+                        <input required type="text" name="mobile_number" id="mobile_number"
+                               value="{{ old('mobile_number') }}"
                                class="form-control @error('mobile_number') is-invalid @enderror"
                                placeholder="Mobile Number"/>
                         <div class="invalid-feedback">@error('mobile_number') {{ $message }} @enderror</div>

@@ -32,29 +32,31 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3 "> Donor:
-                                    <select name="donor_user_id" class="form-select">
-                                        <option value="">{{ __('Select Donor') }}</option>
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}"
-                                                    @if (request('donor_user_id') == $user->id) selected @endif>
-                                                {{ ucfirst($user->name) }} ({{$user->email}})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    Receiver:
-                                    <select name="receiver_user_id" class="form-select">
-                                        <option value="">{{ __('Select Receiver') }}</option>
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}"
-                                                    @if (request('receiver_user_id') == $user->id) selected @endif>
-                                                {{ ucfirst($user->name) }} ({{$user->email}})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                @if(authUser()->role->name!=='public-user')
+                                    <div class="col-md-3 "> Donor:
+                                        <select name="donor_user_id" class="form-select">
+                                            <option value="">{{ __('Select Donor') }}</option>
+                                            @foreach($users as $user)
+                                                <option value="{{ $user->id }}"
+                                                        @if (request('donor_user_id') == $user->id) selected @endif>
+                                                    {{ ucfirst($user->name) }} ({{$user->email}})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        Receiver:
+                                        <select name="receiver_user_id" class="form-select">
+                                            <option value="">{{ __('Select Receiver') }}</option>
+                                            @foreach($users as $user)
+                                                <option value="{{ $user->id }}"
+                                                        @if (request('receiver_user_id') == $user->id) selected @endif>
+                                                    {{ ucfirst($user->name) }} ({{$user->email}})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
                                 <div class="col-md-3">
                                     From: <input type="date" name="from_date" class="form-control"
                                                  value="{{request('from_date')}}">
@@ -62,11 +64,7 @@
                                 <div class="col-md-3">
                                     To: <input type="date" name="to_date" class="form-control"
                                                value="{{request('to_date')}}">
-
                                 </div>
-                            </div>
-                            <div class="row">
-
                                 <div class="col-md-3 mt-2 mb-2">
                                     Mobile Number:
                                     <input type="text" value="{{ request('keyword') }}" name="keyword"
@@ -94,7 +92,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="col-md-3 mt-4 mb-2">
+                                <div class="col-md-3 @if(authUser()->role->name!=='public-user') mt-4 @endif mb-2">
                                     <button type="submit" class="btn btn-primary ">
                                         <span><i class="ti ti-filter me-1 ti-xs"></i>Filter</span>
                                     </button>
@@ -138,7 +136,9 @@
                                         <td><b>Name:</b>{{ $donation->giver->name }}<br>
                                             <b>Email:</b>{{ $donation->giver->email }}<br>
                                             <b>Contact:</b>{{ $donation->giver->phone_number }}<br>
-                                            <b>Display Image:</b> <a target="_blank" href="{{asset($donation->donor_display_image??authUser()->image)}}" >View here</a><br>
+                                            <b>Display Image:</b> <a target="_blank"
+                                                                     href="{{asset($donation->donor_display_image??authUser()->image)}}">View
+                                                here</a><br>
                                         </td>
                                         <td><b>Name:</b>{{ $donation->receiver->name }}<br>
                                             <b>Email:</b>{{ $donation->receiver->email }}<br>
@@ -151,8 +151,10 @@
                                         </td>
                                         <td>{{ $donation->amount}}</td>
                                         <td><b>Type:</b> {{ ucfirst($donation->payment_gateway??'-') }} <br>
-                                            @if($donation->payment_receipt)<b>Receipt:</b> <a href="{{asset($donation->payment_receipt)}}">View receipt</a>
-                                             @endif
+                                            @if($donation->payment_receipt)
+                                                <b>Receipt:</b> <a href="{{asset($donation->payment_receipt)}}">View
+                                                    receipt</a>
+                                            @endif
 
                                         </td>
                                         <td>{{ $donation->mobile_number }}</td>

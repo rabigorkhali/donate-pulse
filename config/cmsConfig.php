@@ -102,15 +102,27 @@ return [
                         [
                             'name' => 'Create Category',
                             'route' => [
-                                'url' => $campaignCategoryUrl,
-                                'method' => $postMethod,
+                                [
+                                    'url' => $campaignCategoryUrl . '/create',
+                                    'method' => $getMethod,
+                                ],
+                                [
+                                    'url' => $campaignCategoryUrl,
+                                    'method' => $postMethod,
+                                ],
                             ],
                         ],
                         [
                             'name' => 'Edit Category',
                             'route' => [
-                                'url' => $campaignCategoryUrl . '/*',
-                                'method' => $putMethod,
+                                [
+                                    'url' => $campaignCategoryUrl . '/*/edit',
+                                    'method' => $getMethod,
+                                ],
+                                [
+                                    'url' => $campaignCategoryUrl . '/*',
+                                    'method' => $putMethod,
+                                ],
                             ],
                         ],
                         [
@@ -140,15 +152,27 @@ return [
                         [
                             'name' => 'Create Campaign',
                             'route' => [
-                                'url' => $campaignUrl,
-                                'method' => $postMethod,
+                                [
+                                    'url' => $campaignUrl . '/create',
+                                    'method' => $getMethod,
+                                ],
+                                [
+                                    'url' => $campaignUrl,
+                                    'method' => $postMethod,
+                                ],
                             ],
                         ],
                         [
                             'name' => 'Edit Campaign',
                             'route' => [
-                                'url' => $campaignUrl . '/*',
-                                'method' => $putMethod,
+                                [
+                                    'url' => $campaignUrl . '/*/edit',
+                                    'method' => $getMethod,
+                                ],
+                                [
+                                    'url' => $campaignUrl . '/*',
+                                    'method' => $putMethod,
+                                ],
                             ],
                         ],
                         [

@@ -35,7 +35,7 @@ class WithdrawalService extends Service
                 $query->WhereRaw('LOWER(withdrawal_mobile_number) LIKE ?', ['%' . strtolower($keyword) . '%']);
             }
         }
-        if (authUser() == 'public-user') $query->where('user_id', authUser()->id);
+        if (authUser()->role->name == 'public-user') $query->where('user_id', authUser()->id);
         if ($withdrawalStatus) $query->where('withdrawal_status', $withdrawalStatus);
         if ($fromDate) $query->where('created_at', '>', $fromDate);
         if ($toDate) $query->where('created_at', '<', $toDate);

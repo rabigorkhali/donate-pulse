@@ -35,6 +35,9 @@ class PaymentGatewayRequest extends FormRequest
             'bank_address' => 'required_if:payment_gateway,bank|max:255',
             'bank_account_number' => 'required_if:payment_gateway,bank|max:255',
         ];
+        if (authUser()->role->name == 'public-user') {
+            unset($validation['user_id']);
+        }
         return $validation;
     }
 }

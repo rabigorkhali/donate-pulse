@@ -59,6 +59,7 @@ class DonationService extends Service
         $table = $this->model->getTable();
         if ($donorUserId) $query->where('giver_user_id', $donorUserId);
         if ($receiverUserId) $query->where('receiver_user_id', $receiverUserId);
+        if(authUser()->role->name=='public-user')$query->where('receiver_user_id', authUser()->id);
         if ($paymentGateway) $query->where('payment_gateway', $paymentGateway);
         if ($fromDate) $query->where('created_at','>', $fromDate);
         if ($toDate) $query->where('created_at','<', $toDate);

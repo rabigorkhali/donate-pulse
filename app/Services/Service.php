@@ -17,7 +17,7 @@ class Service
     public function __construct($model)
     {
         $this->model = $model;
-        $this->fullImageUploadPath=getImageUploadFirstLevelPath().'/'.strtolower(class_basename(get_class($this->model))).'/';
+        $this->fullImageUploadPath = getImageUploadFirstLevelPath() . '/' . strtolower(class_basename(get_class($this->model))) . '/';
     }
 
     // get all data
@@ -33,10 +33,10 @@ class Service
         $table = $this->model->getTable();
         if ($keyword) {
             if (Schema::hasColumn($table, 'name')) {
-                $query->orWhereRaw('LOWER(name) LIKE ?', ['%'.strtolower($keyword).'%']);
+                $query->orWhereRaw('LOWER(name) LIKE ?', ['%' . strtolower($keyword) . '%']);
             }
             if (Schema::hasColumn($table, 'title')) {
-                $query->orWhereRaw('LOWER(title) LIKE ?', ['%'.strtolower($keyword).'%']);
+                $query->orWhereRaw('LOWER(title) LIKE ?', ['%' . strtolower($keyword) . '%']);
             }
         }
         if ($pagination) {
@@ -165,7 +165,11 @@ class Service
 
     public function itemByIdentifier($id)
     {
-        return $this->model->findOrFail($id);
+        $query = $this->model->newQuery();
+        if (Schema::hasColumn($this->model->getTable(), 'user_id') && authUser()->role->name == 'public-user') {
+            $query->where('user_id', authUser()->id);
+        }
+        return $query->findOrFail($id);
     }
 
     // Data for index page

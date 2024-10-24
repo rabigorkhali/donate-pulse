@@ -53,9 +53,10 @@
                                     <th>{{ __('SN') }}</th>
                                     <th>{{ __('Title') }}</th>
                                     <th>{{ __('Slug') }}</th>
-                                    <th>{{ __('Status') }}</th>
+                                    <th>{{ __('Approval Status') }}</th>
                                     <th>{{ __('Goal Amount') }}</th>
                                     <th>{{ __('Campaign Category') }}</th>
+                                    <th>{{ __('Status') }}</th>
                                     <th>{{ __('Action') }}</th>
                                 </tr>
                                 </thead>
@@ -70,6 +71,9 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $campaign->title }}</td>
                                         <td>{{ $campaign->slug }}</td>
+                                        <td>{{ ucfirst($campaign->campaign_status) }}</td>
+                                        <td>{{ $campaign->goal_amount }}</td>
+                                        <td>{{ $campaign->category->title ?? 'N/A' }}</td> {{-- Assuming you have a relationship with CampaignCategory --}}
                                         <td>
                                             <span class="badge @if ($campaign->status) bg-label-primary @else bg-label-secondary @endif me-1">
                                                 @if ($campaign->status)
@@ -79,8 +83,6 @@
                                                 @endif
                                             </span>
                                         </td>
-                                        <td>{{ $campaign->goal_amount }}</td>
-                                        <td>{{ $campaign->category->title ?? 'N/A' }}</td> {{-- Assuming you have a relationship with CampaignCategory --}}
                                         <td>
                                             @if(hasPermission('/'.strtolower($title).'/*','put') || hasPermission('/'.strtolower($title).'/*','delete'))
                                                 <div class="dropdown">
