@@ -11,7 +11,7 @@
                             <a href="{{route('login')}}" class="app-brand-link gap-2">
                                 @if(getConfigTableData()?->logo)
                                     <span class="app-brand-logo demo">
-                                     <img src="{{getConfigTableData()?->logo}}" width="32" height="22">
+                                     <img src="{{asset(getConfigTableData()?->logo)}}" width="32" height="22">
                                     </span>
                                 @endif
                                 <span
