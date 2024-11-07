@@ -4,6 +4,7 @@
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner py-4">
                 <!-- Login -->
+                @include('backend.system.partials.errors')
                 <div class="card">
                     <div class="card-body">
                         <!-- Logo -->

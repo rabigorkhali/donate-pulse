@@ -79,7 +79,7 @@ class RegisterController extends Controller
             DB::beginTransaction();
             $response = User::create($insertData);
             if ($response) {
-                Mail::to($data['email'])->send(new NewUserRegistrationEmail($data));
+                Mail::to($data['email'])->send(new NewUserRegistrationEmail($insertData));
 
             }
             Session::flash('success', 'Success. Please check your email to get your password.');
@@ -87,7 +87,7 @@ class RegisterController extends Controller
             return redirect()->route('login');
         } catch (\Throwable $th) {
             DB::rollback();
-            Session::flash('error', 'Please try again later.');
+            Session::flash('error', 'Something went wrong. Please try again later.');
             return redirect()->route('register');
         }
     }
