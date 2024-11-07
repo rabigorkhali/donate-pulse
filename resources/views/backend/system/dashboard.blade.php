@@ -1,7 +1,9 @@
 @extends('backend.system.layouts.master')
 
 @section('content')
+
     <div class="container">
+        @include('backend.system.partials.errors')
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">

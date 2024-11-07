@@ -4,6 +4,8 @@
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner py-4">
                 <!-- Login -->
+                @include('backend.system.partials.errors')
+
                 <div class="card">
                     <div class="card-body">
                         <!-- Logo -->
@@ -65,12 +67,12 @@
                             </div>
                         </form>
 
-                        {{-- <p class="text-center">
+                         <p class="text-center">
                             <span>{{ __('New on our platform?') }}</span>
                             <a href="{{ route('register') }}">
                                 <span>{{ __('Create an account') }}</span>
                             </a>
-                        </p> --}}
+                        </p>
 
 
                     </div>

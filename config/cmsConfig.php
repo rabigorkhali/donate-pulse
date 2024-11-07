@@ -53,6 +53,10 @@ return [
             'url' => '/change-password',
             'method' => $putMethod,
         ],
+        [
+            'url' => '/login',
+            'method' => $getMethod,
+        ],
 
     ],
 

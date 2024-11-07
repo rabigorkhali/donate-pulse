@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="flex-grow-1">
                                     <span class="fw-medium d-block">{{authUser()->name}}</span>
-                                    <small class="text-muted">{{ucfirst(authUser()->role->name)}}</small>
+                                    <small class="text-muted">{{ucwords(str_replace('-',' ',authUser()->role->name))}}</small>
                                 </div>
                             </div>
                         </a>
