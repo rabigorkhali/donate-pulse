@@ -1,0 +1,10 @@
+.d-none {
+    display: none !important;
+  }
+
+  .page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #546E7A;
+    border-color: #546E7A; 
+}
