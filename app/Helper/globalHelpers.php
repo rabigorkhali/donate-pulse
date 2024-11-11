@@ -196,11 +196,12 @@ function cssIndexProgramColorsRandom()
     $colors = ["green", "blue", "purple", "pink", "black"];
     return $colors[array_rand($colors)];
 }
+
 use Intervention\Image\ImageManagerStatic;
 
 function uploadImage($dir, $input, $resize = false, $width = '', $height = '')
 {
-    $directory = public_path() .'/'. $dir;
+    $directory = public_path() . '/' . $dir;
     if (is_dir($directory) != true) \File::makeDirectory($directory, $mode = 0775, true);
     $fileName = uniqid();
     $fileThumbnail = $fileName . '-medium.' . Request::file($input)->getClientOriginalExtension();;
@@ -217,7 +218,7 @@ function uploadImage($dir, $input, $resize = false, $width = '', $height = '')
     $image->save($directory . '/' . $fileName, 100);
 
     /* THUMBNAIL */
-    $directoryThumbnail = public_path() .'/'. $dir;
+    $directoryThumbnail = public_path() . '/' . $dir;
     if (is_dir($directoryThumbnail) != true) \File::makeDirectory($directoryThumbnail, $mode = 0775, true);
     $imageThumbnail = Image::make(Request::file($input));
     $imageThumbnail = $image->resize(500, 500, function ($constraintThumbnail) {
@@ -228,7 +229,7 @@ function uploadImage($dir, $input, $resize = false, $width = '', $height = '')
 
 
     /* small */
-    $directoryThumbnail = public_path() .'/'. $dir;
+    $directoryThumbnail = public_path() . '/' . $dir;
     if (is_dir($directoryThumbnail) != true) \File::makeDirectory($directoryThumbnail, $mode = 0775, true);
     $imageSmall = Image::make(Request::file($input));
     $imageSmall = $image->resize(70, null, function ($constraintThumbnail) {
@@ -242,14 +243,15 @@ function uploadImage($dir, $input, $resize = false, $width = '', $height = '')
 
 function removeImage($dir)
 {
-    $f1 =  $dir ;
+    $f1 = $dir;
     $f2 = str_replace('.', '-medium.', $f1);
     $f3 = str_replace('.', '-small.', $f1);
-    File::delete(public_path() .'/'.$f1);
-    File::delete(public_path() .'/'.$f2);
-    File::delete(public_path() .'/'.$f3);
+    File::delete(public_path() . '/' . $f1);
+    File::delete(public_path() . '/' . $f2);
+    File::delete(public_path() . '/' . $f3);
 }
- function getCampaignStatus()
+
+function getCampaignStatus()
 {
     return [
         "pending" => "Pending",
@@ -264,16 +266,16 @@ function removeImage($dir)
 
 function permittedCampaigns()
 {
-    return \App\Models\Campaign::where('user_id',authUser()->id)->pluck('id');
+    return \App\Models\Campaign::where('user_id', authUser()->id)->pluck('id');
 }
 
 function withdrawalStatus()
 {
-    return[
-        'pending'=>'Pending',
-        'cancelled'=>'Cancelled',
-        'rejected'=>'Rejected',
-        'successful'=>'Successful',
+    return [
+        'pending' => 'Pending',
+        'cancelled' => 'Cancelled',
+        'rejected' => 'Rejected',
+        'successful' => 'Successful',
     ];
 }
 
@@ -288,6 +290,7 @@ function imageName($filename, $imageType = '', $size = '100x100', $text = 'Image
 
     return $newFilename;
 }
+
 function numberPriceFormat($input)
 {
     $formatted = number_format($input);
@@ -299,7 +302,7 @@ function numberPriceFormat($input)
 function priceToNprFormat($string)
 {
     try {
-        $string=explode('.',$string)[0];
+        $string = explode('.', $string)[0];
         $string = strrev($string);
         $length = strlen($string);
         $newCharacter = '';
@@ -332,6 +335,7 @@ function replaceSpacesWithDash($inputString)
     $result = preg_replace('/\s+/', '-', $inputString);
     return $result;
 }
+
 function frontendActiveButton($routeNameParam = '')
 {
     $routeName = Route::currentRouteName();
@@ -402,14 +406,10 @@ function getDaysDiffByTwoDate($date1, $date2)
 }
 
 
-
 function giveImageName($imageName, $imagegenerateType)
 {
-    return  str_replace('.', '-' . $imagegenerateType . '.', $imageName);
+    return str_replace('.', '-' . $imagegenerateType . '.', $imageName);
 }
-
-
-
 
 
 function generateUniqueID()
@@ -444,4 +444,215 @@ function getPostsBlogs($limit = '5')
     $posts = \App\Models\Post::where('status', 'published')->orderby('created_at', 'desc')->limit($limit)->get();
     return $posts;
 }
+
+function getCounties()
+{
+    $countries = [
+        'afghanistan' => 'Afghanistan',
+        'albania' => 'Albania',
+        'algeria' => 'Algeria',
+        'american_samoa' => 'American Samoa',
+        'andorra' => 'Andorra',
+        'angola' => 'Angola',
+        'anguilla' => 'Anguilla',
+        'antigua_and_barbuda' => 'Antigua and Barbuda',
+        'argentina' => 'Argentina',
+        'armenia' => 'Armenia',
+        'aruba' => 'Aruba',
+        'australia' => 'Australia',
+        'austria' => 'Austria',
+        'azerbaijan' => 'Azerbaijan',
+        'bahamas' => 'Bahamas',
+        'bahrain' => 'Bahrain',
+        'bangladesh' => 'Bangladesh',
+        'barbados' => 'Barbados',
+        'belarus' => 'Belarus',
+        'belgium' => 'Belgium',
+        'belize' => 'Belize',
+        'benin' => 'Benin',
+        'bermuda' => 'Bermuda',
+        'bhutan' => 'Bhutan',
+        'bolivia' => 'Bolivia',
+        'bosnia_and_herzegovina' => 'Bosnia and Herzegovina',
+        'botswana' => 'Botswana',
+        'brazil' => 'Brazil',
+        'brunei' => 'Brunei',
+        'bulgaria' => 'Bulgaria',
+        'burkina_faso' => 'Burkina Faso',
+        'burundi' => 'Burundi',
+        'cambodia' => 'Cambodia',
+        'cameroon' => 'Cameroon',
+        'canada' => 'Canada',
+        'cape_verde' => 'Cape Verde',
+        'cayman_islands' => 'Cayman Islands',
+        'central_african_republic' => 'Central African Republic',
+        'chad' => 'Chad',
+        'chile' => 'Chile',
+        'china' => 'China',
+        'colombia' => 'Colombia',
+        'comoros' => 'Comoros',
+        'congo' => 'Congo',
+        'costa_rica' => 'Costa Rica',
+        'croatia' => 'Croatia',
+        'cuba' => 'Cuba',
+        'cyprus' => 'Cyprus',
+        'czech_republic' => 'Czech Republic',
+        'denmark' => 'Denmark',
+        'djibouti' => 'Djibouti',
+        'dominica' => 'Dominica',
+        'dominican_republic' => 'Dominican Republic',
+        'ecuador' => 'Ecuador',
+        'egypt' => 'Egypt',
+        'el_salvador' => 'El Salvador',
+        'equatorial_guinea' => 'Equatorial Guinea',
+        'eritrea' => 'Eritrea',
+        'estonia' => 'Estonia',
+        'ethiopia' => 'Ethiopia',
+        'fiji' => 'Fiji',
+        'finland' => 'Finland',
+        'france' => 'France',
+        'gabon' => 'Gabon',
+        'gambia' => 'Gambia',
+        'georgia' => 'Georgia',
+        'germany' => 'Germany',
+        'ghana' => 'Ghana',
+        'greece' => 'Greece',
+        'greenland' => 'Greenland',
+        'grenada' => 'Grenada',
+        'guam' => 'Guam',
+        'guatemala' => 'Guatemala',
+        'guinea' => 'Guinea',
+        'guyana' => 'Guyana',
+        'haiti' => 'Haiti',
+        'honduras' => 'Honduras',
+        'hong_kong' => 'Hong Kong',
+        'hungary' => 'Hungary',
+        'iceland' => 'Iceland',
+        'india' => 'India',
+        'indonesia' => 'Indonesia',
+        'iran' => 'Iran',
+        'iraq' => 'Iraq',
+        'ireland' => 'Ireland',
+        'israel' => 'Israel',
+        'italy' => 'Italy',
+        'jamaica' => 'Jamaica',
+        'japan' => 'Japan',
+        'jordan' => 'Jordan',
+        'kazakhstan' => 'Kazakhstan',
+        'kenya' => 'Kenya',
+        'kiribati' => 'Kiribati',
+        'kuwait' => 'Kuwait',
+        'kyrgyzstan' => 'Kyrgyzstan',
+        'laos' => 'Laos',
+        'latvia' => 'Latvia',
+        'lebanon' => 'Lebanon',
+        'lesotho' => 'Lesotho',
+        'liberia' => 'Liberia',
+        'libya' => 'Libya',
+        'liechtenstein' => 'Liechtenstein',
+        'lithuania' => 'Lithuania',
+        'luxembourg' => 'Luxembourg',
+        'macau' => 'Macau',
+        'madagascar' => 'Madagascar',
+        'malawi' => 'Malawi',
+        'malaysia' => 'Malaysia',
+        'maldives' => 'Maldives',
+        'mali' => 'Mali',
+        'malta' => 'Malta',
+        'marshall_islands' => 'Marshall Islands',
+        'mauritania' => 'Mauritania',
+        'mauritius' => 'Mauritius',
+        'mexico' => 'Mexico',
+        'micronesia' => 'Micronesia',
+        'moldova' => 'Moldova',
+        'monaco' => 'Monaco',
+        'mongolia' => 'Mongolia',
+        'montenegro' => 'Montenegro',
+        'morocco' => 'Morocco',
+        'mozambique' => 'Mozambique',
+        'myanmar' => 'Myanmar',
+        'namibia' => 'Namibia',
+        'nauru' => 'Nauru',
+        'nepal' => 'Nepal',
+        'netherlands' => 'Netherlands',
+        'new_zealand' => 'New Zealand',
+        'nicaragua' => 'Nicaragua',
+        'niger' => 'Niger',
+        'nigeria' => 'Nigeria',
+        'north_korea' => 'North Korea',
+        'norway' => 'Norway',
+        'oman' => 'Oman',
+        'pakistan' => 'Pakistan',
+        'palau' => 'Palau',
+        'panama' => 'Panama',
+        'papua_new_guinea' => 'Papua New Guinea',
+        'paraguay' => 'Paraguay',
+        'peru' => 'Peru',
+        'philippines' => 'Philippines',
+        'poland' => 'Poland',
+        'portugal' => 'Portugal',
+        'qatar' => 'Qatar',
+        'romania' => 'Romania',
+        'russia' => 'Russia',
+        'rwanda' => 'Rwanda',
+        'saint_kitts_and_nevis' => 'Saint Kitts and Nevis',
+        'saint_lucia' => 'Saint Lucia',
+        'saint_vincent_and_the_grenadines' => 'Saint Vincent and the Grenadines',
+        'samoa' => 'Samoa',
+        'san_marino' => 'San Marino',
+        'saudi_arabia' => 'Saudi Arabia',
+        'senegal' => 'Senegal',
+        'serbia' => 'Serbia',
+        'seychelles' => 'Seychelles',
+        'sierra_leone' => 'Sierra Leone',
+        'singapore' => 'Singapore',
+        'slovakia' => 'Slovakia',
+        'slovenia' => 'Slovenia',
+        'solomon_islands' => 'Solomon Islands',
+        'somalia' => 'Somalia',
+        'south_africa' => 'South Africa',
+        'south_korea' => 'South Korea',
+        'spain' => 'Spain',
+        'sri_lanka' => 'Sri Lanka',
+        'sudan' => 'Sudan',
+        'suriname' => 'Suriname',
+        'sweden' => 'Sweden',
+        'switzerland' => 'Switzerland',
+        'syria' => 'Syria',
+        'taiwan' => 'Taiwan',
+        'tajikistan' => 'Tajikistan',
+        'tanzania' => 'Tanzania',
+        'thailand' => 'Thailand',
+        'togo' => 'Togo',
+        'tonga' => 'Tonga',
+        'trinidad_and_tobago' => 'Trinidad and Tobago',
+        'tunisia' => 'Tunisia',
+        'turkey' => 'Turkey',
+        'turkmenistan' => 'Turkmenistan',
+        'tuvalu' => 'Tuvalu',
+        'uganda' => 'Uganda',
+        'ukraine' => 'Ukraine',
+        'united_arab_emirates' => 'United Arab Emirates',
+        'united_kingdom' => 'United Kingdom',
+        'united_states' => 'United States',
+        'uruguay' => 'Uruguay',
+        'uzbekistan' => 'Uzbekistan',
+        'vanuatu' => 'Vanuatu',
+        'vatican_city' => 'Vatican City',
+        'venezuela' => 'Venezuela',
+        'vietnam' => 'Vietnam',
+        'yemen' => 'Yemen',
+        'zambia' => 'Zambia',
+        'zimbabwe' => 'Zimbabwe'
+    ];
+    return $countries;
+}
+
+ function paymentGateways()
+ {
+     return[
+         'khalti'=>'Khalti',
+         'bank'=>'Bank'
+     ];
+ }
 

@@ -94,7 +94,7 @@
                                 @foreach ($thisDatas as $paymentKey => $payment)
                                     <tr>
                                         <td>{{ $paymentKey + 1 }}</td>
-                                        <td>{{ $payment->user->name }} ({{$payment->user->email}})</td>
+                                        <td>{{ $payment->user?->name }} ({{$payment->user?->email}})</td>
                                         <td>{{ ucfirst($payment->payment_gateway) }}</td>
                                         <td>{{ $payment->mobile_number }}</td>
                                         <td>

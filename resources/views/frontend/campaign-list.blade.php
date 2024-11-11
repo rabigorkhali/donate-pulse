@@ -62,7 +62,7 @@
                                     <a href="{{ route('campaignDetailPage', $causesListDatum->slug) }}">
                                         <img height="239" class="img-fullwidth " style=" border-radius:5px 5px 0 0;"
                                              alt=""
-                                             src="{{ asset('uploads') . '/' . imageName($causesListDatum->cover_image) }}">
+                                             src="{{ asset( imageName($causesListDatum->cover_image)) }}">
                                     </a>
                                 </div>
                                 <div class="image-box-details bg-lighter p-15 pt-20 pb-sm-20">
@@ -81,7 +81,7 @@
                                             {{ $causesListDatum->total_visits }} Views</span>
                                     </div>
                                     <p class="desc mb-10">
-                                        {{ substr($causesListDatum->description, 0, 100) }}... <br> <a
+                                        {!! strip_tags(substr($causesListDatum->description, 0, 100)) !!}... <br> <a
                                                 href="{{ route('campaignDetailPage', $causesListDatum->slug) }}"
                                                 class="text-info"> Read More...</a>
                                     </p>

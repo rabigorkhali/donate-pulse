@@ -7,7 +7,7 @@
     <div class="main-content">
         <!-- Section: inner-header -->
         <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-stellar-background-ratio="0.5"
-                 data-bg-img="{{ asset('uploads') . '/' . $campaignDetails->cover_image }}"
+                 data-bg-img="{{ asset($campaignDetails->cover_image) }}"
                  style="background-image: url(&quot;images/bg/bg1.jpg&quot;); background-position: 50% 61px;">
             <div class="container pt-100 pb-50">
                 <!-- Section Content -->
@@ -33,7 +33,7 @@
                                     <div class="col-md-5">
                                         <div class="thumb">
                                             <img class="img-fullwidth img-thumbnail" alt=""
-                                                 src="{{ asset('uploads') . '/' . $campaignDetails->cover_image }}">
+                                                 src="{{ asset( $campaignDetails->cover_image) }}">
                                         </div>
                                     </div>
                                     <div class="col-md-7">
@@ -137,7 +137,7 @@
         </section>
         @if ($campaignDetails->campaign_status == 'running')
             <section id="donationForm" class="divider parallax"
-                     data-bg-img="{{ asset('uploads') . '/' . $campaignDetails->cover_image }}"
+                     data-bg-img="{{ asset( $campaignDetails->cover_image) }}"
                      data-parallax-ratio="0.7"
                      style="background-image: url('{{ asset('uploads') . '/' . $campaignDetails->cover_image }}'); background-position: 50% 76px;">
                 <div class="container pt-0 pb-0">
@@ -154,18 +154,18 @@
                                         <div class="col-sm-12  @if ($errors->first('payment_gateway')) has-error @endif">
                                             <div class="form-group mb-20">
                                                 <label><strong>Payment Gateway/Mode</strong></label> <br>
-                                                @foreach ($paymentGateways as $keyPaymentGateways => $datumPaymentGateways)
+                                                @foreach (paymentGateways() as $keyPaymentGateways => $datumPaymentGateways)
                                                     <label class="radio-inline">
                                                         <input
-                                                                onchange="paymentGateway('{{ $datumPaymentGateways->slug }}')"
+                                                                onchange="paymentGateway('{{ $keyPaymentGateways }}')"
                                                                 type="radio"
-                                                                @if (!old('payment_gateway') && $datumPaymentGateways->slug == 'khalti') checked
+                                                                @if (!old('payment_gateway') && $keyPaymentGateways == 'khalti') checked
                                                                 @endif
-                                                                @if (old('payment_gateway') == $datumPaymentGateways->slug) checked
+                                                                @if (old('payment_gateway') == $keyPaymentGateways) checked
                                                                 @endif
-                                                                value="{{ $datumPaymentGateways->slug }}"
+                                                                value="{{ $keyPaymentGateways }}"
                                                                 name="payment_gateway">
-                                                        {{ $datumPaymentGateways->name }}
+                                                        {{ $datumPaymentGateways }}
                                                     </label>
                                                 @endforeach
                                                 @if ($errors->first('payment_gateway'))
@@ -178,12 +178,12 @@
                                         <div class="col-md-12 d-none bank-details"
                                              style="border: 1px solid #000; margin: 10px;">
                                             <div class="form-group mb-20 ">
-                                                <label>Account Name: </label>{{ setting('bank.bank_account_name') }}<br>
+                                                <label>Account Name: </label>{{ getConfigTableData()->bank_account_name }}<br>
                                                 <label>Account
-                                                    No: </label>{{ setting('bank.bank_account_number') }}</br>
-                                                <label>Bank Name: </label>{{ setting('bank.bank_name') }}</br>
+                                                    No: </label>{{ getConfigTableData()->bank_account_number }}</br>
+                                                <label>Bank Name: </label>{{ getConfigTableData()->bank_name }}</br>
                                                 <label>QR: </label><br> <img height="100"
-                                                                             src="{{ asset('uploads') . '/' . setting('bank.bank_qr') }}">
+                                                                             src="{{ asset(getConfigTableData()->bank_qr)  }}">
                                             </div>
                                         </div>
 
@@ -191,7 +191,7 @@
                                             <div class="form-group mb-20">
                                                 <label><strong>Full Name</strong></label>
                                                 <input type="text" maxlength="100" name="fullname"
-                                                       value="{{ old('fullname') ?? Auth::guard('frontend_users')->user()?->full_name }}"
+                                                       value="{{ old('fullname') ?? Auth::user()?->name }}"
                                                        placeholder="Rama Namaya" class="form-control">
                                                 @if ($errors->first('fullname'))
                                                     <span
@@ -205,7 +205,7 @@
                                             <div class="form-group mb-20">
                                                 <label><strong>Mobile Number</strong></label>
                                                 <input type="text" maxlength="15" name="mobile_number"
-                                                       value="{{ old('mobile_number') ?? Auth::guard('frontend_users')->user()?->mobile_number }}"
+                                                       value="{{ old('mobile_number') ?? Auth::user()?->mobile_number }}"
                                                        placeholder="9841000000" class="form-control">
                                                 @if ($errors->first('mobile_number'))
                                                     <span
@@ -220,12 +220,12 @@
                                                 <select name="country" class="form-control">
                                                     @foreach ($countries as $keyCountries => $datumCountries)
                                                         <option
-                                                                @if (!old('country')) @if ($datumCountries->name == 'Nepal') selected
+                                                                @if (!old('country')) @if ($datumCountries == 'Nepal') selected
                                                                 @endif
                                                                 @endif
-                                                                @if (strtolower(old('country') ?? Auth::guard('frontend_users')->user()?->country) == strtolower($datumCountries->name)) selected
+                                                                @if (strtolower(old('country') ?? Auth::user()?->country) == strtolower($datumCountries)) selected
                                                                 @endif
-                                                                value="{{ strtolower($datumCountries->name) }}">{{ $datumCountries->name }}
+                                                                value="{{ strtolower($datumCountries) }}">{{ $datumCountries}}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -240,7 +240,7 @@
                                             <div class="form-group mb-20">
                                                 <label><strong>Address</strong></label>
                                                 <input type="text" maxlength="200"
-                                                       value="{{ old('address') ?? Auth::guard('frontend_users')->user()?->address }}"
+                                                       value="{{ old('address') ?? Auth::user()?->address }}"
                                                        name="address" placeholder="Tinkune-7,Kathmandu"
                                                        class="form-control">
                                                 @if ($errors->first('address'))
@@ -255,7 +255,7 @@
                                             <div class="form-group mb-20">
                                                 <label><strong>Email</strong></label>
                                                 <input type="email"
-                                                       value="{{ old('email') ?? Auth::guard('frontend_users')->user()?->email }}"
+                                                       value="{{ old('email') ?? Auth::user()?->email }}"
                                                        name="email" placeholder="example@example.com"
                                                        class="form-control">
                                                 @if ($errors->first('email'))
@@ -452,6 +452,7 @@
                                 donor_id: "{{ $campaignDetails->id }}",
                             },
                             success: function (responseSuccess) {
+                                console.log(responseSuccess);
                                 $("#preloader").hide();
                                 Swal.fire('Success!',
                                     'Thank you. You donation has been received. God bless you.',

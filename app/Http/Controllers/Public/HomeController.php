@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Public\FrontendBaseController;
 use App\Models\Campaign;
+use App\Models\CampaignCategory;
 use App\Models\CampaignView;
 use App\Models\Donation;
 use App\Models\Partner;
@@ -33,6 +34,7 @@ class HomeController extends FrontendBaseController
     {
         return $this->parentViewFolder() . '.index';;
     }
+
     public function getPage($slug)
     {
         try {
@@ -54,13 +56,13 @@ class HomeController extends FrontendBaseController
             $data = array();
             $data['featuredCauses'] = CampaignView::where('status', true)
                 ->where('is_featured', true)
-                ->wherein('campaign_status', ['running','completed'])
+                ->wherein('campaign_status', ['running', 'completed'])
                 ->orderby('summary_total_collection', 'desc')
                 ->take(6)->get();
 
             $data['recentCauses'] = CampaignView::where('status', true)
                 ->where('is_featured', false)
-                ->wherein('campaign_status', ['running','completed'])
+                ->wherein('campaign_status', ['running', 'completed'])
                 ->orderby('summary_total_collection', 'desc')
                 ->take(6)->get();
 
@@ -80,7 +82,7 @@ class HomeController extends FrontendBaseController
                 $topDonors['name'] = $donationRawDatum?->giver?->name ?? $donationRawDatum->fullname;
 
                 if ($donationRawDatum?->giver?->profile_picture) {
-                    $topDonors['profile_pic'] = asset( imageName($donationRawDatum?->giver?->profile_picture, '-medium'));
+                    $topDonors['profile_pic'] = asset(imageName($donationRawDatum?->giver?->profile_picture, '-medium'));
                 } else {
                     $topDonors['profile_pic'] = asset('static-images/images/usernotfound.png');
                 }
@@ -96,7 +98,6 @@ class HomeController extends FrontendBaseController
             $data['partners'] = Partner::get();
             return $this->renderView($this->viewFolder(), $data);
         } catch (Throwable $th) {
-            dd($th);
             return $this->renderView($this->parentViewFolder() . '.errorpage', []);
         }
     }
@@ -127,7 +128,6 @@ class HomeController extends FrontendBaseController
             $data['campaignCategories'] = CampaignCategory::where('status', 1)->orderby('title', 'asc')->get();
             return $this->renderView($this->parentViewFolder() . '.campaign-list', $data);
         } catch (Throwable $th) {
-
             return $this->renderView($this->parentViewFolder() . '.errorpage', []);
         }
     }
@@ -248,15 +248,10 @@ class HomeController extends FrontendBaseController
                 return redirect()->back();
             }
 
-            if ($data['payment_gateway'] == 'bank') {
-                $paymentGateWayDetails = PaymentGateway::where('slug', 'bank')->first();
-            } else {
-                $paymentGateWayDetails = PaymentGateway::where('slug', $data['payment_gateway'])->first();
-            }
-            $insertData['payment_gateway_id'] = $paymentGateWayDetails->id;
+            $insertData['payment_gateway'] = $data['payment_gateway'];
             $insertData['campaign_id'] = $campaignDetails->id;
-            $insertData['receiver_public_user_id'] = $campaignDetails->public_user_id;
-            $insertData['giver_public_user_id'] = Auth::guard('frontend_users')->user()?->id ?? null;
+            $insertData['receiver_user_id'] = $campaignDetails->user_id;
+            $insertData['giver_user_id'] = Auth::user()?->id ?? null;
             $insertData['created_at'] = date('Y-m-d H:i:s');
             $insertData['transaction_id'] = 'testest';
             $insertData['service_charge_percentage'] = 7;
@@ -264,7 +259,7 @@ class HomeController extends FrontendBaseController
             $insertData['is_anonymous'] = 0;
             $insertData['is_verified'] = 0; //by system admin manually
             if ($request->file('payment_receipt')) {
-                $insertData['payment_receipt'] = 'donations/' . $this->uploadImage($this->dir, 'payment_receipt', true, 1280, null);
+                $insertData['payment_receipt'] = uploadImage($this->dir, 'payment_receipt', true, 1280, null);
             }
             $resp = Donation::insert($insertData);
             Session::flash('success', 'Congratulations. Your donation has been successfully received. Please wait for the verification.');
@@ -284,21 +279,21 @@ class HomeController extends FrontendBaseController
                 ->where('campaign_status', '!=', 'pending')
                 ->where('slug', $slug)->first();
             $data['campaignDetails'] = $campaignDetails;
-            $data['countries'] = Country::orderby('name', 'asc')->get();
-            $data['paymentGateways'] = PaymentGateway::orderby('position', 'asc')->where('status', 1)->where('show_in_frontend', 1)->get();
+            $data['countries'] = getCounties();
+            $data['paymentGateways'] = paymentGateways();
             $topDonorsList = [];
             $donationRaw = $this->donation->with('giver')->where('campaign_id', $campaignDetails->id)->wherein('payment_status', ['completed'])->where('is_verified', 1)->orderby('amount')->get();
             foreach ($donationRaw as $donationRawKey => $donationRawDatum) {
                 $topDonors = [];
                 $topDonors['name'] = $donationRawDatum?->giver?->name ?? $donationRawDatum->fullname;
-                if ($donationRawDatum?->giver?->profile_picture) {
-                    $topDonors['profile_pic'] = asset('uploads') . '/' . imageName($donationRawDatum?->giver?->profile_picture, '-medium');
+                if ($donationRawDatum?->giver?->image && !str_contains('https', $donationRawDatum?->giver?->image)) {
+                    $topDonors['profile_pic'] = asset(imageName($donationRawDatum?->giver?->image, '-medium'));
                 } else {
                     $topDonors['profile_pic'] = asset('static-images/images/usernotfound.png');
                 }
                 $topDonors['amount'] = $donationRawDatum->amount;
                 $topDonors['is_anonymous'] = $donationRawDatum->is_anonymous;
-                $topDonors['giver_public_user_id'] = $donationRawDatum->giver_public_user_id;
+                $topDonors['giver_user_id'] = $donationRawDatum->giver_user_id;
                 array_push($topDonorsList, $topDonors);
             }
             $data['topDonors'] = $topDonorsList;
@@ -339,50 +334,58 @@ class HomeController extends FrontendBaseController
             foreach ($form_data as $item) {
                 $formDataArray[$item['name']] = $item['value'];
             }
-            $paymentGateWayDetails = PaymentGateway::where('slug', 'khalti')->where('status', 1)->first();
             $campaignDetails = CampaignView::where('status', 1)->first();
 
             if (!$campaignDetails) {
+                return ['message' => 'Campaign not found.', 'success' => false];
                 Session::flash('error', 'Campaign not found.');
                 return redirect()->back();
             }
-
-            if (!$paymentGateWayDetails) {
-                Session::flash('error', 'Invalid payment gateway.');
+            if (isset($response?->error_key)) {
+                return ['message' => $response?->error_key ?? 'Bad Request', 'success' => false];
+                Session::flash('error', $response?->error_key ?? 'Bad Request');
                 return redirect()->back();
             }
+
             if ($status_code == 200) {
                 /* donateaoro */
                 $insertData = [];
-                $insertData['amount'] = $response->amount / 100;
+                $insertData['amount'] = $response?->amount / 100;
+//                $insertData['amount'] = 1 / 100;
                 $insertData['fullname'] = trim($formDataArray['fullname']);
                 $insertData['country'] = trim($formDataArray['country']);
                 $insertData['email'] = trim($formDataArray['email']);
                 $insertData['address'] = trim($formDataArray['address']);
                 $insertData['description'] = trim($formDataArray['description']);
-                $insertData['payment_gateway_id'] = $paymentGateWayDetails->id;
+                $insertData['payment_gateway'] = 'khalti';
                 $insertData['campaign_id'] = $request->input('campaign_id');
-                $insertData['receiver_public_user_id'] = $campaignDetails->public_user_id;
-                $insertData['giver_public_user_id'] = $request->user?->id ?? null;
+                $insertData['receiver_user_id'] = $campaignDetails->user_id;
+                $insertData['giver_user_id'] = authUser()?->id ?? null;
                 $insertData['created_at'] = date('Y-m-d H:i:s');
                 $insertData['transaction_id'] = $response->idx ?? null;
                 $insertData['service_charge_percentage'] = 7;
-                $insertData['payment_status'] = strtolower($response?->state?->name ?? '');
+                $insertData['payment_status'] = strtolower($response?->state?->name ?? 'failed');
                 $insertData['is_anonymous'] = 0;
                 $insertData['payment_gateway_all_response'] = json_encode($response);
                 $insertData['is_verified'] = 1; //by system admin manually
                 $resp = Donation::insert($insertData);
+                return ['message' => 'Congratulations. Your donation has been successfully received.', 'success' => false];
+
                 Session::flash('success', 'Congratulations. Your donation has been successfully received. Please wait for the verification.');
                 return redirect()->back();
                 /* donateaoro */
             } else {
+                return ['message' => 'Something went wrong. Please try again later or contact our support team.', 'success' => false];
+
                 Session::flash('error', 'Sorry. Something went wrong. Please try again later or contact our support team.');
                 return redirect()->back();
             }
         } catch (Throwable $th) {
-            return $this->renderView($this->parentViewFolder() . '.errorpage', []);
-            // Session::flash('error', 'Sorry. Something went wrong. Please try again later or contact our support team.');
-            // return redirect()->back();
+            return ['message' => $th->getMessage(), 'success' => false];
+
+//            return $this->renderView($this->parentViewFolder() . '.errorpage', []);
+            Session::flash('error', 'Sorry. Something went wrong. Please try again later or contact our support team.');
+            return redirect()->back();
         }
     }
 
@@ -391,11 +394,11 @@ class HomeController extends FrontendBaseController
         try {
             $data = [];
             $data['ip'] = $request->input('ip');
-            $data['latitude'] = $request->input('latitude')??null;
-            $data['longitude'] = $request->input('longitude')??null;
-            $data['campaign_id'] = $request->input('campaign_id')??null;
+            $data['latitude'] = $request->input('latitude') ?? null;
+            $data['longitude'] = $request->input('longitude') ?? null;
+            $data['campaign_id'] = $request->input('campaign_id') ?? null;
             $data['created_at'] = date('Y-m-d');
-            $ifExists = CampaignVisit::where('ip', $data['ip'])->where('campaign_id',$data['campaign_id'])->wheredate('created_at', date('Y-m-d'))->count();
+            $ifExists = CampaignVisit::where('ip', $data['ip'])->where('campaign_id', $data['campaign_id'])->wheredate('created_at', date('Y-m-d'))->count();
             if (!$ifExists) {
                 CampaignVisit::insert($data);
             }
