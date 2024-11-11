@@ -299,6 +299,7 @@ function numberPriceFormat($input)
 function priceToNprFormat($string)
 {
     try {
+        $string=explode('.',$string)[0];
         $string = strrev($string);
         $length = strlen($string);
         $newCharacter = '';

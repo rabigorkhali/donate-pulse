@@ -65,7 +65,7 @@ class CampaignService extends Service
     {
         $data = $request->except('_token');
         $update = $this->itemByIdentifier($id);
-        if ($update->campaign_status !== 'pending') {
+        if ($update->campaign_status !== 'pending' && authUser()->role->name =='public-user') {
             $message['error'] = 'Only campaign with pending status can be updated';
             return $message;
         }

@@ -16,15 +16,15 @@
                                     <li data-index="rs-2" data-transition="slidingoverlayhorizontal"
                                         data-slotamount="default"
                                         data-easein="default" data-easeout="default" data-masterspeed="default"
-                                        data-thumb="{{ asset('uploads') . '/' . imageName($sliderBannersDatum->cover_image, '-small') }}"
+                                        data-thumb="{{ asset( imageName($sliderBannersDatum->banner, '-small')) }}"
                                         data-rotate="0" data-saveperformance="off" data-title="Slide 2"
                                         data-description="">
                                         <!-- MAIN IMAGE -->
                                         <img
-                                            src="{{ asset('uploads') . '/' . imageName($sliderBannersDatum->cover_image, '-cropped') }}"
-                                            alt="" data-bgposition="center center" data-bgfit="cover"
-                                            data-bgrepeat="no-repeat" class="rev-slidebg" data-bgparallax="10"
-                                            data-no-retina>
+                                                src="{{ asset( imageName($sliderBannersDatum->banner,'')) }}"
+                                                alt="" data-bgposition="center center" data-bgfit="cover"
+                                                data-bgrepeat="no-repeat" class="rev-slidebg" data-bgparallax="10"
+                                                data-no-retina>
                                         <!-- LAYERS -->
                                         <!-- LAYER NR. 1 -->
                                         <div class="tp-caption tp-resizeme text-uppercase text-white font-raleway"
@@ -42,18 +42,19 @@
                                         </div>
                                         <!-- LAYER NR. 2 -->
                                         <div
-                                            class="tp-caption tp-resizeme text-uppercase text-white font-raleway bg-theme-colored-transparent pl-20 pr-20"
-                                            id="rs-2-layer-2" data-x="['left']" data-hoffset="['35']"
-                                            data-y="['middle']"
-                                            data-voffset="['-25']" data-fontsize="['35']" data-lineheight="['54']"
-                                            data-width="none" data-height="none" data-whitespace="nowrap"
-                                            data-transform_idle="o:1;s:500"
-                                            data-transform_in="y:100;scaleX:1;scaleY:1;opacity:0;"
-                                            data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;"
-                                            data-mask_in="x:0px;y:0px;s:inherit;e:inherit;"
-                                            data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;" data-start="1000"
-                                            data-splitin="none" data-splitout="none" data-responsive_offset="on"
-                                            style="z-index: 7; white-space: nowrap; font-weight:600; border-radius: 30px;">
+                                                class="tp-caption tp-resizeme text-uppercase text-white font-raleway bg-theme-colored-transparent pl-20 pr-20"
+                                                id="rs-2-layer-2" data-x="['left']" data-hoffset="['35']"
+                                                data-y="['middle']"
+                                                data-voffset="['-25']" data-fontsize="['35']" data-lineheight="['54']"
+                                                data-width="none" data-height="none" data-whitespace="nowrap"
+                                                data-transform_idle="o:1;s:500"
+                                                data-transform_in="y:100;scaleX:1;scaleY:1;opacity:0;"
+                                                data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;"
+                                                data-mask_in="x:0px;y:0px;s:inherit;e:inherit;"
+                                                data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;"
+                                                data-start="1000"
+                                                data-splitin="none" data-splitout="none" data-responsive_offset="on"
+                                                style="z-index: 7; white-space: nowrap; font-weight:600; border-radius: 30px;">
                                             {{ $sliderBannersDatum->title }}
                                         </div>
                                         <!-- LAYER NR. 3 -->
@@ -83,8 +84,8 @@
                                              data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;" data-start="1400"
                                              data-splitin="none" data-splitout="none" data-responsive_offset="on"
                                              style="z-index: 5; white-space: nowrap; letter-spacing:1px;"><a
-                                                class="btn btn-colored btn-lg btn-theme-colored pl-20 pr-20"
-                                                href="#">{{ $sliderBannersDatum->btn_text ?? 'Donate Now' }}</a>
+                                                    class="btn btn-colored btn-lg btn-theme-colored pl-20 pr-20"
+                                                    href="#">{{ $sliderBannersDatum->button_text ?? 'Donate Now' }}</a>
                                         </div>
                                     </li>
                                 @else
@@ -92,29 +93,30 @@
                                     <li data-index="rs-3" data-transition="slidingoverlayhorizontal"
                                         data-slotamount="default" data-easein="default" data-easeout="default"
                                         data-masterspeed="default"
-                                        data-thumb="{{ asset('uploads') . '/' . imageName($sliderBannersDatum->cover_image, '-small') }}"
+                                        data-thumb="{{ asset(imageName($sliderBannersDatum->banner, '-small')) }}"
                                         data-rotate="0" data-saveperformance="off" data-title="Slide 3"
                                         data-description="">
                                         <!-- MAIN IMAGE -->
                                         <img
-                                            src="{{ asset('uploads') . '/' . imageName($sliderBannersDatum->cover_image, '-cropped') }}"
-                                            alt="" data-bgposition="center center" data-bgfit="cover"
-                                            data-bgrepeat="no-repeat" class="rev-slidebg" data-bgparallax="10"
-                                            data-no-retina>
+                                                src="{{ asset(imageName($sliderBannersDatum->banner, '')) }}"
+                                                alt="" data-bgposition="center center" data-bgfit="cover"
+                                                data-bgrepeat="no-repeat" class="rev-slidebg" data-bgparallax="10"
+                                                data-no-retina>
                                         <!-- LAYERS -->
                                         <!-- LAYER NR. 1 -->
                                         <div
-                                            class="tp-caption tp-resizeme text-uppercase text-white font-raleway bg-theme-colored-transparent pr-20 pl-20"
-                                            id="rs-3-layer-1" data-x="['right']" data-hoffset="['30']"
-                                            data-y="['middle']" data-voffset="['-90']" data-fontsize="['64']"
-                                            data-lineheight="['72']" data-width="none" data-height="none"
-                                            data-whitespace="nowrap" data-transform_idle="o:1;s:500"
-                                            data-transform_in="y:100;scaleX:1;scaleY:1;opacity:0;"
-                                            data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;"
-                                            data-mask_in="x:0px;y:0px;s:inherit;e:inherit;"
-                                            data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;" data-start="1000"
-                                            data-splitin="none" data-splitout="none" data-responsive_offset="on"
-                                            style="z-index: 7; white-space: nowrap; font-weight:600;">
+                                                class="tp-caption tp-resizeme text-uppercase text-white font-raleway bg-theme-colored-transparent pr-20 pl-20"
+                                                id="rs-3-layer-1" data-x="['right']" data-hoffset="['30']"
+                                                data-y="['middle']" data-voffset="['-90']" data-fontsize="['64']"
+                                                data-lineheight="['72']" data-width="none" data-height="none"
+                                                data-whitespace="nowrap" data-transform_idle="o:1;s:500"
+                                                data-transform_in="y:100;scaleX:1;scaleY:1;opacity:0;"
+                                                data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;"
+                                                data-mask_in="x:0px;y:0px;s:inherit;e:inherit;"
+                                                data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;"
+                                                data-start="1000"
+                                                data-splitin="none" data-splitout="none" data-responsive_offset="on"
+                                                style="z-index: 7; white-space: nowrap; font-weight:600;">
                                             {{-- <span class="">Help</span> The Poor --}}
                                             <span class="">{{ $sliderBannersDatum->title }}</span>
                                         </div>
@@ -159,8 +161,8 @@
                                              data-mask_out="x:inherit;y:inherit;s:inherit;e:inherit;" data-start="1400"
                                              data-splitin="none" data-splitout="none" data-responsive_offset="on"
                                              style="z-index: 5; white-space: nowrap; letter-spacing:1px;"><a
-                                                class="btn btn-colored btn-lg btn-flat btn-theme-colored pl-20 pr-20"
-                                                href="#">{{ $sliderBannersDatum->btn_text ?? 'Donate Now' }}</a>
+                                                    class="btn btn-colored btn-lg btn-flat btn-theme-colored pl-20 pr-20"
+                                                    href="#">{{ $sliderBannersDatum->button_text ?? 'Donate Now' }}</a>
                                         </div>
                                     </li>
                                 @endif
@@ -278,8 +280,8 @@
                             <div class="col-md-6">
                                 <h5 class="font-weight-300 m-0">What we can do?</h5>
                                 <h2 class="mt-0 text-uppercase font-28">Featured <span
-                                        class="text-theme-colored font-weight-400">Projects</span> <span
-                                        class="font-30 text-theme-colored">.</span></h2>
+                                            class="text-theme-colored font-weight-400">Projects</span> <span
+                                            class="font-30 text-theme-colored">.</span></h2>
                                 <div class="icon">
                                     <i class="fa fa-hospital-o"></i>
                                 </div>
@@ -296,34 +298,34 @@
                                                 <a href="{{ route('campaignDetailPage', $featuredCausesDatum->slug) }}">
                                                     <img height="239" style=" border-radius:5px 5px 0 0;"
                                                          class="img-fullwidth" alt=""
-                                                         src="{{ asset('uploads') . '/' . imageName($featuredCausesDatum->cover_image) }}">
+                                                         src="{{ asset( imageName($featuredCausesDatum->cover_image,'-medium')) }}">
                                                 </a>
                                             </div>
                                             <div class="image-box-details bg-lighter p-15 pt-20 pb-sm-20">
                                                 <h3 class="title mt-0 mb-5"><a
-                                                        href="{{ route('campaignDetailPage', $featuredCausesDatum->slug) }}">{{ $featuredCausesDatum->title }}</a>
+                                                            href="{{ route('campaignDetailPage', $featuredCausesDatum->slug) }}">{{ $featuredCausesDatum->title }}</a>
                                                 </h3>
                                                 <div class="project-meta mb-10 font-12">
                                                     <span class="mr-10"><i class="fa fa-tags"></i> <a rel="tag"
                                                                                                       href="{{ route('campaignDetailPage', $featuredCausesDatum->slug) }}">{{ $featuredCausesDatum->category->title }}</a></span>
                                                     <span class="mb-10 text-gray-darkgray mr-10 font-13"><i
-                                                            class="fa fa-money mr-5 text-theme-colored"></i>
+                                                                class="fa fa-money mr-5 text-theme-colored"></i>
                                                         {{ $featuredCausesDatum->total_number_donation }}
                                                         Donations</span>
                                                     <span class="mb-10 text-gray-darkgray mr-10 font-13"><i
-                                                            class="fa fa-eye mr-5 text-theme-colored"></i>
+                                                                class="fa fa-eye mr-5 text-theme-colored"></i>
                                                         {{ $featuredCausesDatum->total_visits }} Views</span>
                                                 </div>
                                                 <p class="desc mb-10">
-                                                    {{ substr($featuredCausesDatum->description, 0, 100) }}... <br> <a
-                                                        href="{{ route('campaignDetailPage', $featuredCausesDatum->slug) }}"
-                                                        class="text-info"> Read More...</a>
+                                                    {!! strip_tags(substr($featuredCausesDatum->description, 0, 100))  !!}... <br> <a
+                                                            href="{{ route('campaignDetailPage', $featuredCausesDatum->slug) }}"
+                                                            class="text-info"> Read More...</a>
                                                 </p>
                                                 <div class="progress-item mt-0">
                                                     <div class="progress mb-10">
                                                         <div
-                                                            data-percent="{{ calculatePercentageMaxTo100($featuredCausesDatum->summary_total_collection, $featuredCausesDatum->goal_amount) }}"
-                                                            class="progress-bar"><span class="percent">0</span>
+                                                                data-percent="{{ calculatePercentageMaxTo100($featuredCausesDatum->summary_total_collection, $featuredCausesDatum->goal_amount) }}"
+                                                                class="progress-bar"><span class="percent">0</span>
                                                         </div>
                                                     </div>
                                                     @if ($featuredCausesDatum->campaign_status == 'running')
@@ -371,7 +373,7 @@
                                 <div class="col-md-6">
                                     <h5 class="font-weight-300 m-0">Happy Donate</h5>
                                     <h2 class="mt-0 text-uppercase font-28">Our <span
-                                            class="font-30 text-theme-colored">Donors.</span></h2>
+                                                class="font-30 text-theme-colored">Donors.</span></h2>
                                     <div class="icon">
                                         <i class="fa fa-hospital-o"></i>
                                     </div>
@@ -457,8 +459,8 @@
                         <div class="col-md-6">
                             <h5 class="font-weight-300 m-0">What we can do?</h5>
                             <h2 class="mt-0 text-uppercase font-28">Latest <span
-                                    class="text-theme-colored font-weight-400">Projects</span> <span
-                                    class="font-30 text-theme-colored">.</span></h2>
+                                        class="text-theme-colored font-weight-400">Projects</span> <span
+                                        class="font-30 text-theme-colored">.</span></h2>
                             <div class="icon">
                                 <i class="fa fa-hospital-o"></i>
                             </div>
@@ -467,40 +469,41 @@
                 </div>
                 <div class="section-content">
                     <div class="row">
+
                         @foreach ($recentCauses as $recentCausesKey => $recentCausesDatum)
                             <div class="col-xs-12 col-sm-6 col-md-4 mb-30">
                                 <div class="image-box-thum">
-                                    <a href="{{ route('campaignDetailPage', $featuredCausesDatum->slug) }}">
+                                    <a href="{{ route('campaignDetailPage', $recentCausesDatum->slug) }}">
                                         <img height="239" class="img-fullwidth" style=" border-radius:5px 5px 0 0;"
                                              alt=""
-                                             src="{{ asset('uploads') . '/' . imageName($recentCausesDatum->cover_image) }}">
+                                             src="{{ asset( imageName($recentCausesDatum->cover_image)) }}">
                                     </a>
                                 </div>
                                 <div class="image-box-details bg-lighter p-15 pt-20 pb-sm-20">
                                     <h3 class="title mt-0 mb-5"><a
-                                            href="{{ route('campaignDetailPage', $featuredCausesDatum->slug) }}">{{ substr($recentCausesDatum->title, 0, 100) }}</a>
+                                                href="{{ route('campaignDetailPage', $recentCausesDatum->slug) }}">{{ substr($recentCausesDatum->title, 0, 100) }}</a>
                                     </h3>
                                     <div class="project-meta mb-10 font-12">
                                         <span class="mr-10"><i class="fa fa-tags"></i> <a rel="tag"
                                                                                           href="#">{{ $recentCausesDatum->category->title }}</a></span>
                                         <span class="mb-10 text-gray-darkgray mr-10 font-13"><i
-                                                class="fa fa-money mr-5 text-theme-colored"></i>
-                                            {{ $featuredCausesDatum->total_number_donation }}
+                                                    class="fa fa-money mr-5 text-theme-colored"></i>
+                                            {{ $recentCausesDatum->total_number_donation }}
                                             Donations</span>
                                         <span class="mb-10 text-gray-darkgray mr-10 font-13"><i
-                                                class="fa fa-eye mr-5 text-theme-colored"></i>
-                                            {{ $featuredCausesDatum->total_visits }} Views</span>
+                                                    class="fa fa-eye mr-5 text-theme-colored"></i>
+                                            {{ $recentCausesDatum->total_visits??0 }} Views</span>
                                     </div>
                                     <p class="desc mb-10">
-                                        {{ substr($recentCausesDatum->description, 0, 100) }}... <br> <a
-                                            href="{{ route('campaignDetailPage', $featuredCausesDatum->slug) }}"
-                                            class="text-info"> Read More...</a>
+                                        {!! strip_tags(substr($recentCausesDatum->description, 0, 100)) !!}... <br> <a
+                                                href="{{ route('campaignDetailPage', $recentCausesDatum->slug) }}"
+                                                class="text-info"> Read More...</a>
                                     </p>
                                     <div class="progress-item mt-0">
                                         <div class="progress mb-10">
                                             <div
-                                                data-percent="{{ calculatePercentageMaxTo100($recentCausesDatum->summary_total_collection, $recentCausesDatum->goal_amount) }}"
-                                                class="progress-bar"><span class="percent">0</span></div>
+                                                    data-percent="{{ calculatePercentageMaxTo100($recentCausesDatum->summary_total_collection, $recentCausesDatum->goal_amount) }}"
+                                                    class="progress-bar"><span class="percent">0</span></div>
                                         </div>
                                         @if ($recentCausesDatum->campaign_status == 'running')
                                             <a class="btn btn-dark btn-theme-colored btn-sm text-uppercase mb-10"
@@ -552,12 +555,12 @@
                                     <div class="testimonial pt-10">
                                         <div class="thumb pull-left mb-0 mr-0 pr-20">
                                             <img width="75" class="img-circle" alt=""
-                                                 src="{{ asset('uploads') . '/' . imageName($testimonialsDatum->profile_picture, '-cropped') }}">
+                                                 src="{{ imageName($testimonialsDatum->image, '-small') }}">
                                         </div>
                                         <div class="ml-100 ">
                                             <h4 class="mt-0 font-weight-300">{{ $testimonialsDatum->message }}</h4>
                                             <p class="author mt-20">- <span
-                                                    class="text-black-333">{{ $testimonialsDatum->name }},</span>
+                                                        class="text-black-333">{{ $testimonialsDatum->name }},</span>
                                                 <small><em>{{ $testimonialsDatum->designation }}</em></small>
                                             </p>
                                         </div>

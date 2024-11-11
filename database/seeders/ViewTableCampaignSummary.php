@@ -19,6 +19,7 @@ class ViewTableCampaignSummary extends Seeder
         SELECT cmp.id,
        cmp.user_id,
        cmp.title,
+       cmp.slug,
        cmp.description,
        cmp.start_date,
        cmp.end_date,
@@ -26,6 +27,8 @@ class ViewTableCampaignSummary extends Seeder
        cmp.campaign_status,
        cmp.status,
        cmp.is_featured,
+       cmp.campaign_category_id,
+       cmp.cover_image,
 
        (SELECT SUM(amount)
         FROM donations
@@ -51,7 +54,7 @@ class ViewTableCampaignSummary extends Seeder
         WHERE campaign_id = cmp.id
           AND payment_status = 'completed') AS total_number_donation
 FROM campaigns cmp
-GROUP BY cmp.id, cmp.user_id, cmp.title, cmp.description, cmp.start_date, cmp.end_date, cmp.goal_amount, cmp.campaign_status,cmp.status,cmp.is_featured;
+GROUP BY cmp.id, cmp.user_id, cmp.title, cmp.description, cmp.start_date, cmp.end_date, cmp.goal_amount, cmp.campaign_status,cmp.status,cmp.is_featured,cmp.slug,cmp.campaign_category_id,cmp.cover_image;
 
         ");
     }

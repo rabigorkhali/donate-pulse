@@ -53,14 +53,14 @@ class HomeController extends FrontendBaseController
         try {
             $data = array();
             $data['featuredCauses'] = CampaignView::where('status', true)
-                ->where('is_featured', false)
-                ->wherein('campaign_status', ['running'])
+                ->where('is_featured', true)
+                ->wherein('campaign_status', ['running','completed'])
                 ->orderby('summary_total_collection', 'desc')
                 ->take(6)->get();
 
             $data['recentCauses'] = CampaignView::where('status', true)
                 ->where('is_featured', false)
-                ->wherein('campaign_status', ['running'])
+                ->wherein('campaign_status', ['running','completed'])
                 ->orderby('summary_total_collection', 'desc')
                 ->take(6)->get();
 
@@ -80,7 +80,7 @@ class HomeController extends FrontendBaseController
                 $topDonors['name'] = $donationRawDatum?->giver?->name ?? $donationRawDatum->fullname;
 
                 if ($donationRawDatum?->giver?->profile_picture) {
-                    $topDonors['profile_pic'] = asset('uploads') . '/' . imageName($donationRawDatum?->giver?->profile_picture, '-medium');
+                    $topDonors['profile_pic'] = asset( imageName($donationRawDatum?->giver?->profile_picture, '-medium'));
                 } else {
                     $topDonors['profile_pic'] = asset('static-images/images/usernotfound.png');
                 }

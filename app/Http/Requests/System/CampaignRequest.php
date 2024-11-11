@@ -39,6 +39,11 @@ class CampaignRequest extends FormRequest
             'image' => 'nullable|image|max:10240',
             'status' => 'nullable|boolean',
         ];
+        if($this->id && authUser()->role->name !=='public-user')
+        {
+            $validation['start_date'] = 'required|date';
+
+        }
         if (authUser()->role->name == 'public-user') {
             unset($validation['user_id']);
             unset($validation['campaign_status']);
