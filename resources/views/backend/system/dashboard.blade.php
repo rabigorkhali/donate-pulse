@@ -14,7 +14,7 @@
         <div class="container-xxl flex-grow-1 container-p-y">
             <div class="row g-6">
                 <!-- Sales last year -->
-                <div class="col-xxl-3 col-md-3 col-sm-6">
+                <div class="col-xxl-3 col-md-3 col-sm-6 mt-2">
                     <div class="card">
                         <div class="card-header pb-3">
                             <h5 class="card-title mb-1">Total Campaign</h5>
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-3 col-md-3 col-sm-6">
+                <div class="col-xxl-3 col-md-3 col-sm-6 mt-2">
                     <div class="card">
                         <div class="card-header pb-3">
                             <h5 class="card-title mb-1">Total Donation Received</h5>
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-3 col-md-3 col-sm-6">
+                <div class="col-xxl-3 col-md-3 col-sm-6 mt-2">
                     <div class="card">
                         <div class="card-header pb-3">
                             <h5 class="card-title mb-1">Withdrawable Amount</h5>
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-3 col-md-3 col-sm-6">
+                <div class="col-xxl-3 col-md-3 col-sm-6 mt-2">
                     <div class="card">
                         <div class="card-header pb-3">
                             <h5 class="card-title mb-1">Total Donation Given</h5>
