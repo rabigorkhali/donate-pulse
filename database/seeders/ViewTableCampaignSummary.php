@@ -15,31 +15,19 @@ class ViewTableCampaignSummary extends Seeder
      */
     public function run()
     {
+        DB::statement("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         DB::select("CREATE OR REPLACE VIEW campaigns_summary_view AS
-SELECT cmp.id,
-       cmp.user_id,
-       cmp.title,
-       cmp.slug,
-       cmp.description,
-       cmp.start_date,
-       cmp.end_date,
-       cmp.goal_amount,
-       cmp.campaign_status,
-       cmp.status,
-       cmp.is_featured,
-       cmp.campaign_category_id,
-       cmp.cover_image,
-       cmp.created_at,
-       COALESCE(SUM(don.amount), 0) AS summary_total_collection,
-       COALESCE(SUM(don.amount - ((don.amount * don.service_charge_percentage) / 100)), 0) AS net_amount_collection,
-       COALESCE(COUNT(cv.campaign_id), 0) AS total_visits,
-       COALESCE(SUM((don.amount * don.service_charge_percentage) / 100), 0) AS summary_service_charge_amount,
-       COALESCE(COUNT(don.id), 0) AS total_number_donation
-FROM campaigns cmp
-LEFT JOIN donations don ON don.campaign_id = cmp.id AND don.payment_status = 'completed'
-LEFT JOIN campaign_visits cv ON cv.campaign_id = cmp.id
-GROUP BY cmp.id, cmp.user_id, cmp.title, cmp.slug, cmp.description, cmp.start_date, cmp.end_date, cmp.goal_amount, cmp.campaign_status, cmp.status, cmp.is_featured, cmp.campaign_category_id, cmp.cover_image,cmp.created_at;
-
-        ");
+        SELECT *,(select sum(amount) from donations where campaign_id=cmp.id and payment_status='completed') as summary_total_collection
+        ,
+        (SELECT FLOOR(SUM(don.amount - ((don.amount * don.service_charge_percentage) / 100))) from donations as don where campaign_id=cmp.id and payment_status='completed')
+         as net_amount_collection
+         ,
+         (select count(id) from campaign_visits where campaign_id=cmp.id) as total_visits
+         ,
+         (SELECT FLOOR(SUM(((don.amount * don.service_charge_percentage) / 100))) from donations as don where campaign_id=cmp.id and payment_status='completed')
+         as summary_service_charge_amount
+         ,
+         (select count(id) from donations where campaign_id=cmp.id and payment_status='completed') as total_number_donation
+        FROM campaigns cmp");
     }
 }
