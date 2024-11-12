@@ -124,17 +124,17 @@
                                         <td>{{ $key + 1 }}</td>
 
                                         <td>
-                                            {{ $withdrawal->campaign->title}}<br>
+                                            {{ $withdrawal->campaign?->title}}<br>
                                         </td>
                                         <td>
-                                            Gross: {{ $withdrawal->campaignView->summary_total_collection}} <br>
+                                            Gross: {{ $withdrawal->campaignView?->summary_total_collection}} <br>
                                             Service
-                                            Charge: {{ $withdrawal->campaignView->summary_service_charge_amount}} <br>
-                                            Net: {{ $withdrawal->campaignView->net_amount_collection}} <br>
+                                            Charge: {{ $withdrawal->campaignView?->summary_service_charge_amount}} <br>
+                                            Net: {{ $withdrawal->campaignView?->net_amount_collection}} <br>
                                         </td>
-                                        <td>{{ ucfirst($withdrawal->paymentGateway->payment_gateway??'-') }} <br>
+                                        <td>{{ ucfirst($withdrawal->payment_gateway??'-') }} <br>
                                         </td>
-                                        <td>{{ $withdrawal->paymentGateway->mobile_number??'-' }}</td>
+                                        <td>{{ $withdrawal->mobile_number??'-' }}</td>
                                         <td>{{ $withdrawal->created_at }}<br>
                                         </td>
                                         <td>{{ ucfirst($withdrawal->campaign->campaign_status) }}</td>
