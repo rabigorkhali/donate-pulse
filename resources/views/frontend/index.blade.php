@@ -317,7 +317,8 @@
                                                         {{ $featuredCausesDatum->total_visits }} Views</span>
                                                 </div>
                                                 <p class="desc mb-10">
-                                                    {!! strip_tags(substr($featuredCausesDatum->description, 0, 100))  !!}... <br> <a
+                                                    {!! strip_tags(substr($featuredCausesDatum->description, 0, 100))  !!}
+                                                    ... <br> <a
                                                             href="{{ route('campaignDetailPage', $featuredCausesDatum->slug) }}"
                                                             class="text-info"> Read More...</a>
                                                 </p>
@@ -582,7 +583,7 @@
                             <div class="owl-carousel-6col clients-logo text-center">
                                 @foreach ($partners as $partnersKey => $partnersDatum)
                                     <div class="item"><a href="#"><img class="img-responsive"
-                                                                       src="{{ asset('uploads') . '/' . imageName($partnersDatum->logo, '-cropped') }}"
+                                                                       src="{{ asset(imageName($partnersDatum->image, '-small')) }}"
                                                                        alt=""></a>
                                     </div>
                                 @endforeach

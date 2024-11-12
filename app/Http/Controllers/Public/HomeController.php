@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Session;
 use Throwable;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-
+use DB;
 class HomeController extends FrontendBaseController
 {
 
@@ -102,6 +102,7 @@ class HomeController extends FrontendBaseController
             $data['partners'] = Partner::get();
             return $this->renderView($this->viewFolder(), $data);
         } catch (Throwable $th) {
+            dd($th);
             return $this->renderView($this->parentViewFolder() . '.errorpage', []);
         }
     }
