@@ -29,6 +29,7 @@ SELECT cmp.id,
        cmp.is_featured,
        cmp.campaign_category_id,
        cmp.cover_image,
+       cmp.created_at,
        COALESCE(SUM(don.amount), 0) AS summary_total_collection,
        COALESCE(SUM(don.amount - ((don.amount * don.service_charge_percentage) / 100)), 0) AS net_amount_collection,
        COALESCE(COUNT(cv.campaign_id), 0) AS total_visits,
@@ -37,7 +38,7 @@ SELECT cmp.id,
 FROM campaigns cmp
 LEFT JOIN donations don ON don.campaign_id = cmp.id AND don.payment_status = 'completed'
 LEFT JOIN campaign_visits cv ON cv.campaign_id = cmp.id
-GROUP BY cmp.id, cmp.user_id, cmp.title, cmp.slug, cmp.description, cmp.start_date, cmp.end_date, cmp.goal_amount, cmp.campaign_status, cmp.status, cmp.is_featured, cmp.campaign_category_id, cmp.cover_image;
+GROUP BY cmp.id, cmp.user_id, cmp.title, cmp.slug, cmp.description, cmp.start_date, cmp.end_date, cmp.goal_amount, cmp.campaign_status, cmp.status, cmp.is_featured, cmp.campaign_category_id, cmp.cover_image,cmp.created_at;
 
         ");
     }

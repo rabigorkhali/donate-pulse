@@ -441,10 +441,21 @@ function getSiteDetails($siteType = 'Site')
 
 function getPostsBlogs($limit = '5')
 {
-    $posts = \App\Models\Post::where('status', 'published')->orderby('created_at', 'desc')->limit($limit)->get();
+    $posts = \App\Models\Post::where('status', 1)->orderby('created_at', 'desc')->limit($limit)->get();
     return $posts;
 }
+function getLatestCampaigns($limit = '3')
+{
+    $campaigns = \App\Models\CampaignView::where('status', 1)->orderby('created_at', 'desc')
+        ->wherenotin('campaign_status', getCampaignStatusThatCantBeShown())
+        ->limit($limit)->get();
+    return $campaigns;
+}
 
+function getCampaignStatusThatCantBeShown()
+{
+    return ['pending', 'rejected', 'accepted','stopped'];
+}
 function getCounties()
 {
     $countries = [

@@ -1,7 +1,7 @@
 <!-- Menu -->
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="{{url('/system/dashboard')}}" class="app-brand-link">
+        <a href="{{url('/')}}" class="app-brand-link">
            <span class="app-brand-logo demo">
                <img src="{{asset(getConfigTableData()?->logo)}}" class="img-fluid">
            </span>
@@ -16,7 +16,12 @@
 
     <div class="menu-inner-shadow"></div>
     <ul class="menu-inner py-1">
-
+        <li class="menu-item ">
+            <a href="{{url('')}}" class="menu-link">
+                <i class="fa fa-globe"></i>
+                <div>&nbsp; {{__('Visit Website')}}</div>
+            </a>
+        </li>
         @foreach(modules() as $module)
             @if (hasPermissionOnModule($module))
                 @if ($module['hasSubmodules'])
