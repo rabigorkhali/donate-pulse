@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Models\Campaign;
 use App\Models\CampaignCategory;
+use App\Models\CampaignView;
 use App\Models\PostCategory;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
 class CampaignService extends Service
@@ -15,6 +17,7 @@ class CampaignService extends Service
     {
         parent::__construct($model);
     }
+
     public function getAllData($data, $selectedColumns = [], $pagination = true)
     {
         $keyword = $data->get('keyword');
@@ -26,10 +29,10 @@ class CampaignService extends Service
         $table = $this->model->getTable();
         if ($keyword) {
             if (Schema::hasColumn($table, 'name')) {
-                $query->orWhereRaw('LOWER(name) LIKE ?', ['%'.strtolower($keyword).'%']);
+                $query->orWhereRaw('LOWER(name) LIKE ?', ['%' . strtolower($keyword) . '%']);
             }
             if (Schema::hasColumn($table, 'title')) {
-                $query->orWhereRaw('LOWER(title) LIKE ?', ['%'.strtolower($keyword).'%']);
+                $query->orWhereRaw('LOWER(title) LIKE ?', ['%' . strtolower($keyword) . '%']);
             }
         }
         if (authUser()->role->name == 'public-user') $query->where('user_id', authUser()->id);
@@ -65,7 +68,7 @@ class CampaignService extends Service
     {
         $data = $request->except('_token');
         $update = $this->itemByIdentifier($id);
-        if ($update->campaign_status !== 'pending' && authUser()->role->name =='public-user') {
+        if ($update->campaign_status !== 'pending' && authUser()->role->name == 'public-user') {
             $message['error'] = 'Only campaign with pending status can be updated';
             return $message;
         }
@@ -92,4 +95,34 @@ class CampaignService extends Service
             'thisData' => $this->itemByIdentifier($id),
         ];
     }
+
+    public function campaignSummary(Request $request, $id)
+    {
+        try {
+            $data = [];
+            if (authUser()->role->name !== 'public-user') {
+                $campaignData = CampaignView::select('start_date', 'end_date', 'cover_image', 'goal_amount', 'summary_total_collection', 'net_amount_collection', 'summary_service_charge_amount', 'total_number_donation', 'campaign_status')
+                    ->where('id', $id)->first();
+            } else {
+                $campaignData = CampaignView::select('start_date', 'end_date', 'cover_image', 'goal_amount', 'summary_total_collection', 'net_amount_collection', 'summary_service_charge_amount', 'total_number_donation', 'campaign_status')
+                    ->where('user_id', authUser()->id)->where('id', $id)->first();
+            }
+            if (!$campaignData) {
+                return false;
+            }
+            $campaignData->summary_total_collection = priceToNprFormat($campaignData->summary_total_collection);
+            $campaignData->net_amount_collection = priceToNprFormat($campaignData->net_amount_collection);
+            $campaignData->summary_service_charge_amount = priceToNprFormat($campaignData->summary_service_charge_amount);
+            $campaignData->goal_amount = priceToNprFormat($campaignData->goal_amount);
+            $campaignData->start_date = $campaignData->start_date;
+            $campaignData->start_date_format = $campaignData->start_date;
+            $campaignData->end_date = $campaignData->end_date;
+            $campaignData->end_date_format = $campaignData->end_date;
+            $data['campaign'] = $campaignData;
+            return $data;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
 }

@@ -22,7 +22,7 @@ class ViewTableCampaignSummary extends Seeder
         (SELECT FLOOR(SUM(don.amount - ((don.amount * don.service_charge_percentage) / 100))) from donations as don where campaign_id=cmp.id and payment_status='completed')
          as net_amount_collection
          ,
-         (select count(id) from campaign_visits where campaign_id=cmp.id) as total_visits
+         (select count(campaign_id) from campaign_visits where campaign_id=cmp.id) as total_visits
          ,
          (SELECT FLOOR(SUM(((don.amount * don.service_charge_percentage) / 100))) from donations as don where campaign_id=cmp.id and payment_status='completed')
          as summary_service_charge_amount

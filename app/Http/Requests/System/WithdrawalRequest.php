@@ -27,13 +27,6 @@ class WithdrawalRequest extends FormRequest
             'campaign_id' => 'required',
             'payment_gateway_id' => 'required',
         ];
-        if (authUser()->role->name !== 'public-user') {
-            $validation = [
-                'campaign_id' => 'required',
-                'withdrawal_status' => 'required',
-            ];
-        }
-
         return $validation;
     }
 

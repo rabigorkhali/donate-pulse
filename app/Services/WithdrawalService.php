@@ -7,6 +7,7 @@ use App\Models\PaymentGateway;
 use App\Models\User;
 use App\Models\CampaignView;
 use App\Models\Withdrawal;
+use Faker\Provider\Payment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
@@ -25,6 +26,7 @@ class WithdrawalService extends Service
         $show = $data->get('show');
         $fromDate = $data->get('from_date');
         $toDate = $data->get('to_date');
+        $userId = $data->get('user_id');
         $query = $this->query();
         if (count($selectedColumns) > 0) {
             $query->select($selectedColumns);
@@ -38,6 +40,7 @@ class WithdrawalService extends Service
         if (authUser()->role->name == 'public-user') $query->where('user_id', authUser()->id);
         if ($withdrawalStatus) $query->where('withdrawal_status', $withdrawalStatus);
         if ($fromDate) $query->where('created_at', '>', $fromDate);
+        if ($userId) $query->where('user_id', $userId);
         if ($toDate) $query->where('created_at', '<', $toDate);
         if ($pagination) {
             return $query->orderBy('created_at', 'DESC')->paginate($show ?? 10);
@@ -56,10 +59,20 @@ class WithdrawalService extends Service
 
     public function createPageData($request)
     {
+        $campaignQuery = new Campaign();
+        if (authUser()->role->name == 'public-user') {
+            $campaignQuery = $campaignQuery->where('user_id', authUser()->id);
+        }
+        $campaignQuery = $campaignQuery->where('campaign_status', 'completed');
+        $campaignQuery = $campaignQuery->orderby('title')->get();
+
+        $paymentQuery = new PaymentGateway();
+            $paymentQuery = $paymentQuery->where('user_id', authUser()->id);
+        $paymentQuery = $paymentQuery->orderby('payment_gateway')->get();
         return [
             'users' => User::orderby('name')->get(),
-            'paymentGateways' => PaymentGateway::where('user_id', authUser()->id)->orderby('payment_gateway')->get(),
-            'campaigns' => Campaign::where('campaign_status', 'completed')->where('user_id', authUser()->id)->orderby('title')->get()
+            'paymentGateways' => $paymentQuery,
+            'campaigns' => $campaignQuery
         ];
     }
 
@@ -76,7 +89,7 @@ class WithdrawalService extends Service
 
             $campaignData = CampaignView::where('campaign_status', 'completed')->where('user_id', authUser()->id)->first();
             if (!$campaignData) {
-                $message['error'] = 'This campaign is not eligible for withdrawing';
+                $message['error'] = 'You cannot withdraw this campaign.';
                 return $message;
             }
             $paymentGateways = PaymentGateway::where('user_id', authUser()->id)->where('id', $data['payment_gateway_id'])->first();

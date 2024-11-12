@@ -30,7 +30,6 @@ class HomeControllerBackend extends Controller
     public function index(Request $request)
     {
         $data = array();
-        DB::statement("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         $campaignQuery = new Campaign();
         if (authUser()->role->name == 'public-user') {
             $campaignQuery = $campaignQuery->where('user_id', authUser()->id);

@@ -69,6 +69,7 @@ Route::prefix(getSystemPrefix())->middleware(['auth', 'permission.routes'])->gro
     Route::resource('/partners', PartnerController::class, ['except' => ['show']]);
     Route::resource('/campaign-categories', CampaignCategoryController::class, ['except' => ['show']]);
     Route::resource('/campaigns', CampaignController::class, ['except' => ['show']]);
+    Route::get('/campaigns-summary/{id}', [CampaignController::class, 'campaignSummary'])->name('campaigns.campaignSummary');
     Route::resource('/payment-gateways', PaymentGatewayController::class, ['except' => ['show','edit','update']]);
     Route::resource('/donations', DonationController::class);
     Route::resource('/withdrawals', WithdrawalController::class);

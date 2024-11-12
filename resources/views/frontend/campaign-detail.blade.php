@@ -49,21 +49,21 @@
                                                 others, you can make a positive difference in the world.. </p>
                                             <ul class="list-inline clearfix mt-20 ">
                                                 <li class="pull-left flip pr-0">Raised: <span
-                                                            class="font-weight-700">{{ priceToNprFormat($campaignDetails->summary_total_collection) }}</span>
+                                                        class="font-weight-700">{{ priceToNprFormat($campaignDetails->summary_total_collection) }}</span>
                                                 </li>
                                                 <li class="text-theme-colored pull-right flip pr-0">Goal: <span
-                                                            class="font-weight-700">{{ priceToNprFormat($campaignDetails->goal_amount) }}</span>
+                                                        class="font-weight-700">{{ priceToNprFormat($campaignDetails->goal_amount) }}</span>
                                                 </li>
 
                                             </ul>
                                             <ul class="list-inline clearfix  mb-20">
 
                                                 <li class="text-theme-colored pull-right flip pr-0">Views: <span
-                                                            class="font-weight-700">{{ $campaignDetails->total_visits }}</span>
+                                                        class="font-weight-700">{{ $campaignDetails->total_visits }}</span>
                                                 </li>
                                                 @if($campaignDetails->total_number_donation)
                                                     <li class="pull-left flip pr-0">Donation Made By: <span
-                                                                class="font-weight-700">{{ $campaignDetails->total_number_donation }} beautiful  @if($campaignDetails->total_number_donation)
+                                                            class="font-weight-700">{{ $campaignDetails->total_number_donation }} beautiful  @if($campaignDetails->total_number_donation)
                                                                 souls
                                                             @else
                                                                 soul
@@ -94,7 +94,7 @@
                             <div class="target-information pb-sm-20 bg-light pr-0 pb-50 pl-0">
                                 <div class="text-center">
                                     <h2
-                                            class="bg-theme-colored text-white text-uppercase font-weight-600 p-10 pl-30 pr-30 mt-0">
+                                        class="bg-theme-colored text-white text-uppercase font-weight-600 p-10 pl-30 pr-30 mt-0">
                                         Target</h2>
                                     <h3 class="font-28 font-weight-300 font-opensans">
                                         {{ priceToNprFormat($campaignDetails->goal_amount) }}</h3>
@@ -104,7 +104,7 @@
                                                  data-percent="{{ calculatePercentageMaxTo100($campaignDetails->summary_total_collection, $campaignDetails->goal_amount) }}"
                                                  data-linewidth="8">
                                                 <span
-                                                        class="percent text-white font-weight-700">{{ calculatePercentageMaxTo100($campaignDetails->summary_total_collection, $campaignDetails->goal_amount) }}
+                                                    class="percent text-white font-weight-700">{{ calculatePercentageMaxTo100($campaignDetails->summary_total_collection, $campaignDetails->goal_amount) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -151,26 +151,27 @@
                                     @csrf
                                     <div class="row">
                                         <input type="hidden" name="campaign_id" value="{{ $campaignDetails->id }}">
-                                        <div class="col-sm-12  @if ($errors->first('payment_gateway')) has-error @endif">
+                                        <div
+                                            class="col-sm-12  @if ($errors->first('payment_gateway')) has-error @endif">
                                             <div class="form-group mb-20">
                                                 <label><strong>Payment Gateway/Mode</strong></label> <br>
                                                 @foreach (paymentGateways() as $keyPaymentGateways => $datumPaymentGateways)
                                                     <label class="radio-inline">
                                                         <input
-                                                                onchange="paymentGateway('{{ $keyPaymentGateways }}')"
-                                                                type="radio"
-                                                                @if (!old('payment_gateway') && $keyPaymentGateways == 'khalti') checked
-                                                                @endif
-                                                                @if (old('payment_gateway') == $keyPaymentGateways) checked
-                                                                @endif
-                                                                value="{{ $keyPaymentGateways }}"
-                                                                name="payment_gateway">
+                                                            onchange="paymentGateway('{{ $keyPaymentGateways }}')"
+                                                            type="radio"
+                                                            @if (!old('payment_gateway') && $keyPaymentGateways == 'khalti') checked
+                                                            @endif
+                                                            @if (old('payment_gateway') == $keyPaymentGateways) checked
+                                                            @endif
+                                                            value="{{ $keyPaymentGateways }}"
+                                                            name="payment_gateway">
                                                         {{ $datumPaymentGateways }}
                                                     </label>
                                                 @endforeach
                                                 @if ($errors->first('payment_gateway'))
                                                     <span
-                                                            class="text-danger display-block">{{ $errors->first('payment_gateway') }}</span>
+                                                        class="text-danger display-block">{{ $errors->first('payment_gateway') }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -178,7 +179,8 @@
                                         <div class="col-md-12 d-none bank-details"
                                              style="border: 1px solid #000; margin: 10px;">
                                             <div class="form-group mb-20 ">
-                                                <label>Account Name: </label>{{ getConfigTableData()->bank_account_name }}<br>
+                                                <label>Account
+                                                    Name: </label>{{ getConfigTableData()->bank_account_name }}<br>
                                                 <label>Account
                                                     No: </label>{{ getConfigTableData()->bank_account_number }}</br>
                                                 <label>Bank Name: </label>{{ getConfigTableData()->bank_name }}</br>
@@ -195,13 +197,13 @@
                                                        placeholder="Rama Namaya" class="form-control">
                                                 @if ($errors->first('fullname'))
                                                     <span
-                                                            class="text-danger display-block">{{ $errors->first('fullname') }}</span>
+                                                        class="text-danger display-block">{{ $errors->first('fullname') }}</span>
                                                 @endif
                                             </div>
                                         </div>
 
                                         <div
-                                                class="col-sm-12 bank-details   @if (old('payment_mode') == 'online') d-none @endif  @if ($errors->first('mobile_number')) has-error @endif">
+                                            class="col-sm-12 bank-details   @if (old('payment_mode') == 'online') d-none @endif  @if ($errors->first('mobile_number')) has-error @endif">
                                             <div class="form-group mb-20">
                                                 <label><strong>Mobile Number</strong></label>
                                                 <input type="text" maxlength="15" name="mobile_number"
@@ -209,7 +211,7 @@
                                                        placeholder="9841000000" class="form-control">
                                                 @if ($errors->first('mobile_number'))
                                                     <span
-                                                            class="text-danger display-block">{{ $errors->first('mobile_number') }}</span>
+                                                        class="text-danger display-block">{{ $errors->first('mobile_number') }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -220,18 +222,18 @@
                                                 <select name="country" class="form-control">
                                                     @foreach ($countries as $keyCountries => $datumCountries)
                                                         <option
-                                                                @if (!old('country')) @if ($datumCountries == 'Nepal') selected
-                                                                @endif
-                                                                @endif
-                                                                @if (strtolower(old('country') ?? Auth::user()?->country) == strtolower($datumCountries)) selected
-                                                                @endif
-                                                                value="{{ strtolower($datumCountries) }}">{{ $datumCountries}}
+                                                            @if (!old('country')) @if ($datumCountries == 'Nepal') selected
+                                                            @endif
+                                                            @endif
+                                                            @if (strtolower(old('country') ?? Auth::user()?->country) == strtolower($datumCountries)) selected
+                                                            @endif
+                                                            value="{{ strtolower($datumCountries) }}">{{ $datumCountries}}
                                                         </option>
                                                     @endforeach
                                                 </select>
                                                 @if ($errors->first('country'))
                                                     <span
-                                                            class="text-danger display-block">{{ $errors->first('country') }}</span>
+                                                        class="text-danger display-block">{{ $errors->first('country') }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -245,7 +247,7 @@
                                                        class="form-control">
                                                 @if ($errors->first('address'))
                                                     <span
-                                                            class="text-danger display-block">{{ $errors->first('address') }}</span>
+                                                        class="text-danger display-block">{{ $errors->first('address') }}</span>
                                                 @endif
                                             </div>
 
@@ -260,7 +262,7 @@
                                                        class="form-control">
                                                 @if ($errors->first('email'))
                                                     <span
-                                                            class="text-danger display-block">{{ $errors->first('email') }}</span>
+                                                        class="text-danger display-block">{{ $errors->first('email') }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -273,19 +275,19 @@
                                                        class="form-control">
                                                 @if ($errors->first('amount'))
                                                     <span
-                                                            class="text-danger display-block">{{ $errors->first('amount') }}</span>
+                                                        class="text-danger display-block">{{ $errors->first('amount') }}</span>
                                                 @endif
                                             </div>
                                         </div>
                                         <div
-                                                class="col-sm-12 bank-details @if (old('payment_mode') == 'online') d-none @endif @if ($errors->first('payment_receipt')) has-error @endif">
+                                            class="col-sm-12 bank-details @if (old('payment_mode') == 'online') d-none @endif @if ($errors->first('payment_receipt')) has-error @endif">
                                             <div class="form-group mb-20">
                                                 <label><strong>Payment Receipt</strong></label>
                                                 <input type="file" name="payment_receipt" placeholder=""
                                                        class="form-control">
                                                 @if ($errors->first('payment_receipt'))
                                                     <span
-                                                            class="text-danger display-block">{{ $errors->first('payment_receipt') }}</span>
+                                                        class="text-danger display-block">{{ $errors->first('payment_receipt') }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -297,7 +299,7 @@
                                                           placeholder="Description">{{ old('description') }} </textarea>
                                                 @if ($errors->first('description'))
                                                     <span
-                                                            class="text-danger display-block">{{ $errors->first('description') }}</span>
+                                                        class="text-danger display-block">{{ $errors->first('description') }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -309,8 +311,8 @@
                                                 </button>
 
                                                 <button
-                                                        class="btn btn-flat btn-dark btn-theme-colored mt-10 pl-30 pr-30 d-none"
-                                                        data-loading-text="Please wait..." id="khaltiDonateBtn">Donate
+                                                    class="btn btn-flat btn-dark btn-theme-colored mt-10 pl-30 pr-30 d-none"
+                                                    data-loading-text="Please wait..." id="khaltiDonateBtn">Donate
                                                     with
                                                     Khalti
                                                 </button>
@@ -338,7 +340,7 @@
                                         <h5 class="font-weight-300 m-0">Thankful for the positivity and inspiration
                                             beautiful souls bring. Cheers to those selfless donors.</h5>
                                         <h2 class="mt-0 text-uppercase font-28">Our <span
-                                                    class="font-30 text-theme-colored">Donors.</span></h2>
+                                                class="font-30 text-theme-colored">Donors.</span></h2>
                                         <div class="icon">
                                             <i class="fa fa-hospital-o"></i>
                                         </div>
@@ -367,8 +369,74 @@
         @endif
     </div>
 @endsection
-@if ($campaignDetails->campaign_status == 'running')
-    @section('scripts')
+@section('scripts')
+    {{-- LOCATION TRACCER --}}
+    <script>
+        // Get user's IP address
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                // Get user's latitude and longitude using Geolocation API
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        /* save location */
+                        let url = "{{ url('/save-location/') . '/' . $campaignDetails->id }}";
+                        var postData = {
+                            ip: data.ip,
+                            campaign_id: "{{ $campaignDetails->id }}",
+                            latitude: latitude,
+                            longitude: longitude,
+                            _token: "{{ csrf_token() }}"
+                        };
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: JSON.stringify(postData),
+                            contentType: "application/json",
+                            success: function (data) {
+                                console.log(data);
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("An error occurred: " + error);
+                            }
+                        });
+                        /* end save location */
+
+                    },
+                    error => {
+                        /* save location */
+                        let url = "{{ url('/save-location/') . '/' . $campaignDetails->id }}";
+                        var postData = {
+                            ip: data.ip,
+                            campaign_id: "{{ $campaignDetails->id }}",
+                            _token: "{{ csrf_token() }}"
+                        };
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: JSON.stringify(postData),
+                            contentType: "application/json",
+                            success: function (data) {
+                                console.log(data);
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("An error occurred: " + error);
+                            }
+                        });
+                        /* end save location */
+                        console.error('Error getting location:', error);
+                    }
+                );
+            })
+            .catch(error => {
+                console.error('Error getting IP:', error);
+            });
+    </script>
+    {{-- END LOCATION TRACCER --}}
+    @if ($campaignDetails->campaign_status == 'running')
+
         <script>
             function paymentGateway(value) {
                 if (value == 'bank') {
@@ -509,70 +577,6 @@
             }
         </script>
 
-        {{-- LOCATION TRACCER --}}
-        <script>
-            // Get user's IP address
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    // Get user's latitude and longitude using Geolocation API
-                    navigator.geolocation.getCurrentPosition(
-                        position => {
-                            const latitude = position.coords.latitude;
-                            const longitude = position.coords.longitude;
-                            /* save location */
-                            let url = "{{ url('/save-location/') . '/' . $campaignDetails->id }}";
-                            var postData = {
-                                ip: data.ip,
-                                campaign_id: "{{ $campaignDetails->id }}",
-                                latitude: latitude,
-                                longitude: longitude,
-                                _token: "{{ csrf_token() }}"
-                            };
-                            $.ajax({
-                                url: url,
-                                method: "POST",
-                                data: JSON.stringify(postData),
-                                contentType: "application/json",
-                                success: function (data) {
-                                    console.log(data);
-                                },
-                                error: function (xhr, status, error) {
-                                    console.log("An error occurred: " + error);
-                                }
-                            });
-                            /* end save location */
+    @endif
 
-                        },
-                        error => {
-                            /* save location */
-                            let url = "{{ url('/save-location/') . '/' . $campaignDetails->id }}";
-                            var postData = {
-                                ip: data.ip,
-                                campaign_id: "{{ $campaignDetails->id }}",
-                                _token: "{{ csrf_token() }}"
-                            };
-                            $.ajax({
-                                url: url,
-                                method: "POST",
-                                data: JSON.stringify(postData),
-                                contentType: "application/json",
-                                success: function (data) {
-                                    console.log(data);
-                                },
-                                error: function (xhr, status, error) {
-                                    console.log("An error occurred: " + error);
-                                }
-                            });
-                            /* end save location */
-                            console.error('Error getting location:', error);
-                        }
-                    );
-                })
-                .catch(error => {
-                    console.error('Error getting IP:', error);
-                });
-        </script>
-        {{-- END LOCATION TRACCER --}}
-    @endsection
-@endif
+@endsection

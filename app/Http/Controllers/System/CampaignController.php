@@ -5,6 +5,7 @@ namespace App\Http\Controllers\System;
 use App\Http\Controllers\ResourceController;
 use App\Services\CampaignService;
 use App\Services\PostCategoryService;
+use Illuminate\Http\Request;
 
 class CampaignController extends ResourceController
 {
@@ -28,4 +29,9 @@ class CampaignController extends ResourceController
         return 'backend.system.campaign';
     }
 
+    public function campaignSummary(Request $request, $id)
+    {
+        $data = $this->service->campaignSummary($request, $id);
+        return $data;
+    }
 }

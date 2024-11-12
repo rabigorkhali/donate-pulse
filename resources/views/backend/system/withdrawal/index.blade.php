@@ -132,9 +132,9 @@
                                             Charge: {{ $withdrawal->campaignView?->summary_service_charge_amount}} <br>
                                             Net: {{ $withdrawal->campaignView?->net_amount_collection}} <br>
                                         </td>
-                                        <td>{{ ucfirst($withdrawal->payment_gateway??'-') }} <br>
+                                        <td>{{ ucfirst($withdrawal->paymentGateway->payment_gateway??'-') }} <br>
                                         </td>
-                                        <td>{{ $withdrawal->mobile_number??'-' }}</td>
+                                        <td>{{ $withdrawal->withdrawal_mobile_number??'-' }}</td>
                                         <td>{{ $withdrawal->created_at }}<br>
                                         </td>
                                         <td>{{ ucfirst($withdrawal->campaign->campaign_status) }}</td>
@@ -148,11 +148,11 @@
                                                             <i class="ti ti-dots-vertical"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            @if(hasPermission('/'.strtolower($title).'/*','put'))
-                                                                <a class="dropdown-item"
-                                                                   href="{{route('withdrawals.edit',$withdrawal->id)}}"><i
-                                                                        class="ti ti-pencil me-1"></i>{{__('Edit')}}</a>
-                                                            @endif
+{{--                                                            @if(hasPermission('/'.strtolower($title).'/*','put'))--}}
+{{--                                                                <a class="dropdown-item"--}}
+{{--                                                                   href="{{route('withdrawals.edit',$withdrawal->id)}}"><i--}}
+{{--                                                                        class="ti ti-pencil me-1"></i>{{__('Edit')}}</a>--}}
+{{--                                                            @endif--}}
                                                             @if(hasPermission('/withdrawals/*', 'delete'))
                                                                 <a href="#" class="dropdown-item delete-button"
                                                                    data-bs-toggle="modal"
@@ -166,6 +166,7 @@
                                                 @endif
                                             @endif
                                         </td>
+
                                     </tr>
                                 @endforeach
                                 </tbody>
