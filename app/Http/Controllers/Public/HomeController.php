@@ -6,8 +6,12 @@ use App\Http\Controllers\Public\FrontendBaseController;
 use App\Models\Campaign;
 use App\Models\CampaignCategory;
 use App\Models\CampaignView;
+use App\Models\CampaignVisit;
 use App\Models\Donation;
+use App\Models\Page;
 use App\Models\Partner;
+use App\Models\Post;
+use App\Models\PostCategory;
 use App\Models\Slider;
 use App\Models\Testimonial;
 use App\Models\User;
@@ -98,6 +102,7 @@ class HomeController extends FrontendBaseController
             $data['partners'] = Partner::get();
             return $this->renderView($this->viewFolder(), $data);
         } catch (Throwable $th) {
+            dd($th);
             return $this->renderView($this->parentViewFolder() . '.errorpage', []);
         }
     }
@@ -139,25 +144,23 @@ class HomeController extends FrontendBaseController
             $keyword = trim($request->get('title'));
             $category = trim($request->get('category'));
             if ($category) {
-                $categoryDetails = Category::where('slug', $category)->first();
+                $categoryDetails = PostCategory::where('slug', $category)->first();
             }
             $postQuery = Post::where('status', true);
             if ($keyword) {
                 $postQuery = $postQuery->where('title', 'LIKE', '%' . $keyword . '%');
             }
             if ($category) {
-                $postQuery = $postQuery->where('category_id', $categoryDetails?->id);
+                $postQuery = $postQuery->where('post_category_id', $categoryDetails?->id);
             }
             $postQuery = $postQuery->orderby('id', 'desc')
                 ->where('status', 1)
                 ->paginate(3);
 
             $data['postList'] = $postQuery;
-            $data['postCategories'] = Category::orderby('name', 'asc')->get();
+            $data['postCategories'] = PostCategory::orderby('name', 'asc')->get();
             return $this->renderView($this->parentViewFolder() . '.blog-list', $data);
         } catch (Throwable $th) {
-
-            dd($th);
             return $this->renderView($this->parentViewFolder() . '.errorpage', []);
         }
     }
@@ -166,11 +169,11 @@ class HomeController extends FrontendBaseController
     {
         try {
             $data = array();
-            $postDetails = Post::where('status', 'published')
+            $postDetails = Post::where('status', 1)
                 ->where('slug', $slug)->first();
             $data['postDetails'] = $postDetails;
-            $data['postCategories'] = Category::orderby('name', 'asc')->get();
-            $data['latestPosts'] = Post::orderby('id', 'desc')->where('status', 'PUBLISHED')->get();
+            $data['postCategories'] = PostCategory::orderby('name', 'asc')->get();
+            $data['latestPosts'] = Post::orderby('id', 'desc')->where('status', 1)->get();
             return $this->renderView($this->parentViewFolder() . '.blog-detail', $data);
         } catch (Throwable $th) {
             dd($th);
@@ -400,10 +403,11 @@ class HomeController extends FrontendBaseController
             $data['created_at'] = date('Y-m-d');
             $ifExists = CampaignVisit::where('ip', $data['ip'])->where('campaign_id', $data['campaign_id'])->wheredate('created_at', date('Y-m-d'))->count();
             if (!$ifExists) {
-                CampaignVisit::insert($data);
+                CampaignVisit::create($data);
             }
             return 'true';
         } catch (Throwable $th) {
+            return $th->getMessage();
             return 'false';
         }
     }

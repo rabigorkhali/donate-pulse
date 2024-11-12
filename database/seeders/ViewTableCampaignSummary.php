@@ -16,7 +16,7 @@ class ViewTableCampaignSummary extends Seeder
     public function run()
     {
         DB::select("CREATE OR REPLACE VIEW campaigns_summary_view AS
-        SELECT cmp.id,
+SELECT cmp.id,
        cmp.user_id,
        cmp.title,
        cmp.slug,
@@ -29,32 +29,15 @@ class ViewTableCampaignSummary extends Seeder
        cmp.is_featured,
        cmp.campaign_category_id,
        cmp.cover_image,
-
-       (SELECT SUM(amount)
-        FROM donations
-        WHERE campaign_id = cmp.id
-          AND payment_status = 'completed') AS summary_total_collection,
-
-       (SELECT FLOOR(SUM(don.amount - ((don.amount * don.service_charge_percentage) / 100)))
-        FROM donations AS don
-        WHERE don.campaign_id = cmp.id
-          AND don.payment_status = 'completed') AS net_amount_collection,
-
-       (SELECT COUNT(id)
-        FROM campaign_visits
-        WHERE campaign_id = cmp.id) AS total_visits,
-
-       (SELECT FLOOR(SUM(((don.amount * don.service_charge_percentage) / 100)))
-        FROM donations AS don
-        WHERE don.campaign_id = cmp.id
-          AND don.payment_status = 'completed') AS summary_service_charge_amount,
-
-       (SELECT COUNT(id)
-        FROM donations
-        WHERE campaign_id = cmp.id
-          AND payment_status = 'completed') AS total_number_donation
+       COALESCE(SUM(don.amount), 0) AS summary_total_collection,
+       COALESCE(SUM(don.amount - ((don.amount * don.service_charge_percentage) / 100)), 0) AS net_amount_collection,
+       COALESCE(COUNT(cv.campaign_id), 0) AS total_visits,
+       COALESCE(SUM((don.amount * don.service_charge_percentage) / 100), 0) AS summary_service_charge_amount,
+       COALESCE(COUNT(don.id), 0) AS total_number_donation
 FROM campaigns cmp
-GROUP BY cmp.id, cmp.user_id, cmp.title, cmp.description, cmp.start_date, cmp.end_date, cmp.goal_amount, cmp.campaign_status,cmp.status,cmp.is_featured,cmp.slug,cmp.campaign_category_id,cmp.cover_image;
+LEFT JOIN donations don ON don.campaign_id = cmp.id AND don.payment_status = 'completed'
+LEFT JOIN campaign_visits cv ON cv.campaign_id = cmp.id
+GROUP BY cmp.id, cmp.user_id, cmp.title, cmp.slug, cmp.description, cmp.start_date, cmp.end_date, cmp.goal_amount, cmp.campaign_status, cmp.status, cmp.is_featured, cmp.campaign_category_id, cmp.cover_image;
 
         ");
     }

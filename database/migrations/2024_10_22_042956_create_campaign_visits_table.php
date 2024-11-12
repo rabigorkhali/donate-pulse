@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('longitude')->nullable();
             $table->ipAddress('ip')->nullable();
             $table->foreign('campaign_id')->references('id')->on('campaigns')->onDelete('cascade');
-
+            $table->timestamps();
         });
     }
 

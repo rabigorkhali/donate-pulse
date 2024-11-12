@@ -7,7 +7,7 @@
     <div class="main-content">
         <!-- Section: inner-header -->
         <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-stellar-background-ratio="0.5"
-                 data-bg-img="{{ asset('uploads') . '/' . $postDetails->image }}"
+                 data-bg-img="{{ asset( $postDetails->image) }}"
                  style="background-image: url(&quot;images/bg/bg1.jpg&quot;); background-position: 50% 61px;">
             <div class="container pt-100 pb-50">
                 <!-- Section Content -->
@@ -31,7 +31,7 @@
                             <article class="post clearfix mb-0">
                                 <div class="entry-header">
                                     <div class="post-thumb thumb"><img
-                                                src="{{ asset('uploads') . '/' . $postDetails->image }}" alt=""
+                                                src="{{ asset( $postDetails->image) }}" alt=""
                                                 class="img-responsive img-fullwidth"></div>
                                 </div>
                                 <div class="entry-content">
@@ -90,7 +90,7 @@
                                         @foreach ($postCategories as $postCategoriesKey => $postCategoriesDatum)
                                             <li><a
                                                         href="{{ route('postList', ['category' => $postCategoriesDatum->slug]) }}">{{ $postCategoriesDatum->name }}
-                                                    <span>({{ $postCategoriesDatum->posts->count() }})</span></a>
+                                                    <span>({{ $postCategoriesDatum?->posts?->count() }})</span></a>
                                             </li>
                                         @endforeach
                                     </ul>

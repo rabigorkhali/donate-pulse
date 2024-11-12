@@ -60,7 +60,7 @@
                                         <div class="entry-header">
                                             <div class="post-thumb thumb">
                                                 <img
-                                                    src="{{ asset('uploads') . '/' . imageName($postListDatum->image, '-cropped') }}"
+                                                    src="{{ asset( imageName($postListDatum->image, '-medium')) }}"
                                                     alt="" class="img-responsive img-fullwidth">
                                             </div>
                                         </div>
@@ -89,7 +89,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p class="mt-10"> {!! substr($postListDatum->body, 0, 100) !!}....</p>
+                                            <p class="mt-10"> {!! strip_tags(substr($postListDatum->body, 0, 100)) !!}....</p>
                                             <a href="{{ route('postDetailPage', $postListDatum->slug) }}"
                                                class="btn-read-more">Read more</a>
                                             <div class="clearfix"></div>

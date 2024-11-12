@@ -33,8 +33,12 @@
                                     <li class="{{ frontendActiveButton('dashboard') }}"><a
                                             href="{{ route('dashboard') }}">Dashboard</a>
                                     </li>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
                                     <li class="{{ frontendActiveButton('logout') }}"><a
-                                            href="{{ route('logout') }}">Logout</a>
+                                            href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">Logout</a>
                                     </li>
 
                                 </ul>
