@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\SendEmailAfterWithdrawMade;
 use App\Models\Campaign;
 use App\Models\PaymentGateway;
 use App\Models\User;
@@ -117,8 +118,6 @@ class WithdrawalService extends Service
         try {
             return [
                 'thisData' => $this->itemByIdentifier($id),
-                'users' => User::orderby('name')->get(),
-                'paymentGateways' => PaymentGateway::where('user_id', authUser()->id)->orderby('payment_gateway')->get(),
             ];
         } catch (\Throwable $throwable) {
             $message['error'] = 'Server error.';
@@ -128,9 +127,10 @@ class WithdrawalService extends Service
 
     public function update($request, $id)
     {
-        $data = $request->except('_token', 'campaign_id', 'withdrawal_status');
-        if (authUser()->role->name !== 'public-user') {
-            $data = $request->except('_token', 'campaign_id', 'payment_gateway_id', '');
+        $data = $request->except('_token');
+        if (authUser()->role->name == 'public-user') {
+            $message['error'] = 'Unauthorized.';
+            return $message;
         }
 
         $update = $this->itemByIdentifier($id);
@@ -144,10 +144,19 @@ class WithdrawalService extends Service
             if ($imagePath && file_exists(public_path($imagePath))) {
                 removeImage($imagePath);
             }
-            $data['receipt'] = $this->fullImageUploadPath . uploadImage($this->fullImageUploadPath, 'receipt', true, 300, null);
+            $data['receipt'] = $this->fullImageUploadPath . uploadImage($this->fullImageUploadPath, 'receipt', true, 600, null);
         }
         $update->fill($data)->save();
         $update = $this->itemByIdentifier($id);
+        if ($update->withdrawal_status == 'successful') {
+            $mailData = [];
+            $campaignDetails = CampaignView::find($update->campaign_id);
+            $mailData['campaignDetails'] = $campaignDetails;
+            $mailData['toMail'] = $campaignDetails->owner->email ?? '';
+            if ($mailData['toMail']) {
+                dispatch(new SendEmailAfterWithdrawMade($mailData));
+            }
+        }
         return $update;
     }
 

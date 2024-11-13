@@ -344,7 +344,7 @@
                                                                             style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 25.2px;">
                                                                             <span style="font-size:14px;">
                                                                                 Greetings!<br>
-                                                                                Your gross donation amount collection of <b>{{ priceToNprFormat($campaignDetails['summary_total_collection'] ?? 0) }}<b>
+                                                                                Your gross donation amount collection of <b>{{ priceToNprFormat($campaignDetails['summary_total_collection'] ?? 0) }}</b>
                                                                                  for the campaign "{{ $campaignDetails?->title ?? '' }}" has been withdrawn successfully.
                                                                                  Keeping note that the net amount you receive is after deducting 7% proccessing charge from your total gross collection i.e. <b>{{$campaignDetails['net_amount_collection'] ?? 0}}</b>
                                                                                 <br> <br> Thank you.<br>
@@ -368,7 +368,7 @@
                                                             <td class="pad">
                                                                 <div align="center" class="alignment">
                                                                     <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.example.com" style="height:44px;width:160px;v-text-anchor:middle;" arcsize="10%" strokeweight="0.75pt" strokecolor="#101" fillcolor="#101"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a
-                                                                        href="{{ route('my.withdrawals.view', $withdrawalId ?? '1') }}"
+                                                                        href="{{ route('withdrawals.index') }}"
                                                                         style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#101;border-radius:4px;width:auto;border-top:1px solid #101;font-weight:undefined;border-right:1px solid #101;border-bottom:1px solid #101;border-left:1px solid #101;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;"
                                                                         target="_blank"><span
                                                                             style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span

@@ -38,6 +38,6 @@ class SendEmailAfterWithdrawMade implements ShouldQueue
         $mailData = $this->mailData;
         dump('send email to withdrawal ');
 
-        Mail::to($this->mailData['receiverEmail'])->send(new WithdrawSuccessFulEmail($this->mailData));
+        Mail::to($this->mailData['toMail'])->send(new WithdrawSuccessFulEmail($this->mailData));
     }
 }

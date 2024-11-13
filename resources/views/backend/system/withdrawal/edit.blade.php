@@ -12,7 +12,6 @@
                 @method('PUT')
                 <input type="hidden" name="id" value="{{ $thisData->id }}">
                 <div class="row g-3">
-
                     <div class="col-md-6">
                         <label class="form-label" for="campaign_id">{{ __('Campaign') }}</label> *
                         <select readonly required class="form-control @error('campaign_id') is-invalid @enderror"
@@ -23,24 +22,7 @@
                         </select>
                         <div class="invalid-feedback">@error('campaign_id') {{ $message }} @enderror</div>
                     </div>
-                    @if(authUser()->role->name=='public-user')
 
-                        <div class="col-md-6">
-                            <label class="form-label" for="payment_gateway_id">{{ __('Payment Gateway') }}</label> *
-                            <select required class="form-control @error('payment_gateway_id') is-invalid @enderror"
-                                    name="payment_gateway_id">
-                                <option value="">{{ __('Select Payment Gateway') }}</option>
-                                @foreach($paymentGateways as $paymentGateway)
-                                    <option
-                                        @if($thisData->payment_gateway_id == $paymentGateway->id) selected
-                                        @endif value="{{ $paymentGateway->id }}">
-                                        {{ ucfirst($paymentGateway->payment_gateway) }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="invalid-feedback">@error('payment_gateway_id') {{ $message }} @enderror</div>
-                        </div>
-                    @endif
                     @if(authUser()->role->name!=='public-user')
                         <div class="col-md-6">
                             <label class="form-label" for="payment_gateway_id">{{ __('Withdrawal Status') }}</label> *
@@ -56,6 +38,22 @@
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">@error('payment_gateway_id') {{ $message }} @enderror</div>
+                        </div>
+                    @endif
+
+                    <div class="col-md-6 ">
+                        <label class="form-label" for="image">{{ 'Receipt (Must be image) *' }}</label>
+                        <input value="{{ $thisData?->receipt ?? old('receipt') }}" type="file" name="receipt"
+                               id="receipt" class="form-control @if ($errors->first('receipt')) is-invalid @endif"/>
+                        <div class="invalid-feedback">{{ $errors->first('receipt') }}</div>
+                    </div>
+                    <div class="col-md-6 mt-2">
+                    </div>
+                    @if($thisData?->receipt)
+                        <div class="col-md-6 mt-2">
+                            <a target="_blank" href="{{ asset($thisData?->receipt) }}">
+                                <img src="{{ asset($thisData?->receipt) }}" width="100" alt="Image"
+                                     class="img-fluid"></a>
                         </div>
                     @endif
 

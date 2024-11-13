@@ -27,6 +27,14 @@ class WithdrawalRequest extends FormRequest
             'campaign_id' => 'required',
             'payment_gateway_id' => 'required',
         ];
+        if ($this->method() == 'PUT') {
+            $validation = [
+                'campaign_id' => 'required',
+                'withdrawal_status' => 'required',
+                'receipt' => 'nullable|image|max:10240',
+            ];
+        }
+
         return $validation;
     }
 

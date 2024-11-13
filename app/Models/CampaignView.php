@@ -17,7 +17,6 @@ class CampaignView extends Model
         return $this->belongsTo(CampaignCategory::class,'campaign_category_id');
     }
 
-
     public function owner()
     {
         return $this->belongsTo(User::class,'user_id');

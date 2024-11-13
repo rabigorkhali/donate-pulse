@@ -23,6 +23,7 @@ class Withdrawal extends Model
         'is_email_sent',
         'successful_withdrawal_date',
         'withdrawal_request_date',
+        'receipt',
     ];
 
     protected $dates = ['successful_withdrawal_date', 'withdrawal_request_date', 'deleted_at'];

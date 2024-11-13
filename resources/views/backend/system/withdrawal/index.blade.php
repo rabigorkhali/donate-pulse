@@ -148,11 +148,11 @@
                                                             <i class="ti ti-dots-vertical"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-{{--                                                            @if(hasPermission('/'.strtolower($title).'/*','put'))--}}
-{{--                                                                <a class="dropdown-item"--}}
-{{--                                                                   href="{{route('withdrawals.edit',$withdrawal->id)}}"><i--}}
-{{--                                                                        class="ti ti-pencil me-1"></i>{{__('Edit')}}</a>--}}
-{{--                                                            @endif--}}
+                                                            @if(hasPermission('/'.strtolower($title).'/*','put'))
+                                                                <a class="dropdown-item"
+                                                                   href="{{route('withdrawals.edit',$withdrawal->id)}}"><i
+                                                                        class="ti ti-pencil me-1"></i>{{__('Edit')}}</a>
+                                                            @endif
                                                             @if(hasPermission('/withdrawals/*', 'delete'))
                                                                 <a href="#" class="dropdown-item delete-button"
                                                                    data-bs-toggle="modal"
