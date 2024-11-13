@@ -78,7 +78,7 @@
         // Function to initialize the map
         function initMap() {
 
-            let allLocations=<?php echo $locationArray; ?>;
+            let allLocations=<?php echo $locationArray??[]; ?>;
             // Latitude and Longitude for the initial map center
             var latitude = 27.7172;
             var longitude = 85.3240;

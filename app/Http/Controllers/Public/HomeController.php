@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Public\FrontendBaseController;
+use App\Jobs\SendEmailAfterDonationMade;
+use App\Jobs\SendEmailAfterDonationMadeToGiver;
 use App\Models\Campaign;
 use App\Models\CampaignCategory;
 use App\Models\CampaignView;
@@ -264,10 +266,33 @@ class HomeController extends FrontendBaseController
             if ($request->file('payment_receipt')) {
                 $insertData['payment_receipt'] = uploadImage($this->dir, 'payment_receipt', true, 1280, null);
             }
-            $resp = Donation::insert($insertData);
+            $resp = Donation::create($insertData);
+            /* send mail */
+            $mailData = [];
+            $mailData['donationId'] = $resp->id;
+            $mailData['campaignDetails'] = $campaignDetails;
+            $mailData['donationData'] = $insertData;
+            $mailData['donationReceiverEmail'] = $campaignDetails->owner->email;
+            dispatch(new SendEmailAfterDonationMade($mailData));
+
+            // Mail::to($campaignDetails->owner->email)->send(new DonationReceivedEmail($mailData));
+            /* send mail */
+
+
+            /* SEND EMAIL GIVER */
+            $mailData = [];
+            $mailData['donationId'] = $resp->id;
+            $mailData['campaignDetails'] = $campaignDetails;
+            $mailData['donationData'] = $insertData;
+            $mailData['donationGiverEmail'] = $insertData['email'] ?? '';
+            if ($mailData['donationGiverEmail']) {
+                dispatch(new SendEmailAfterDonationMadeToGiver($mailData));
+            }
+            /* SEND EMAIL GIVER */
             Session::flash('success', 'Congratulations. Your donation has been successfully received. Please wait for the verification.');
             return redirect()->back();
         } catch (Throwable $th) {
+            dd($th);
             return $this->renderView($this->parentViewFolder() . '.errorpage', []);
             Session::flash('error', 'Sorry. Something went wrong. Please try again later or contact our support team.');
             return redirect()->back();
@@ -371,7 +396,26 @@ class HomeController extends FrontendBaseController
                 $insertData['is_anonymous'] = 0;
                 $insertData['payment_gateway_all_response'] = json_encode($response);
                 $insertData['is_verified'] = 1; //by system admin manually
-                $resp = Donation::insert($insertData);
+                $resp = Donation::create($insertData);
+                /* send mail */
+                $mailData = [];
+                $mailData['donationId'] = $resp->id;
+                $mailData['campaignDetails'] = $campaignDetails;
+                $mailData['donationData'] = $insertData;
+                $mailData['donationReceiverEmail'] = $campaignDetails->owner->email;
+                dispatch(new SendEmailAfterDonationMade($mailData));
+                /* send email */
+
+                /* SEND EMAIL GIVER */
+                $mailData = [];
+                $mailData['donationId'] = $resp->id;
+                $mailData['campaignDetails'] = $campaignDetails;
+                $mailData['donationData'] = $insertData;
+                $mailData['donationGiverEmail'] = $insertData['email'] ?? '';
+                if ($mailData['donationGiverEmail']) {
+                    dispatch(new SendEmailAfterDonationMadeToGiver($mailData));
+                }
+                /* SEND EMAIL GIVER */
                 return ['message' => 'Congratulations. Your donation has been successfully received.', 'success' => false];
 
                 Session::flash('success', 'Congratulations. Your donation has been successfully received. Please wait for the verification.');
