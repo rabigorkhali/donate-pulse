@@ -35,6 +35,35 @@ class RoleService extends Service
         return $update;
     }
 
+    public function delete($request, $id)
+    {
+        $item = $this->itemByIdentifier($id);
+        if ($item->name == 'public-user') {
+            return ['error'=>'This role cannot be delete.'];
+        }
+        $imagePath = $item->image ?? null;
+        $logoPath = $item->logo ?? null;
+        $bannerPath = $update->banner ?? null;
+        $thumbnailImage = $update->thumbnail_image ?? null;
+        $coverImage = $update->cover_image ?? null;
+        if ($coverImage && file_exists(public_path($coverImage))) {
+            removeImage($coverImage);
+        }
+        if ($imagePath && file_exists(public_path($imagePath))) {
+            removeImage($imagePath);
+        }
+        if ($logoPath && file_exists(public_path($logoPath))) {
+            removeImage($logoPath);
+        }
+        if ($bannerPath && file_exists(public_path($bannerPath))) {
+            removeImage($bannerPath);
+        }
+        if ($thumbnailImage && file_exists(public_path($thumbnailImage))) {
+            removeImage($thumbnailImage);
+        }
+        return $item->delete();
+    }
+
 
     public function mapPermission($permissions)
     {

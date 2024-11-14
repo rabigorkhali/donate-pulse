@@ -17,5 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(FakeUserSeeder::class);
         $this->call(ViewTableCampaignSummary::class);
+        $this->call(PageSeeder::class);
+        $this->call(CampaignCategorySeeder::class);
+        $this->call(PostCategorySeeder::class);
     }
 }
