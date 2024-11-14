@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('withdrawal_status', ['pending', 'cancelled', 'rejected', 'successful']);
             $table->string('withdrawal_transaction_id')->nullable();
             $table->string('withdrawal_mobile_number')->nullable();
+            $table->string('receipt')->nullable();
             $table->decimal('withdrawal_amount');
             $table->decimal('withdrawal_service_charge', 15, 2)->nullable();
             $table->boolean('is_email_sent')->default(false);
