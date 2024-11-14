@@ -91,19 +91,19 @@
                 <div class="widget dark mb-20">
                     <h5 class="widget-title line-bottom">Quick Contact</h5>
                     <ul class="list-border font-13">
-                        <li><a href="#">{{  getConfigTableData()->primary_phone_number }}</a></li>
-                        <li><a href="#">{{  getConfigTableData()->email }}</a></li>
-                        <li><a href="#" class="lineheight-20">{{  getConfigTableData()->address_line_1 }}</a></li>
+                        <li><a href="#">{{  getConfigTableData()?->primary_phone_number }}</a></li>
+                        <li><a href="#">{{  getConfigTableData()?->email }}</a></li>
+                        <li><a href="#" class="lineheight-20">{{  getConfigTableData()?->address_line_1 }}</a></li>
                     </ul>
                 </div>
                 <div class="widget dark">
                     <h6 class="widget-title mb-0 text-gray-darkgray">Connect With Us</h6>
                     <ul class="social-icons icon-dark icon-circled icon-sm mt-10">
-                        <li><a target="_blank" href="{{  getConfigTableData()->facebook_url }}"><i
+                        <li><a target="_blank" href="{{  getConfigTableData()?->facebook_url }}"><i
                                         class="fa fa-facebook"></i></a></li>
-                        <li><a target="_blank" href="{{  getConfigTableData()->twitter_url }}"><i
+                        <li><a target="_blank" href="{{  getConfigTableData()?->twitter_url }}"><i
                                         class="fa fa-twitter"></i></a></li>
-                        <li><a target="_blank" href="{{  getConfigTableData()->instagram_url }}"><i
+                        <li><a target="_blank" href="{{  getConfigTableData()?->instagram_url }}"><i
                                         class="fa fa-instagram"></i></a></li>
                     </ul>
                 </div>
@@ -115,7 +115,7 @@
         <div class="container pt-20 pb-20">
             <div class="row">
                 <div class="col-md-6 sm-text-center">
-                    <p class="font-11 text-black-777 m-0">{{  getConfigTableData()->all_rights_reserved_text }}</p>
+                    <p class="font-11 text-black-777 m-0">{{  getConfigTableData()?->all_rights_reserved_text }}</p>
                 </div>
                 <div class="col-md-6 text-right">
                     <div class="widget no-border m-0">
@@ -125,7 +125,11 @@
                             </li>
                             <li>|</li>
                             <li>
-                                <a href="{{ route('frontendPage', 'help-desk') }}">Help Desk</a>
+                                <a href="{{ route('frontendContactus') }}">Help Desk</a>
+                            </li>
+                            <li>|</li>
+                            <li>
+                                <a href="{{ route('frontendPage', 'privacy-policies') }}">Privacy Policies</a>
                             </li>
                             <li>|</li>
                             <li>

@@ -6,12 +6,12 @@
     <!-- Meta Tags -->
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <meta name="description" content="" />
-    <meta name="keywords" content="{{getConfigTableData()->keywords}}" />
+    <meta name="keywords" content="{{getConfigTableData()?->keywords}}" />
     <meta name="author" content="Donatepur" />
     <!-- Page Title -->
-    <title>{{getConfigTableData()->title}}</title>
+    <title>{{getConfigTableData()?->title}}</title>
     <!-- Favicon and Touch Icons -->
-    <link href="{{ asset(getConfigTableData()->favicon) }}" rel="shortcut icon" type="image/png">
+    <link href="{{ asset(getConfigTableData()?->favicon) }}" rel="shortcut icon" type="image/png">
     {{-- <link href="{{ asset('/images/apple-touch-icon.png') }}" rel="apple-touch-icon">
     <link href="{{ asset('/images/apple-touch-icon-72x72.png') }}" rel="apple-touch-icon" sizes="72x72">
     <link href="{{ asset('/images/apple-touch-icon-114x114.png') }}" rel="apple-touch-icon" sizes="114x114">

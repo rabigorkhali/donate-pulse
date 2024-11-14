@@ -1,5 +1,5 @@
 @extends('frontend.master')
-@section('title', 'Home')
+@section('title', 'Blog')
 @section('content')
     <!-- Start main-content -->
     <div class="main-content mt-80">

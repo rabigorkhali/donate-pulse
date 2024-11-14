@@ -9,6 +9,7 @@ use App\Models\Campaign;
 use App\Models\CampaignCategory;
 use App\Models\CampaignView;
 use App\Models\CampaignVisit;
+use App\Models\ContactUs;
 use App\Models\Donation;
 use App\Models\Page;
 use App\Models\Partner;
@@ -193,7 +194,7 @@ class HomeController extends FrontendBaseController
     public function contactUsCreate(Request $request)
     {
         try {
-            $data = $request->except('_token');
+            $data = $request->except('_token','honeypot');
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'phone' => 'required|string|max:15',
@@ -203,16 +204,19 @@ class HomeController extends FrontendBaseController
             ]);
 
             if ($validator->fails()) {
-                // Handle validation failure (e.g., return error response)
+                return response()->json([
+                    'status' => 'error',
+                    'errors' => $validator->errors(),
+                ], 422);
             }
             $data['created_at'] = date('Y-m-d H:i:s');
             $resp = ContactUs::insert($data);
-            if ($resp) return true;
-            return false;
+            Session::flash('success', 'Thanks. Your message has been received.');
+
             return $this->renderView($this->parentViewFolder() . '.contact-us', $data);
         } catch (Throwable $th) {
+            Session::flash('error', 'Sorry. Something went wrong. Please try again later or contact our support team.');
             return $this->renderView($this->parentViewFolder() . '.errorpage', []);
-            return false;
         }
     }
 

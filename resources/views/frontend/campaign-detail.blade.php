@@ -180,12 +180,12 @@
                                              style="border: 1px solid #000; margin: 10px;">
                                             <div class="form-group mb-20 ">
                                                 <label>Account
-                                                    Name: </label>{{ getConfigTableData()->bank_account_name }}<br>
+                                                    Name: </label>{{ getConfigTableData()?->bank_account_name }}<br>
                                                 <label>Account
-                                                    No: </label>{{ getConfigTableData()->bank_account_number }}</br>
-                                                <label>Bank Name: </label>{{ getConfigTableData()->bank_name }}</br>
+                                                    No: </label>{{ getConfigTableData()?->bank_account_number }}</br>
+                                                <label>Bank Name: </label>{{ getConfigTableData()?->bank_name }}</br>
                                                 <label>QR: </label><br> <img height="100"
-                                                                             src="{{ asset(getConfigTableData()->bank_qr)  }}">
+                                                                             src="{{ asset(getConfigTableData()?->bank_qr)  }}">
                                             </div>
                                         </div>
 

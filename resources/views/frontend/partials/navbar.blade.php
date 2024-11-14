@@ -5,7 +5,7 @@
             <div class="container">
                 <nav id="menuzord-right" class="menuzord default no-bg">
                     <a class="menuzord-brand pull-left flip" href="{{ url('/') }}"><img
-                            src="{{ asset(getConfigTableData()->logo) }}" alt=""></a>
+                            src="{{ asset(getConfigTableData()?->logo) }}" alt=""></a>
                     <ul class="menuzord-menu">
                         <li class="{{ frontendActiveButton('fontendDefaultPage') }}"><a
                                 href="{{ route('fontendDefaultPage') }}">Home</a></li>
