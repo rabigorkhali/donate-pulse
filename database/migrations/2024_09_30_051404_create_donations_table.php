@@ -23,7 +23,7 @@ class CreateDonationsTable extends Migration
             $table->string('fullname');
             $table->string('country')->nullable();
             $table->string('email')->nullable();
-            $table->enum('payment_status', ['pending', 'completed', 'failed'])->default('pending');
+            $table->enum('payment_status')->default('pending');
             $table->string('payment_gateway');
             $table->decimal('amount');
             $table->integer('service_charge_percentage');

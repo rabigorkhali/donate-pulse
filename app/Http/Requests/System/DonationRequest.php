@@ -23,7 +23,7 @@ class DonationRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $validation= [
             'giver_user_id' => 'required|exists:users,id',
             'receiver_user_id' => 'required|exists:users,id',
             'campaign_id' => 'required|exists:campaigns,id',
@@ -31,7 +31,7 @@ class DonationRequest extends FormRequest
             'fullname' => 'required|string|max:255',
             'country' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
-            'payment_status' => 'required|in:completed,pending',
+            'payment_status' => 'required|in:completed,pending,rejected',
             'payment_gateway' => 'required|string|max:255',
             'amount' => 'required|numeric|min:1',
             'service_charge_percentage' => 'required|numeric|min:0|max:100',
@@ -41,6 +41,11 @@ class DonationRequest extends FormRequest
             'description' => 'nullable|string|max:500',
             'donor_display_image' => 'nullable|image|max:10240',
         ];
+        if ($this->method() == 'PUT') {
+            $validation=[];
+            $validation['payment_status'] = 'required|in:completed,pending,rejected';
+        }
+        return  $validation;
     }
 
     /**

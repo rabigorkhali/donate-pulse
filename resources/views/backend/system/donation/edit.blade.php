@@ -5,102 +5,197 @@
         @include('backend.system.partials.errors')
         <div class="card mb-4">
             <h5 class="card-header">{{ $title }}</h5>
-
-            <form class="card-body" action="{{ route('posts.update', $thisData->id) }}" method="post"
+            <form class="card-body" action="{{ route('donations.update', $thisData->id) }}" method="post"
                   enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <input type="hidden" name="id" value="{{ $thisData->id }}">
                 <div class="row g-3">
-                    <!-- Post Category -->
+                    <!-- Giver User ID -->
                     <div class="col-md-6">
-                        <label class="form-label" for="post_category_id">{{ __('Post Category') }}</label> *
-                        <select required class="form-control @if ($errors->first('post_category_id')) is-invalid @endif"
-                                name="post_category_id">
-                            <option value="">{{__('None')}}</option>
-                            @foreach($categories as $category)
-                                <option @if($thisData->post_category_id == $category->id) selected
-                                        @endif value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
+                        <label class="form-label" for="giver_user_id">{{ __('Giver User') }}</label> *
+                        <select disabled required class="form-control @error('giver_user_id') is-invalid @enderror"
+                                name="giver_user_id">
+                            <option value="">{{ __('Select User') }}</option>
+                            @foreach($users as $user)
+                                <option @if($thisData->giver_user_id == $user->id) selected
+                                        @endif value="{{ $user->id }}">
+                                    {{ ucfirst($user->name) }} ({{ $user->email }})
+                                </option>
                             @endforeach
                         </select>
-                        <div class="invalid-feedback">{{ $errors->first('post_category_id') }}</div>
+                        <div class="invalid-feedback">@error('giver_user_id') {{ $message }} @enderror</div>
                     </div>
 
-                    <!-- Title -->
+                    <!-- Receiver User ID -->
                     <div class="col-md-6">
-                        <label class="form-label" for="title">{{ __('Title') }}</label> *
-                        <input required value="{{ $thisData->title }}" type="text" name="title" id="title"
-                               class="form-control @if ($errors->first('title')) is-invalid @endif"
-                               placeholder="Title"/>
-                        <div class="invalid-feedback">{{ $errors->first('title') }}</div>
+                        <label class="form-label" for="receiver_user_id">{{ __('Receiver User') }}</label> *
+                        <select disabled required class="form-control @error('receiver_user_id') is-invalid @enderror"
+                                name="receiver_user_id">
+                            <option value="">{{ __('Select Receiver') }}</option>
+                            @foreach($users as $user)
+                                <option @if($thisData->receiver_user_id == $user->id) selected
+                                        @endif value="{{ $user->id }}">
+                                    {{ ucfirst($user->name) }} ({{ $user->email }})
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">@error('receiver_user_id') {{ $message }} @enderror</div>
                     </div>
 
-                    <!-- Slug -->
+                    <!-- Campaign ID -->
                     <div class="col-md-6">
-                        <label class="form-label" for="slug">{{ __('Slug') }}</label> *
-                        <input required value="{{ $thisData->slug }}" type="text" name="slug" id="slug"
-                               class="form-control @if ($errors->first('slug')) is-invalid @endif"
-                               placeholder="Slug"/>
-                        <div class="invalid-feedback">{{ $errors->first('slug') }}</div>
+                        <label class="form-label" for="campaign_id">{{ __('Campaign') }}</label> *
+                        <select disabled required class="form-control select2 @error('campaign_id') is-invalid @enderror"
+                                name="campaign_id">
+                            <option value="">{{ __('Select Campaign') }}</option>
+                            @foreach($campaigns as $campaign)
+                                <option @if($thisData->campaign_id == $campaign->id) selected
+                                        @endif value="{{ $campaign->id }}">
+                                    {{ ucfirst($campaign->title) }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">@error('campaign_id') {{ $message }} @enderror</div>
                     </div>
 
-                    <!-- SEO Title -->
+                    <!-- Transaction ID -->
                     <div class="col-md-6">
-                        <label class="form-label" for="seo_title">{{ __('SEO Title') }}</label>
-                        <input value="{{ $thisData->seo_title }}" type="text" name="seo_title" id="seo_title"
-                               class="form-control @if ($errors->first('seo_title')) is-invalid @endif"
-                               placeholder="SEO Title"/>
-                        <div class="invalid-feedback">{{ $errors->first('seo_title') }}</div>
+                        <label class="form-label" for="transaction_id">{{ __('Transaction ID') }}</label>
+                        <input disabled type="text" name="transaction_id" id="transaction_id"
+                               value="{{ $thisData->transaction_id }}"
+                               class="form-control @error('transaction_id') is-invalid @enderror"
+                               placeholder="Transaction ID"/>
+                        <div class="invalid-feedback">@error('transaction_id') {{ $message }} @enderror</div>
                     </div>
 
-                    <!-- Body -->
+                    <!-- Full Name -->
+                    <div class="col-md-6">
+                        <label class="form-label" for="fullname">{{ __('Full Name') }}</label> *
+                        <input disabled required type="text" name="fullname" id="fullname" value="{{ $thisData->fullname}}"
+                               class="form-control @error('fullname') is-invalid @enderror" placeholder="Full Name"/>
+                        <div class="invalid-feedback">@error('fullname') {{ $message }} @enderror</div>
+                    </div>
+
+                    <!-- Country -->
+                    <div class="col-md-6">
+                        <label class="form-label" for="country">{{ __('Country') }}</label> *
+                        <select disabled required name="country" id="country"
+                                class="form-control @if ($errors->first('country')) is-invalid @endif">
+                            <option value="">{{ __('Select Country') }}</option>
+                            <option value="nepal"
+                                    @if($thisData->country??old('country') == 'nepal') selected @endif>{{ __('Nepal') }}</option>
+                            <option value="india"
+                                    @if($thisData->country??old('country') == 'india') selected @endif>{{ __('India') }}</option>
+                            <option value="other"
+                                    @if($thisData->country??old('country') == 'other') selected @endif>{{ __('Other') }}</option>
+                        </select>
+                        <div class="invalid-feedback">{{ $errors->first('country') }}</div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <label class="form-label" for="email">{{ __('Email') }}</label>
+                        <input disabled type="email" name="email" id="email" value="{{ $thisData->email??old('email') }}"
+                               class="form-control @error('email') is-invalid @enderror" placeholder="Email"/>
+                        <div class="invalid-feedback">@error('email') {{ $message }} @enderror</div>
+                    </div>
+
+                    <!-- Payment Status -->
+                    <div class="col-md-6">
+                        <label class="form-label" for="payment_status">{{ __('Payment Status') }}</label> *
+                        <select required class="form-control @error('payment_status') is-invalid @enderror"
+                                name="payment_status">
+                            <option value="">{{ __('Select Payment Status') }}</option>
+                            <option value="completed"
+                                    @if($thisData->payment_status== 'completed') selected @endif>{{ __('Completed')}}</option>
+                            <option value="pending"
+                                    @if($thisData->payment_status == 'pending') selected @endif>{{ __('Pending') }}</option>
+                            <option value="rejected"
+                                    @if($thisData->payment_status == 'rejected') selected @endif>{{ __('Rejected') }}</option>
+                        </select>
+                        <div class="invalid-feedback">@error('payment_status') {{ $message }} @enderror</div>
+                    </div>
+
+                    <!-- Payment Gateway -->
+                    <div class="col-md-6">
+                        <label class="form-label" for="payment_gateway">{{ __('Payment Gateway') }}</label> *
+                        <select disabled name="payment_gateway"
+                                class="form-select @error('payment_gateway') is-invalid @enderror">
+                            <option value="">{{ __('Select Payment Gateway') }}</option>
+                            <option value="bank"
+                                    @if ($thisData->payment_gateway??request('payment_gateway') == 'offline') selected @endif>
+                                Offline
+                            </option>
+                            <option value="bank"
+                                    @if ($thisData->payment_gateway??request('payment_gateway') == 'bank') selected @endif>
+                                Bank
+                            </option>
+                            <option value="esewa"
+                                    @if ($thisData->payment_gateway??request('payment_gateway') == 'esewa') selected @endif>
+                                Esewa
+                            </option>
+                            <option value="khalti"
+                                    @if ($thisData->payment_gateway??request('payment_gateway') == 'khalti') selected @endif>
+                                Khalti
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">@error('payment_gateway') {{ $message }} @enderror</div>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="col-md-6">
+                        <label class="form-label" for="amount">{{ __('Amount') }}</label> *
+                        <input disabled required type="number" name="amount" id="amount" value="{{ $thisData->amount??old('amount') }}"
+                               class="form-control @error('amount') is-invalid @enderror" placeholder="Amount"/>
+                        <div class="invalid-feedback">@error('amount') {{ $message }} @enderror</div>
+                    </div>
+
+                    <!-- Service Charge Percentage -->
+                    <div class="col-md-6">
+                        <label class="form-label"
+                               for="service_charge_percentage">{{ __('Service Charge Percentage') }}</label> *
+                        <input disabled required type="number" step="0.01" name="service_charge_percentage"
+                               id="service_charge_percentage" value="{{ $thisData->service_charge_percentage??old('service_charge_percentage')??7 }}"
+                               class="form-control @error('service_charge_percentage') is-invalid @enderror"
+                               placeholder="Service Charge %"/>
+                        <div class="invalid-feedback">@error('service_charge_percentage') {{ $message }} @enderror</div>
+                    </div>
+
+                    <!-- Mobile Number -->
+                    <div class="col-md-6">
+                        <label class="form-label" for="mobile_number">{{ __('Mobile Number') }}</label>
+                        <input disabled type="text" name="mobile_number" id="mobile_number" value="{{ $thisData->mobile_number??old('mobile_number') }}"
+                               class="form-control @error('mobile_number') is-invalid @enderror"
+                               placeholder="Mobile Number"/>
+                        <div class="invalid-feedback">@error('mobile_number') {{ $message }} @enderror</div>
+                    </div>
+
+
+                    <!-- Address -->
+                    <div class="col-md-6">
+                        <label class="form-label" for="address">{{ __('Address') }}</label>
+                        <input disabled type="text" name="address" id="address" value="{{ $thisData->address??old('address') }}"
+                               class="form-control @error('address') is-invalid @enderror"
+                               placeholder="Mobile Number"/>
+                        <div class="invalid-feedback">@error('address') {{ $message }} @enderror</div>
+                    </div>
+
+                    <!-- Description -->
                     <div class="col-md-12">
-                        <label class="form-label" for="body">{{ __('Body') }}</label> *
-                        <textarea required name="body" id="body" rows="4"
-                                  class="form-control text-editor @if ($errors->first('body')) is-invalid @endif"
-                                  placeholder="Body">{{ $thisData->body }}</textarea>
-                        <div class="invalid-feedback">{{ $errors->first('body') }}</div>
+                        <label class="form-label" for="description">{{ __('Description') }}</label>
+                        <textarea disabled name="description" id="description"
+                                  class="form-control @error('description') is-invalid @enderror"
+                                  placeholder="Description">{{ $thisData->description??old('description') }}</textarea>
+                        <div class="invalid-feedback">@error('description') {{ $message }} @enderror</div>
                     </div>
 
-                    <!-- Image -->
-                    <div class="col-md-6">
-                        <label class="form-label" for="image">{{ __('Image') }}</label> *
-                        <input type="file" name="image" id="image"
-                               class="form-control @if ($errors->first('image')) is-invalid @endif"/>
-                        <div class="invalid-feedback">{{ $errors->first('image') }}</div>
-                        @if ($thisData->image)
-                            <div class="col-md-6 mt-2">
-                                <a target="_blank" href="{{ asset($thisData->image) }}">
-                                    <img src="{{ asset($thisData->image) }}" width="100" alt="Image" class="img-fluid">
-                                </a>
-                            </div>
-                        @endif
-                    </div>
-
-                    <!-- Status -->
-                    <div class="col-md-6">
-                        <label class="form-label w-100" for="status">{{ __('Status') }}</label>
-                        <div class="form-check-inline">
-                            <input id="status1" type="radio" name="status" value="1"
-                                   class="form-check-input @if ($errors->first('status')) is-invalid @endif"
-                                   @if($thisData->status == 1) checked @endif>
-                            <label for="status1" class="form-check-label">{{ __('Active') }}</label>
-                        </div>
-                        <div class="form-check-inline">
-                            <input type="radio" id="status2" name="status" value="0"
-                                   class="form-check-input @if ($errors->first('status')) is-invalid @endif"
-                                   @if($thisData->status == 0) checked @endif>
-                            <label for="status2" class="form-check-label">{{ __('Inactive') }}</label>
-                        </div>
-                        <div class="invalid-feedback">{{ $errors->first('status') }}</div>
-                    </div>
                 </div>
 
-                <div class="pt-4">
-                    <button type="submit" class="btn btn-primary me-sm-3 me-1">{{ __('Update') }}</button>
+                <!-- Submit Button -->
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">{{ __('Save Donation') }}</button>
                 </div>
             </form>
-
         </div>
     </div>
 @endsection

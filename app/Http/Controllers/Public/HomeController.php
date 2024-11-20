@@ -105,7 +105,6 @@ class HomeController extends FrontendBaseController
             $data['partners'] = Partner::get();
             return $this->renderView($this->viewFolder(), $data);
         } catch (Throwable $th) {
-            dd($th);
             return $this->renderView($this->parentViewFolder() . '.errorpage', []);
         }
     }
@@ -268,7 +267,7 @@ class HomeController extends FrontendBaseController
             $insertData['is_anonymous'] = 0;
             $insertData['is_verified'] = 0; //by system admin manually
             if ($request->file('payment_receipt')) {
-                $insertData['payment_receipt'] = uploadImage($this->dir, 'payment_receipt', true, 1280, null);
+                $insertData['payment_receipt'] = 'uploads/donations/'.uploadImage('uploads/donations/', 'payment_receipt', true, 1280, null);
             }
             $resp = Donation::create($insertData);
             /* send mail */
@@ -296,7 +295,6 @@ class HomeController extends FrontendBaseController
             Session::flash('success', 'Congratulations. Your donation has been successfully received. Please wait for the verification.');
             return redirect()->back();
         } catch (Throwable $th) {
-            dd($th);
             return $this->renderView($this->parentViewFolder() . '.errorpage', []);
             Session::flash('error', 'Sorry. Something went wrong. Please try again later or contact our support team.');
             return redirect()->back();

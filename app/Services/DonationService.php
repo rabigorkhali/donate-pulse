@@ -31,6 +31,21 @@ class DonationService extends Service
             'campaigns' => Campaign::orderby('title')->get()
         ];
     }
+
+    public function editPageData($request, $id)
+    {
+        $thisData = $this->itemByIdentifier($id);
+        if ($thisData->payment_status !== 'pending') {
+            $message['error'] = 'Only donation with pending status can be updated';
+            return $message;
+        }
+        return [
+            'thisData' => $thisData,
+            'users' => User::orderby('name')->get(),
+            'campaigns' => Campaign::orderby('title')->get()
+        ];
+    }
+
     public function store($request)
     {
         $data = $request->except('_token');
@@ -59,10 +74,10 @@ class DonationService extends Service
         $table = $this->model->getTable();
         if ($donorUserId) $query->where('giver_user_id', $donorUserId);
         if ($receiverUserId) $query->where('receiver_user_id', $receiverUserId);
-        if(authUser()->role->name=='public-user')$query->where('receiver_user_id', authUser()->id);
+        if (authUser()->role->name == 'public-user') $query->where('receiver_user_id', authUser()->id);
         if ($paymentGateway) $query->where('payment_gateway', $paymentGateway);
-        if ($fromDate) $query->where('created_at','>', $fromDate);
-        if ($toDate) $query->where('created_at','<', $toDate);
+        if ($fromDate) $query->where('created_at', '>', $fromDate);
+        if ($toDate) $query->where('created_at', '<', $toDate);
 
         if ($keyword) {
             $query->where('mobile_number', $keyword);
@@ -73,5 +88,36 @@ class DonationService extends Service
             return $query->orderBy('created_at', 'DESC')->get();
         }
     }
+
+    public function update($request, $id)
+    {
+        $data = $request->only('payment_status');
+        $update = $this->itemByIdentifier($id);
+        if ($update->campaign_status !== 'pending' && authUser()->role->name == 'public-user') {
+            $message['error'] = 'Only donation with pending status can be updated';
+            return $message;
+        }
+
+        $update->fill($data)->save();
+        $update = $this->itemByIdentifier($id);
+
+        return $update;
+    }
+
+    public function delete($request, $id)
+    {
+        $item = $this->itemByIdentifier($id);
+        if ($item->payment_gateway == 'khalti') {
+            return false;
+        }
+        $imagePath = $item->payment_receipt ?? null;
+
+        if ($imagePath && file_exists(public_path($imagePath))) {
+            removeImage($imagePath);
+        }
+
+        return $item->delete();
+    }
+
 
 }

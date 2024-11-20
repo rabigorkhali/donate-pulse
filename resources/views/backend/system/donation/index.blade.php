@@ -152,7 +152,8 @@
                                         <td>{{ $donation->amount}}</td>
                                         <td><b>Type:</b> {{ ucfirst($donation->payment_gateway??'-') }} <br>
                                             @if($donation->payment_receipt)
-                                                <b>Receipt:</b> <a href="{{asset($donation->payment_receipt)}}">View
+                                                <b>Receipt:</b> <a target="_blank"
+                                                                   href="{{asset($donation->payment_receipt)}}">View
                                                     receipt</a>
                                             @endif
 
@@ -163,23 +164,31 @@
                                         </td>
                                         <td>{{ ucfirst($donation->payment_status) }}</td>
                                         <td>
-                                            @if(hasPermission('/donations/*', 'put') || hasPermission('/donations/*', 'delete'))
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                            data-bs-toggle="dropdown">
-                                                        <i class="ti ti-dots-vertical"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        @if(hasPermission('/donations/*', 'delete'))
-                                                            <a href="#" class="dropdown-item delete-button"
-                                                               data-bs-toggle="modal"
-                                                               data-actionurl="{{ route('donations.destroy', $donation->id) }}"
-                                                               data-bs-target="#deleteModal">
-                                                                <i class="ti ti-trash me-1"></i>{{ __('Delete') }}
-                                                            </a>
-                                                        @endif
+                                            @if ($donation->payment_gateway !== 'khalti')
+                                                @if(hasPermission('/donations/*', 'put') || hasPermission('/donations/*', 'delete'))
+                                                    <div class="dropdown">
+                                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                                data-bs-toggle="dropdown">
+                                                            <i class="ti ti-dots-vertical"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            @if(hasPermission('/'.strtolower($title).'/*','put') && $donation->payment_status=='pending')
+                                                                <a class="dropdown-item"
+                                                                   href="{{ route('donations.edit', $donation->id) }}">
+                                                                    <i class="ti ti-pencil me-1"></i>{{ __('Edit') }}
+                                                                </a>
+                                                            @endif
+                                                            @if(hasPermission('/donations/*', 'delete'))
+                                                                <a href="#" class="dropdown-item delete-button"
+                                                                   data-bs-toggle="modal"
+                                                                   data-actionurl="{{ route('donations.destroy', $donation->id) }}"
+                                                                   data-bs-target="#deleteModal">
+                                                                    <i class="ti ti-trash me-1"></i>{{ __('Delete') }}
+                                                                </a>
+                                                            @endif
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>
