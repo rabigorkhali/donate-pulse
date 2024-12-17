@@ -108,7 +108,7 @@ class WithdrawalService extends Service
             $data['withdrawal_service_charge'] = $campaignData->summary_service_charge_amount;
             return $this->model->create($data);
         } catch (\Throwable $throwable) {
-            $message['error'] = 'Server error.';
+            $message['error'] = $throwable->getMessage();
             return $message;
         }
     }

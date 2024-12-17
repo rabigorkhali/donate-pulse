@@ -1,0 +1,10 @@
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Remove double slashes from the URL
+RewriteCond %{REQUEST_URI} ^(.*)//(.*)$
+RewriteRule ^ %1/%2 [R=301,L]
+
+# Redirect to /public if the base URL is accessed
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^ /public [L,R=301]

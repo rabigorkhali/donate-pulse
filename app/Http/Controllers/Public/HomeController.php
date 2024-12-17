@@ -82,7 +82,7 @@ class HomeController extends FrontendBaseController
             $totalDonars = $this->donation->wherein('payment_status', ['completed'])->distinct('giver_user_id')->count();
             $data['total_donars'] = $totalDonars + $this->donation->wherein('payment_status', ['completed'])->where('is_verified', 1)->where('giver_user_id', null)->count();
             $data['total_public_users'] = User::where('status', 'active')->count();
-            $donationRaw = $this->donation->with('giver')->wherein('payment_status', ['completed'])->where('is_verified', 1)->orderby('amount')->get();
+            $donationRaw = $this->donation->with('giver')->wherein('payment_status', ['completed'])->where('is_verified', 1)->orderby('amount','desc')->get();
             $topDonorsList = [];
             foreach ($donationRaw as $donationRawKey => $donationRawDatum) {
                 $topDonors = [];

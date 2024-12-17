@@ -68,6 +68,7 @@
         </div>
     </div>
 @endsection
+
 @section('scripts')
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>

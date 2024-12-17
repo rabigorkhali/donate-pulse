@@ -90,7 +90,7 @@
                                         <span><i class="ti ti-clear-all me-1 ti-xs"></i>Clear</span>
                                     </a>
                                     @if(hasPermission('/'.strtolower($title).'/*','put'))
-                                        <a class="btn add-new btn-primary text-white"
+                                        <a class="btn add-new btn-primary text-white mt-2"
                                            href="{{ route(strtolower($title).'.create') }}">
                                             <i class="ti ti-plus me-0 me-sm-1 ti-xs"></i>
                                             <span class="d-none d-sm-inline-block">Add</span>

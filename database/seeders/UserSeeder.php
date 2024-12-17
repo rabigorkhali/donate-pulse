@@ -13,15 +13,15 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $userData = User::where('email', 'rabigorkhaly@gmail.com')->first();
+        $userData = User::where('email', 'rohimsuperadmin@gmail.com')->first();
         if (!$userData) {
             User::factory()->create([
-                'name' => 'Rabi Gorkhali',
-                'email' => 'rabigorkhaly@gmail.com',
-                'password' => bcrypt('rabigorkhaly@gmail.com'),
+                'name' => 'Rohim DHaubhadel',
+                'email' => 'rohimsuperadmin@gmail.com',
+                'password' => bcrypt('rohimsuperadmin@gmail.com'),
                 'status' => 1,
                 'role_id' => 1,
-                'phone_number' => 9843169319,
+                'phone_number' => 9800000000,
                 'date_of_birth' => '1994-09-18',
                 'gender' => 'male',
                 'address' => 'Bhaktapur',
